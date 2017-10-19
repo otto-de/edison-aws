@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import static java.util.Objects.requireNonNull;
 
 @Component
-@ConditionalOnProperty(prefix = "edison.s3-properties", name = "enabled")
+@ConditionalOnProperty(name = "edison.s3-properties.enabled", havingValue = "true")
 public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
 
     private static final String BUCKET_PROPERTY_SOURCE = "bucketPropertySource";
@@ -27,11 +27,11 @@ public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProce
 
     @Override
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        final S3Config s3Config = new S3Config();
+        final S3Configuration s3Configuration = new S3Configuration();
         final ConfigurableEnvironment env = beanFactory.getBean(ConfigurableEnvironment.class);
         final String region = requireNonNull(env.getProperty(EDISON_S3_PROPERTIES_REGION),
                 "property '" + EDISON_S3_PROPERTIES_REGION + "' must not be null");
-        final AmazonS3 s3Client = s3Config.s3Client(s3Config.s3CredentialsProvider(awsProfile), region);
+        final AmazonS3 s3Client = s3Configuration.s3Client(s3Configuration.s3CredentialsProvider(awsProfile), region);
 
         final S3BucketPropertyReader s3BucketPropertyReader = new S3BucketPropertyReader(s3Client, properties);
 
