@@ -1,0 +1,52 @@
+/**
+ * For an example
+ * @see https://raw.githubusercontent.com/ben-manes/caffeine/master/gradle/dependencies.gradle
+ */
+ext {
+    versions = [
+            hibernate_validator: '6.0.2.Final',
+            edison             : '1.2.2',
+            spring_boot        : '1.5.8.RELEASE',
+            aws_sdk            : '1.11.216',
+            metrics            : '3.2.5'
+    ]
+    test_versions = [
+    ]
+    plugin_versions = [
+            versions     : '0.15.0',
+            jacoco       : '0.7.9',
+            nexus_staging: '0.11.0'
+    ]
+
+    libraries = [
+            hibernate_validator      : "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
+            aws_sdk_dynamodb         : "com.amazonaws:aws-java-sdk-dynamodb:${versions.aws_sdk}",
+            aws_sdk_cloudwatch       : "com.amazonaws:aws-java-sdk-cloudwatch:${versions.aws_sdk}",
+            aws_sdk_s3               : "com.amazonaws:aws-java-sdk-s3:${versions.aws_sdk}",
+            edison_core              : "de.otto.edison:edison-core:${versions.edison}",
+            edison_mongo             : "de.otto.edison:edison-mongo:${versions.edison}",
+            edison_dynamodb          : "de.otto.edison:edison-dynamodb:${versions.edison}",
+            edison_jobs              : "de.otto.edison:edison-jobs:${versions.edison}",
+            edison_togglz            : "de.otto.edison:edison-togglz:${versions.edison}",
+            edison_hal               : "de.otto.edison:edison-hal:${versions.edison_hal}",
+            edison_vault             : "de.otto.edison:edison-vault:${versions.edison_vault}",
+            spring_boot              : "org.springframework.boot:spring-boot:${versions.spring_boot}",
+            spring_boot_autoconfigure: "org.springframework.boot:spring-boot-autoconfigure:${versions.spring_boot}",
+            spring_boot_devtools     : "org.springframework.boot:spring-boot-devtools:${versions.spring_boot}",
+            metrics_annotation       : "io.dropwizard.metrics:metrics-annotation:${versions.metrics}",
+            metrics_core             : "io.dropwizard.metrics:metrics-core:${versions.metrics}",
+            metrics_graphite         : "io.dropwizard.metrics:metrics-graphite:${versions.metrics}",
+            metrics_healthchecks     : "io.dropwizard.metrics:metrics-healthchecks:${versions.metrics}",
+            metrics_jvm              : "io.dropwizard.metrics:metrics-jvm:${versions.metrics}",
+            metrics_spring           : "com.ryantenney.metrics:metrics-spring:${versions.metrics_spring}"
+    ]
+    test_libraries = [
+            spring_boot_starter_test: "org.springframework.boot:spring-boot-starter-test:${versions.spring_boot}",
+            edison_testsupport      : "de.otto.edison:edison-testsupport:${versions.edison}"
+    ]
+    gradle_plugins = [
+            versions     : "com.github.ben-manes:gradle-versions-plugin:${plugin_versions.versions}",
+            spring_boot  : "org.springframework.boot:spring-boot-gradle-plugin:${versions.spring_boot}",
+            nexus_staging: "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:${plugin_versions.nexus_staging}"
+    ]
+}
