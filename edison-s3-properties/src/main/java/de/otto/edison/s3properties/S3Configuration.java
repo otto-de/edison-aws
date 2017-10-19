@@ -8,6 +8,7 @@ import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,10 @@ import org.springframework.context.annotation.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
-@EnableConfigurationProperties(S3Properties.class)
 @Configuration
-public class S3Config {
+@EnableConfigurationProperties(S3Properties.class)
+@ConditionalOnProperty(name = "edison.s3-properties.enabled", havingValue = "true")
+public class S3Configuration {
 
     @Bean(name = "s3CredentialsProvider")
     public AWSCredentialsProvider s3CredentialsProvider(@Value("${edison.s3-properties.aws.profile}") final String awsProfile) {

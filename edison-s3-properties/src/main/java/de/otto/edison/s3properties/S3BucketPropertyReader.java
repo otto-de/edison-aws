@@ -3,6 +3,7 @@ package de.otto.edison.s3properties;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.GetObjectRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 @Component
+@ConditionalOnProperty(name = "edison.s3-properties.enabled", havingValue = "true")
 public class S3BucketPropertyReader {
 
     private final AmazonS3 s3Client;
