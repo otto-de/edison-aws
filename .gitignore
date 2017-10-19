@@ -8,11 +8,5 @@ out
 *.iml
 *.ipr
 
-testsupport/testsupport.iml
-status/status.iml
-metrics/metrics.iml
-jobs/jobs.iml
-health/health.iml
-example/example.iml
 .gitconfig
 classes

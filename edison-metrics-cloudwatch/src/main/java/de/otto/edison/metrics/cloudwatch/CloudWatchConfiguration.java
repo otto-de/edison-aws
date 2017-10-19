@@ -19,7 +19,7 @@ public class CloudWatchConfiguration {
 
   @Bean(name = "cloudWatchCredentialsProvider")
   public AWSCredentialsProvider cloudWatchCredentialsProvider(
-    @Value("${edison.cloudWatch.metrics.profile}") final String awsProfile) {
+    @Value("${edison.metrics.cloudWatch.aws.profile}") final String awsProfile) {
     final List<AWSCredentialsProvider> providerList = new ArrayList<>();
 
     providerList.add(InstanceProfileCredentialsProvider.getInstance());
@@ -31,7 +31,7 @@ public class CloudWatchConfiguration {
 
   @Bean
   public AmazonCloudWatchAsync cloudWatchAsync(final AWSCredentialsProvider cloudWatchCredentialsProvider,
-                                               @Value("${edison.cloudWatch.metrics.region}") final String region) {
+                                               @Value("${edison.metrics.cloudWatch.aws.region}") final String region) {
     return AmazonCloudWatchAsyncClient.asyncBuilder()
       .withRegion(region)
       .withCredentials(cloudWatchCredentialsProvider)

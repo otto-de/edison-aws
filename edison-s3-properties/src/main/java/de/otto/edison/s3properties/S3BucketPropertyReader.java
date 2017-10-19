@@ -16,8 +16,7 @@ public class S3BucketPropertyReader {
     private final S3Properties s3Properties;
 
     @Autowired
-    public S3BucketPropertyReader(final AmazonS3 s3Client,
-                                  final S3Properties s3Properties) {
+    public S3BucketPropertyReader(final AmazonS3 s3Client, final S3Properties s3Properties) {
         this.s3Client = s3Client;
         this.s3Properties = s3Properties;
     }

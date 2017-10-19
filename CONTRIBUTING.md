@@ -2,7 +2,6 @@
 
 So, you want to contribute to this project! That's awesome. However, before doing so, please read the following simple steps how to contribute.
 
-
 ## Always open an issue
 
 Before doing anything always [open an issue](https://github.com/otto-de/edison-aws/issues), 
@@ -11,7 +10,6 @@ This will help us to get you started on the right foot.
 
 It is recommended to wait for feedback before continuing to next steps. However, if 
 the issue is clear (e.g. a typo) and the fix is simple, you can continue and fix it.
-
 
 ## Contact the edison core team
 
@@ -22,7 +20,6 @@ Feel free to contact any of us if you have any questions or need help!
 * [Benedikt Stemmildt](https://github.com/BeneStem)
 
 Our colleagues at OTTO can use the chat group "edison-aws" to contact us.
-
 
 ## How to change code
 
@@ -48,12 +45,10 @@ Example (with a way too long subject line):
     Resolves: #123
     See also: #456, #789
 
-
 ### Maintain the CHANGELOG.md
 
 Add all noticeable changes to the [CHANGELOG.md](CHANGELOG.md).
 To ensure a unified view to the changes please format the [CHANGELOG.md](CHANGELOG.md) as done [in this example](https://github.com/skywinder/github-changelog-generator/blob/master/CHANGELOG.md). 
-
 
 ### Create a pull request
 
@@ -62,7 +57,6 @@ Write a good description and title, so everybody will know what is fixed/improve
 
 A travis-ci build will automatically be triggered to check everything.
 
-
 ### Wait for feedback
 
 Before accepting your contributions, we will review them. You may get feedback about what should be 
@@ -70,7 +64,6 @@ fixed in your modified code. If so, just keep committing in your branch and the 
 updated automatically.
 
 We will only accept pull requests that have zero failing checks.
-
 
 ### The merge
 

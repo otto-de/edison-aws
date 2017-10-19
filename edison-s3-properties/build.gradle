@@ -24,7 +24,7 @@ uploadArchives {
             pom.project {
                 name 'edison-s3-properties'
                 packaging 'jar'
-                description 's3 properties library of the edison-aws project.'
+                description 'S3 properties library of the edison-aws project.'
                 url 'http://github.com/otto-de/edison-aws'
 
                 scm {

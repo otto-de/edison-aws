@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableConfigurationProperties(CloudWatchMetricsProperties.class)
-@ConditionalOnProperty(name = "edison.cloudWatch.metrics.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "edison.metrics.cloudWatch.enabled", havingValue = "true")
 public class CloudWatchMetricsReporterConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(CloudWatchMetricsReporterConfiguration.class);
