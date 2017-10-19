@@ -20,8 +20,7 @@ import java.util.List;
 public class S3Config {
 
     @Bean(name = "s3CredentialsProvider")
-    public AWSCredentialsProvider s3CredentialsProvider(
-            @Value("${edison.s3-properties.aws.profile}") final String awsProfile) {
+    public AWSCredentialsProvider s3CredentialsProvider(@Value("${edison.s3-properties.aws.profile}") final String awsProfile) {
         final List<AWSCredentialsProvider> providerList = new ArrayList<>();
 
         providerList.add(InstanceProfileCredentialsProvider.getInstance());
@@ -32,8 +31,7 @@ public class S3Config {
     }
 
     @Bean
-    public AmazonS3 s3Client(final AWSCredentialsProvider awsCredentialsProvider,
-                             @Value("${edison.s3-properties.aws.region}") final String region) {
+    public AmazonS3 s3Client(final AWSCredentialsProvider awsCredentialsProvider, @Value("${edison.s3-properties.aws.region}") final String region) {
         return AmazonS3Client.builder()
                 .withRegion(region)
                 .withCredentials(awsCredentialsProvider)

@@ -8,8 +8,8 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Validated
-@ConditionalOnProperty(value = "edison.cloudWatch.metrics.enabled", havingValue = "true")
-@ConfigurationProperties(prefix = "edison.cloudWatch.metrics")
+@ConditionalOnProperty(value = "edison.metrics.cloudWatch.enabled", havingValue = "true")
+@ConfigurationProperties(prefix = "edison.metrics.cloudWatch")
 public class CloudWatchMetricsProperties {
 
     private @NotEmpty List<String> allowedMetrics;

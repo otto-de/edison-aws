@@ -4,7 +4,7 @@ DynamoDB persistence for Edison Microservices.
 
 ## Usage
  
- *PENDING*
+TODO
 
 ## DynamodbStatusDetailIndicator
 
