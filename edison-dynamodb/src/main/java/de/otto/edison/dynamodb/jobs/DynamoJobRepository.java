@@ -34,7 +34,6 @@ import static java.util.Collections.singletonList;
 import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 
-@Beta
 public class DynamoJobRepository extends AbstractDynamoRepository<JobInfo> implements JobRepository {
 
     private static final String INDEX_LATEST_PER_TYPE = "latestPerTypeIndex";

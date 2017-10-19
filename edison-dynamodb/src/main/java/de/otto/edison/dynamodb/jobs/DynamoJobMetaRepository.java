@@ -30,7 +30,6 @@ import static java.util.Collections.*;
  * DynamoDB implementation of the JobMetaRepository.
  * </p>
  */
-@Beta
 public class DynamoJobMetaRepository extends AbstractDynamoRepository<JobMeta> implements JobMetaRepository {
 
     private static final String KEY_DISABLED = "disabled";

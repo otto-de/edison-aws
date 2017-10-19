@@ -16,7 +16,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 @Configuration
 @ConditionalOnClass(name = "de.otto.edison.jobs.configuration.JobsConfiguration")
-@Beta
 public class DynamoJobConfiguration {
 
     private static final Logger LOG = getLogger(DynamoJobConfiguration.class);

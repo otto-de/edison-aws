@@ -12,7 +12,6 @@ import static de.otto.edison.status.domain.Status.OK;
 
 @Component
 @ConditionalOnProperty(prefix = "edison.dynamo.status", name = "enabled", havingValue = "true", matchIfMissing = true)
-@Beta
 public class DynamoStatusDetailIndicator implements StatusDetailIndicator {
 
     private final AmazonDynamoDB dynamoClient;

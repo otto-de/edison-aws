@@ -5,7 +5,6 @@ import com.amazonaws.services.dynamodbv2.document.Item;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import de.otto.edison.annotations.Beta;
 import de.otto.edison.dynamodb.AbstractDynamoRepository;
 import de.otto.edison.togglz.FeatureClassProvider;
 import org.slf4j.Logger;
@@ -25,7 +24,6 @@ import static java.util.Collections.singletonList;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @ConditionalOnMissingBean(StateRepository.class)
-@Beta
 public class DynamoTogglzRepository extends AbstractDynamoRepository<FeatureState> implements StateRepository {
 
     private static final Logger LOG = LoggerFactory.getLogger(DynamoTogglzRepository.class);
@@ -97,7 +95,6 @@ public class DynamoTogglzRepository extends AbstractDynamoRepository<FeatureStat
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     protected FeatureState decode(final Item item) {
         final FeatureState featureState = new FeatureState(resolveEnumValue(item.getString(getKeyFieldName())));
         featureState.setEnabled(item.getBoolean(ENABLED));
@@ -113,7 +110,6 @@ public class DynamoTogglzRepository extends AbstractDynamoRepository<FeatureStat
         return "id";
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     private Feature resolveEnumValue(final String name) {
         final Class enumType = featureClassProvider.getFeatureClass();
         return (Feature) Enum.valueOf(enumType, name);

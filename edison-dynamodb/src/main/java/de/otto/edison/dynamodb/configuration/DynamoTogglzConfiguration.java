@@ -15,7 +15,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 @Configuration
 @ConditionalOnClass(name = "de.otto.edison.togglz.configuration.TogglzConfiguration")
-@Beta
 public class DynamoTogglzConfiguration {
 
     private static final Logger LOG = getLogger(DynamoTogglzConfiguration.class);

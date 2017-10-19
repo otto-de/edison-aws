@@ -11,7 +11,6 @@ import org.springframework.validation.annotation.Validated;
  */
 @ConfigurationProperties(prefix = "edison.dynamo")
 @Validated
-@Beta
 public class DynamoProperties {
 
     private String endpoint = "http://localhost:8000/";

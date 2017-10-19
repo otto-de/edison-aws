@@ -17,7 +17,6 @@ import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 
-@Beta
 public abstract class AbstractDynamoRepository<V> {
 
     private static final boolean DISABLE_PARALLEL_STREAM_PROCESSING = false;
