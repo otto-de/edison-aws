@@ -21,7 +21,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 @Configuration
 @EnableConfigurationProperties(DynamoProperties.class)
-@Beta
 public class DynamoConfiguration {
 
     private static final Logger LOG = getLogger(DynamoConfiguration.class);

@@ -1,5 +1,5 @@
 # Release Notes
 
-## 1.2.1
+## 0.0.1-SNAPSHOT
 
 **Initial Release**

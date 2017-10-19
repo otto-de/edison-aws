@@ -2,7 +2,6 @@ package de.otto.edison.dynamodb.jobs;
 
 import de.otto.edison.annotations.Beta;
 
-@Beta
 enum JobStructure {
 
     ID("_id"),
