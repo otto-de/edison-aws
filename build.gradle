@@ -1,0 +1,61 @@
+buildscript {
+    apply from: "${rootDir}/gradle/dependencies.gradle"
+
+    repositories {
+        maven { url 'http://repo.spring.io/libs-snapshot' }
+        maven { url 'http://repo.spring.io/plugins-release' }
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath gradle_plugins.values()
+    }
+}
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    maven { url 'http://repo.spring.io/libs-snapshot' }
+}
+
+apply from: "${rootDir}/gradle/root/versions.gradle"
+apply from: "${rootDir}/gradle/root/idea.gradle"
+apply from: "${rootDir}/gradle/root/eclipse.gradle"
+apply from: "${rootDir}/gradle/root/jacoco.gradle"
+apply from: "${rootDir}/gradle/root/nexusstaging.gradle"
+
+subprojects {
+    apply plugin: 'eclipse'
+    apply plugin: 'project-report'
+
+    // USE SEMANTIC VERSIONING AS SPECIFIED HERE: http://semver.org/spec/v2.0.0.html
+    //
+    // Major Release: X.0.0-RELEASE: Breaking Changes. Should be avoided if possible, or planned for future release.
+    // Minor Release: 0.X.0-RELEASE: Additional Features, updates from minor releases in Spring
+    // Micro Release: 0.0.X-RELEASE: Bugfixes, non-breaking changes, updates from micro releases in Spring
+    //
+    // DO NOT FORGET TO DOCUMENT CHANGES IN CHANGELOG.md
+    //
+    // Add a GitHub release for every new release: https://github.com/otto-de/edison-aws/releases
+    version = '1.2.1-SNAPSHOT'
+    group = 'de.otto.edison'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    }
+
+    ext['thymeleaf.version'] = versions.thymeleaf
+    ext['thymeleaf-layout-dialect.version'] = versions.thymeleaf_layout_dialect
+
+    task allDeps(type: DependencyReportTask) {}
+
+    apply from: "${rootDir}/gradle/idea.gradle"
+    apply from: "${rootDir}/gradle/compile.gradle"
+    apply from: "${rootDir}/gradle/test.gradle"
+    apply from: "${rootDir}/gradle/jacoco.gradle"
+    apply from: "${rootDir}/gradle/maven.gradle"
+    apply from: "${rootDir}/gradle/signing.gradle"
+}
