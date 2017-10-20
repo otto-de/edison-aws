@@ -33,10 +33,10 @@ public class S3Configuration {
     }
 
     @Bean
-    public AmazonS3 s3Client(final AWSCredentialsProvider awsCredentialsProvider, @Value("${edison.s3-properties.aws.region}") final String region) {
+    public AmazonS3 s3Client(final AWSCredentialsProvider s3CredentialsProvider, @Value("${edison.s3-properties.aws.region}") final String region) {
         return AmazonS3Client.builder()
                 .withRegion(region)
-                .withCredentials(awsCredentialsProvider)
+                .withCredentials(s3CredentialsProvider)
                 .build();
     }
 }
