@@ -1,7 +1,6 @@
 package de.otto.edison.metrics.cloudwatch;
 
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsync;
-import com.amazonaws.services.cloudwatch.model.Dimension;
 import com.amazonaws.services.cloudwatch.model.MetricDatum;
 import com.amazonaws.services.cloudwatch.model.PutMetricDataRequest;
 import com.codahale.metrics.*;
@@ -55,9 +54,6 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
         cloudWatchClient.putMetricDataAsync(new PutMetricDataRequest()
                 .withNamespace(namespace)
                 .withMetricData(new MetricDatum()
-                        .withDimensions(new Dimension()
-                                .withName("default")
-                                .withValue("total"))
                         .withMetricName(name)
                         .withValue(value)
                         .withTimestamp(new Date())
