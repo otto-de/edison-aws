@@ -3,3 +3,4 @@ rootProject.name = 'edison-aws'
 include "edison-dynamodb"
 include "edison-metrics-cloudwatch"
 include "edison-s3-properties"
+include "edison-paramstore-properties"
