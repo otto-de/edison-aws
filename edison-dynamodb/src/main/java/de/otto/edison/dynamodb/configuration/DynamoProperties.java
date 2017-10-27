@@ -1,6 +1,5 @@
 package de.otto.edison.dynamodb.configuration;
 
-import de.otto.edison.annotations.Beta;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
@@ -9,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
  *
  * @since 1.0.0
  */
-@ConfigurationProperties(prefix = "edison.dynamo")
+@ConfigurationProperties(prefix = "edison.aws.dynamo")
 @Validated
 public class DynamoProperties {
 

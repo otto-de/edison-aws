@@ -10,7 +10,6 @@ import com.amazonaws.services.dynamodbv2.document.utils.ValueMap;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import de.otto.edison.annotations.Beta;
 import de.otto.edison.dynamodb.AbstractDynamoRepository;
 import de.otto.edison.jobs.domain.JobMeta;
 import de.otto.edison.jobs.repository.JobMetaRepository;

@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableConfigurationProperties(CloudWatchMetricsProperties.class)
-@ConditionalOnProperty(name = "edison.metrics.cloudWatch.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "edison.aws.metrics.cloudWatch.enabled", havingValue = "true")
 public class CloudWatchMetricsReporterConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(CloudWatchMetricsReporterConfiguration.class);
@@ -40,7 +40,7 @@ public class CloudWatchMetricsReporterConfiguration {
 
     @Bean(name = "cloudWatchCredentialsProvider")
     public AWSCredentialsProvider cloudWatchCredentialsProvider(
-            @Value("${edison.metrics.cloudWatch.aws.profile}") final String awsProfile) {
+            @Value("${edison.aws.metrics.cloudWatch.aws.profile}") final String awsProfile) {
         final List<AWSCredentialsProvider> providerList = new ArrayList<>();
 
         providerList.add(InstanceProfileCredentialsProvider.getInstance());
@@ -52,7 +52,7 @@ public class CloudWatchMetricsReporterConfiguration {
 
     @Bean
     public AmazonCloudWatchAsync cloudWatchAsync(final AWSCredentialsProvider cloudWatchCredentialsProvider,
-                                                 @Value("${edison.metrics.cloudWatch.aws.region}") final String region) {
+                                                 @Value("${edison.aws.metrics.cloudWatch.aws.region}") final String region) {
         return AmazonCloudWatchAsyncClient.asyncBuilder()
                 .withRegion(region)
                 .withCredentials(cloudWatchCredentialsProvider)

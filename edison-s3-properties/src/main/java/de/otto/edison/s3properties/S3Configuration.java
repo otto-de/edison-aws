@@ -18,11 +18,11 @@ import java.util.List;
 
 @Configuration
 @EnableConfigurationProperties(S3Properties.class)
-@ConditionalOnProperty(name = "edison.s3-properties.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "edison.aws.s3-properties.enabled", havingValue = "true")
 public class S3Configuration {
 
     @Bean(name = "s3CredentialsProvider")
-    public AWSCredentialsProvider s3CredentialsProvider(@Value("${edison.s3-properties.aws.profile}") final String awsProfile) {
+    public AWSCredentialsProvider s3CredentialsProvider(@Value("${edison.aws.s3-properties.aws.profile}") final String awsProfile) {
         final List<AWSCredentialsProvider> providerList = new ArrayList<>();
 
         providerList.add(InstanceProfileCredentialsProvider.getInstance());
@@ -33,7 +33,7 @@ public class S3Configuration {
     }
 
     @Bean
-    public AmazonS3 s3Client(final AWSCredentialsProvider s3CredentialsProvider, @Value("${edison.s3-properties.aws.region}") final String region) {
+    public AmazonS3 s3Client(final AWSCredentialsProvider s3CredentialsProvider, @Value("${edison.aws.s3-properties.aws.region}") final String region) {
         return AmazonS3Client.builder()
                 .withRegion(region)
                 .withCredentials(s3CredentialsProvider)

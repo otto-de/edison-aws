@@ -7,7 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 @Validated
-@ConfigurationProperties(prefix = "edison.metrics.cloudWatch")
+@ConfigurationProperties(prefix = "edison.aws.metrics.cloudWatch")
 public class CloudWatchMetricsProperties {
 
     private @NotEmpty List<String> allowedMetrics;

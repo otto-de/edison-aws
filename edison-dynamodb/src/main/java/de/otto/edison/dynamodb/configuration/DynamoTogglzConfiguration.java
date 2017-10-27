@@ -1,7 +1,6 @@
 package de.otto.edison.dynamodb.configuration;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
-import de.otto.edison.annotations.Beta;
 import de.otto.edison.dynamodb.togglz.DynamoTogglzRepository;
 import de.otto.edison.togglz.FeatureClassProvider;
 import org.slf4j.Logger;

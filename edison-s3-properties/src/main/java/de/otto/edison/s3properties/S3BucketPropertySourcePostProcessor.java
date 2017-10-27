@@ -15,13 +15,13 @@ import org.springframework.stereotype.Component;
 import static java.util.Objects.requireNonNull;
 
 @Component
-@ConditionalOnProperty(name = "edison.s3-properties.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "edison.aws.s3-properties.enabled", havingValue = "true")
 public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
 
     private static final String BUCKET_PROPERTY_SOURCE = "bucketPropertySource";
-    private static final String EDISON_S3_PROPERTIES_BUCKETNAME = "edison.s3-properties.bucketname";
-    private static final String EDISON_S3_PROPERTIES_FILENAME = "edison.s3-properties.filename";
-    private static final String EDISON_S3_PROPERTIES_REGION = "edison.s3-properties.aws.region";
+    private static final String EDISON_S3_PROPERTIES_BUCKETNAME = "edison.aws.s3-properties.bucketname";
+    private static final String EDISON_S3_PROPERTIES_FILENAME = "edison.aws.s3-properties.filename";
+    private static final String EDISON_S3_PROPERTIES_REGION = "edison.aws.s3-properties.aws.region";
     private String awsProfile;
     private S3Properties properties;
 
@@ -41,7 +41,7 @@ public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProce
 
     @Override
     public void setEnvironment(final Environment environment) {
-        awsProfile = environment.getProperty("edison.s3-properties.aws.profile", "default");
+        awsProfile = environment.getProperty("edison.aws.s3-properties.aws.profile", "default");
 
         final String bucketName = requireNonNull(environment.getProperty(EDISON_S3_PROPERTIES_BUCKETNAME),
                 "property '" + EDISON_S3_PROPERTIES_BUCKETNAME + "' must not be null");

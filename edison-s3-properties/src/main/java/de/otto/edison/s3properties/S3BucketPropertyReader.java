@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 @Component
-@ConditionalOnProperty(name = "edison.s3-properties.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "edison.aws.s3-properties.enabled", havingValue = "true")
 public class S3BucketPropertyReader {
 
     private final AmazonS3 s3Client;
