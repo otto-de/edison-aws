@@ -6,7 +6,6 @@ import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.spec.PutItemSpec;
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec;
 import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
-import de.otto.edison.annotations.Beta;
 import de.otto.edison.dynamodb.configuration.DynamoProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 

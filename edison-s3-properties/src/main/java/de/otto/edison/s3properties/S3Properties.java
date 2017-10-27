@@ -2,7 +2,7 @@ package de.otto.edison.s3properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "edison.s3-properties")
+@ConfigurationProperties(prefix = "edison.aws.s3-properties")
 public class S3Properties {
 
     private String bucketname;

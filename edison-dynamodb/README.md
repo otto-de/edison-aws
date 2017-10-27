@@ -9,7 +9,7 @@ TODO
 ## DynamodbStatusDetailIndicator
 
 A StatusDetailIndicator is autoconfigured and regularly checks the availability of the DynamoDB. The indicator can be
-disabled by setting the property `edison.dynamodb.status.enabled=false`.
+disabled by setting the property `edison.aws.dynamodb.status.enabled=false`.
 
 ## DynamodbJobRepository
 
