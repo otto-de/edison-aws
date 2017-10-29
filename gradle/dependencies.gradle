@@ -39,10 +39,11 @@ ext {
             slf4j                    : "org.slf4j:slf4j-api:${versions.slf4j}"
     ]
     test_libraries = [
-            edison_testsupport      : "de.otto.edison:edison-testsupport:${versions.edison}",
-            mockito_core            : "org.mockito:mockito-core:${test_versions.mockito}",
-            hamcrest_core           : "org.hamcrest:hamcrest-core:${test_versions.hamcrest}",
-            hamcrest_library        : "org.hamcrest:hamcrest-library:${test_versions.hamcrest}"
+            spring_boot_starter_test : "org.springframework.boot:spring-boot-starter-test:${versions.spring_boot}",
+            edison_testsupport       : "de.otto.edison:edison-testsupport:${versions.edison}",
+            mockito_core             : "org.mockito:mockito-core:${test_versions.mockito}",
+            hamcrest_core            : "org.hamcrest:hamcrest-core:${test_versions.hamcrest}",
+            hamcrest_library         : "org.hamcrest:hamcrest-library:${test_versions.hamcrest}"
 
     ]
     gradle_plugins = [
