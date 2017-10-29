@@ -15,7 +15,7 @@ the issue is clear (e.g. a typo) and the fix is simple, you can continue and fix
 
 Feel free to contact any of us if you have any questions or need help!
 
-* [Guido Steinacker](https://github.com/gsteinacker) aka "The Author"
+* [Guido Steinacker](https://github.com/gsteinacker)
 * [Matthias Bargmann](https://github.com/mazzeb)
 * [Benedikt Stemmildt](https://github.com/BeneStem)
 

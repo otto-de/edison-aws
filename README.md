@@ -20,7 +20,7 @@ It's purpose is to provide a common implementation for cross-cutting requirement
 * Support for Dynamodb-based repositories in case you do not like Spring Data
 * An optional Dynamodb-based implementation of a JobRepository
 * An optional Dynamodb-based implementation of a TogglzRepository
-* Get property files from s3 to load secret properties
+* Get property files from S3 to load secret properties
 * Reporting of metrics to cloudWatch
 
 ... plus all the features of [edison-microservice](https://github.com/otto-de/edison-microservice).
@@ -28,9 +28,9 @@ It's purpose is to provide a common implementation for cross-cutting requirement
 ## Documentation
 
 Edison Modules:
-* [`edison-dynamodb`](edison-dynamodb/README.md): TODO.
-* [`edison-metrics-cloudwatch`](edison-metrics-cloudwatch/README.md): TODO.
-* [`edison-s3-properties`](edison-s3-properties/README.md): TODO.
+* [`edison-aws-dynamodb`](edison-aws-dynamodb/README.md): TODO.
+* [`edison-aws-metrics`](edison-aws-metrics/README.md): TODO.
+* [`edison-aws.config`](edison-aws-config/README.md): TODO.
 
 ## Setup
 
