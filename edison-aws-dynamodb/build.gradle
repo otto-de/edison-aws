@@ -1,30 +1,13 @@
 dependencies {
     compile project(":edison-aws-core")
 
-    compileOnly libraries.edison_jobs
-    compileOnly libraries.edison_togglz
-
     compile libraries.edison_core
     compile libraries.spring_boot
     compile libraries.spring_boot_autoconfigure
     compile libraries.aws_sdk_dynamodb
 
     testCompile test_libraries.edison_testsupport
-    testCompile libraries.edison_jobs
-    testCompile libraries.edison_togglz
 }
-/*
-task startDB(type: Exec) {
-    commandLine "bash", "-c", "docker run -p 8000:8000 -d tray/dynamodb-local -inMemory -sharedDb -port 8000"
-}
-
-task stopDB(type: Exec) {
-    commandLine "bash", "-c", "id=\$(docker ps | grep \"tray/dynamodb-local\" | awk '{print \$1}');if [[ \${id} ]]; then docker stop \$id; fi"
-}
-
-test.dependsOn startDB
-test.finalizedBy stopDB
-*/
 
 artifacts {
     archives jar

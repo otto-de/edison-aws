@@ -1,8 +1,17 @@
 dependencies {
     compile project(":edison-aws-core")
+
     compile libraries.spring_boot_autoconfigure
     compile libraries.aws_sdk_s3
     compile libraries.slf4j
+
+    compileOnly libraries.edison_togglz
+
+    testCompile libraries.edison_togglz
+
+    testCompile test_libraries.mockito_core
+    testCompile test_libraries.hamcrest_core
+    testCompile test_libraries.hamcrest_library
 }
 
 artifacts {

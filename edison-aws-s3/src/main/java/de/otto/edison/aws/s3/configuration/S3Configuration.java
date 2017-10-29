@@ -1,4 +1,4 @@
-package de.otto.edison.aws.config.s3;
+package de.otto.edison.aws.s3.configuration;
 
 import de.otto.edison.aws.configuration.AwsProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

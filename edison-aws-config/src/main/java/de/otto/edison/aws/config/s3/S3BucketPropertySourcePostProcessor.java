@@ -2,6 +2,7 @@ package de.otto.edison.aws.config.s3;
 
 import de.otto.edison.aws.configuration.AwsConfiguration;
 import de.otto.edison.aws.configuration.AwsProperties;
+import de.otto.edison.aws.s3.configuration.S3Configuration;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -19,6 +20,7 @@ import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 
 @Component
 @ConditionalOnProperty(name = "edison.aws.config.s3.enabled", havingValue = "true")
+// TODO: warum hier keine injection??
 public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
 
     private static final String BUCKET_PROPERTY_SOURCE = "bucketPropertySource";
@@ -29,8 +31,6 @@ public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProce
 
     @Override
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
-        // TODO: warum hier keine injection??
 
         AwsConfiguration awsConfig = new AwsConfiguration();
         S3Configuration s3Config = new S3Configuration();
