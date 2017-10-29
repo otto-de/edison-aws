@@ -6,6 +6,7 @@
 * Renamed artifacts to edison-aws-*
 * Unified properties: prefix is now edison.aws.*
 * Using localstack instead of local installation of dynamo db
+* Removed unused (and broken) DynamoJobRepository and DynamoTogglzRepository
 
 ## 0.0.1-SNAPSHOT
 
