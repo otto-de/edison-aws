@@ -9,6 +9,7 @@ dependencies {
 
     testCompile libraries.edison_togglz
 
+    testCompile test_libraries.spring_boot_starter_test
     testCompile test_libraries.mockito_core
     testCompile test_libraries.hamcrest_core
     testCompile test_libraries.hamcrest_library

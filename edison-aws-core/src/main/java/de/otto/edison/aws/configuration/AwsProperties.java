@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 
-@ConfigurationProperties(prefix = "edison.aws")
+@ConfigurationProperties(prefix = "aws")
 public class AwsProperties {
 
     private String region = EU_CENTRAL_1.value();

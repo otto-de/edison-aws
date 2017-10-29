@@ -47,8 +47,8 @@ public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProce
 
     @Override
     public void setEnvironment(final Environment environment) {
-        awsProperties.setProfile(environment.getProperty("edison.aws.profile", "default"));
-        awsProperties.setRegion(environment.getProperty("edison.aws.region", EU_CENTRAL_1.value()));
+        awsProperties.setProfile(environment.getProperty("aws.profile", "default"));
+        awsProperties.setRegion(environment.getProperty("aws.region", EU_CENTRAL_1.value()));
 
         String bucketName = requireNonNull(
                 environment.getProperty(EDISON_S3_PROPERTIES_BUCKETNAME),

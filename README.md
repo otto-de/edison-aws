@@ -42,6 +42,16 @@ Make sure you have Java 1.8 and gradle 4.x installed on your computer.
 
 In order to execute the tests, you need to have a running [Localstack](https://github.com/localstack/localstack)!
 
+TODO:
+TODO: The following should not be required to run tests!
+TODO: Remove this as soon as the tests are running w/ LocalStack!
+
+Some tests need to access AWS and rely on a properly configured aws profile named `edison-aws-test`.
+You can use [Swamp](https://github.com/felixb/swamp) to create the expected profile configuration:
+```
+swamp -profile ec-users -account ${ACCOUNT} -mfa-device arn:aws:iam::123456789012:mfa/${USER} -target-profile edison-aws-test -target-role ${ROLE}
+```
+
 Test and create coverage report
 
     gradle check
