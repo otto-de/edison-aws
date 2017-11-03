@@ -1,6 +1,7 @@
 package de.otto.edison.aws.s3.configuration;
 
 import de.otto.edison.aws.s3.togglz.S3StateRepository;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,6 +13,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 @Configuration
 @EnableConfigurationProperties(S3TogglzProperties.class)
 @ConditionalOnProperty(name = "edison.aws.s3.togglz.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnClass(name = "org.togglz.core.repository.StateRepository")
 public class S3TogglzConfiguration {
 
     @Bean
