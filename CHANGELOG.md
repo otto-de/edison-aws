@@ -2,6 +2,7 @@
 
 ## 0.1.0-SNAPSHOT
 
+* Add edisons SSLLdapConnectionFactory config
 * Migrated to AWS SDK 2.0.0-preview-4
 * Renamed artifacts to edison-aws-*
 * Unified properties: prefix is now edison.aws.*
