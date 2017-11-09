@@ -1,5 +1,7 @@
 package de.otto.edison.aws.config.paramstore;
 
+import de.otto.edison.aws.configuration.AwsConfiguration;
+import de.otto.edison.aws.configuration.AwsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -19,6 +21,7 @@ import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
+import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 import static software.amazon.awssdk.services.ssm.model.ParameterType.SecureString;
 
 @Component
@@ -29,10 +32,15 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
 
     private static final String PARAMETER_STORE_PROPERTY_SOURCE = "parameterStorePropertySource";
     private ParamStoreConfigProperties properties;
+    private AwsProperties awsProperties;
 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        SSMClient awsSSM = SSMClient.create();
+        AwsConfiguration awsConfig = new AwsConfiguration();
+
+        SSMClient awsSSM = SSMClient.builder()
+                .credentialsProvider(awsConfig.awsCredentialsProvider(awsProperties))
+                .build();
 
         GetParametersByPathRequest request = GetParametersByPathRequest
                 .builder()
@@ -58,6 +66,10 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
 
     @Override
     public void setEnvironment(Environment environment) {
+        awsProperties = new AwsProperties();
+        awsProperties.setProfile(environment.getProperty("aws.profile", "default"));
+        awsProperties.setRegion(environment.getProperty("aws.region", EU_CENTRAL_1.value()));
+
         String pathProperty = "edison.aws.config.paramstore.path";
         String path = requireNonNull(environment.getProperty(pathProperty),
                 "Property '" + pathProperty + "' must not be null");
