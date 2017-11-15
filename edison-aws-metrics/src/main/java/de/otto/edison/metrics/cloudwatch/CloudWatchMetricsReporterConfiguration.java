@@ -1,5 +1,9 @@
 package de.otto.edison.metrics.cloudwatch;
 
+import com.amazonaws.auth.*;
+import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsync;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClient;
 import com.codahale.metrics.MetricRegistry;
 import de.otto.edison.aws.configuration.AwsProperties;
 import org.slf4j.Logger;
@@ -8,12 +12,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.core.auth.AwsCredentialsProvider;
-import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
-
-import static software.amazon.awssdk.core.regions.Region.of;
 
 @Configuration
 @EnableConfigurationProperties({AwsProperties.class, CloudWatchMetricsProperties.class})
@@ -24,7 +26,7 @@ public class CloudWatchMetricsReporterConfiguration {
 
     @Bean
     public CloudWatchMetricsReporter cloudWatchReporter(final MetricRegistry metricRegistry,
-                                                        final CloudWatchAsyncClient cloudWatchAsync,
+                                                        final AmazonCloudWatchAsync cloudWatchAsync,
                                                         final CloudWatchMetricsProperties metricsProperties) {
         final CloudWatchMetricsReporter reporter = new CloudWatchMetricsReporter(
                 metricRegistry,
@@ -37,11 +39,21 @@ public class CloudWatchMetricsReporterConfiguration {
     }
 
     @Bean
-    public CloudWatchAsyncClient cloudWatchAsync(final AwsCredentialsProvider cloudWatchCredentialsProvider,
+    public AmazonCloudWatchAsync cloudWatchAsync(final AWSCredentialsProvider cloudWatchCredentialsProvider,
                                                  final AwsProperties awsProperties) {
-        return CloudWatchAsyncClient.builder()
-                .region(of(awsProperties.getRegion()))
-                .credentialsProvider(cloudWatchCredentialsProvider)
+        return AmazonCloudWatchAsyncClient.asyncBuilder()
+                .withRegion(awsProperties.getRegion())
+                .withCredentials(cloudWatchCredentialsProvider)
                 .build();
+    }
+
+    @Bean(name = "cloudWatchCredentialsProvider")
+    public AWSCredentialsProvider cloudWatchCredentialsProvider(final AwsProperties awsProperties) {
+        final List<AWSCredentialsProvider> providerList = new ArrayList<>();
+        providerList.add(new ContainerCredentialsProvider());
+        providerList.add(InstanceProfileCredentialsProvider.getInstance());
+        providerList.add(new EnvironmentVariableCredentialsProvider());
+        providerList.add(new ProfileCredentialsProvider(awsProperties.getProfile()));
+        return new AWSCredentialsProviderChain(providerList);
     }
 }
