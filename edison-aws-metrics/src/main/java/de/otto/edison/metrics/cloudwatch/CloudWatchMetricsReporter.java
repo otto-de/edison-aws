@@ -3,14 +3,14 @@ package de.otto.edison.metrics.cloudwatch;
 import com.codahale.metrics.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
-import software.amazon.awssdk.services.cloudwatch.model.MetricDatum;
-import software.amazon.awssdk.services.cloudwatch.model.PutMetricDataRequest;
+import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsync;
+import com.amazonaws.services.cloudwatch.model.MetricDatum;
+import com.amazonaws.services.cloudwatch.model.PutMetricDataRequest;
 
 import java.util.List;
 import java.util.SortedMap;
 
-import static java.time.Instant.now;
+import java.util.Date;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -18,13 +18,13 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
 
     private static final Logger LOG = LoggerFactory.getLogger(CloudWatchMetricsReporter.class);
 
-    private final CloudWatchAsyncClient cloudWatchClient;
+    private final AmazonCloudWatchAsync cloudWatchClient;
     private final String namespace;
 
     public CloudWatchMetricsReporter(final MetricRegistry registry,
                                      final List<String> allowedMetrics,
                                      final String namespace,
-                                     final CloudWatchAsyncClient cloudWatchClient) {
+                                     final AmazonCloudWatchAsync cloudWatchClient) {
         super(
                 registry,
                 "cloudWatch-reporter",
@@ -56,15 +56,13 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
     }
 
     private void reportToCloudWatch(final String name, final double value) {
-        cloudWatchClient.putMetricData(PutMetricDataRequest.builder()
-                .namespace(namespace)
-                .metricData(MetricDatum.builder()
-                        .metricName(name)
-                        .value(value)
-                        .timestamp(now())
-                        .build())
-                .build()
-        );
+        cloudWatchClient.putMetricDataAsync(new PutMetricDataRequest()
+                .withNamespace(namespace)
+                .withMetricData(new MetricDatum()
+                        .withMetricName(name)
+                        .withValue(value)
+                        .withTimestamp(new Date())
+                ));
 
         LOG.info("sending metric to cloudWatch: " + name + " : " + value);
     }
