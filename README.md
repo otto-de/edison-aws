@@ -19,7 +19,6 @@ This project contains a number of independent libraries on top of [edison-micros
 The libraries are used in different projects at OTTO.
 It's purpose is to provide a common implementation for cross-cutting requirements like:
 
-* Support for Dynamodb-based repositories
 * Get property files from S3 to load secret properties
 * Reporting of metrics to cloudWatch
 
@@ -29,7 +28,6 @@ It's purpose is to provide a common implementation for cross-cutting requirement
 
 Edison Modules:
 * [`edison-aws-core`](edison-aws-core/README.md): TODO.
-* [`edison-aws-dynamodb`](edison-aws-dynamodb/README.md): TODO.
 * [`edison-aws-metrics`](edison-aws-metrics/README.md): TODO.
 * [`edison-aws-config`](edison-aws-config/README.md): TODO.
 * [`edison-aws-s3`](edison-aws-s3/README.md): TODO.

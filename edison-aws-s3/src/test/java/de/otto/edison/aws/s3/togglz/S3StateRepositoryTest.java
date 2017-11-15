@@ -5,11 +5,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.togglz.core.Feature;
 import org.togglz.core.repository.FeatureState;
-import software.amazon.awssdk.auth.AwsCredentials;
-import software.amazon.awssdk.auth.StaticCredentialsProvider;
-import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.core.auth.AwsCredentials;
+import software.amazon.awssdk.core.auth.StaticCredentialsProvider;
+import software.amazon.awssdk.core.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
 
 import java.net.URI;
 import java.util.HashSet;
@@ -40,19 +40,18 @@ public class S3StateRepositoryTest {
         repository = new S3StateRepository(togglzProperties, client);
     }
 
-    @SuppressWarnings("serial")
     @Test
     public void testGetSetFeatureState() {
         assertNull(repository.getFeatureState(TestFeature.FEATURE_1));
 
-        FeatureState initState = new FeatureState(TestFeature.FEATURE_1)
+        final FeatureState initState = new FeatureState(TestFeature.FEATURE_1)
                 .setEnabled(true)
                 .setStrategyId("abc")
                 .setParameter("key1", "value1");
 
         repository.setFeatureState(initState);
 
-        FeatureState actualState = repository.getFeatureState(TestFeature.FEATURE_1);
+        final FeatureState actualState = repository.getFeatureState(TestFeature.FEATURE_1);
 
         assertThat(actualState.getFeature()).isEqualTo(initState.getFeature());
         assertThat(actualState.getStrategyId()).isEqualTo("abc");
@@ -65,10 +64,9 @@ public class S3StateRepositoryTest {
         });
     }
 
-    @SuppressWarnings("serial")
     @Test
     public void testUpdateFeatureState() {
-        FeatureState initState = new FeatureState(TestFeature.FEATURE_1)
+        final FeatureState initState = new FeatureState(TestFeature.FEATURE_1)
                 .setEnabled(true)
                 .setStrategyId("abc")
                 .setParameter("key1", "value1");
@@ -79,7 +77,7 @@ public class S3StateRepositoryTest {
 
         assertThat(actualState.getFeature()).isEqualTo(initState.getFeature());
 
-        FeatureState updatedState = new FeatureState(TestFeature.FEATURE_1)
+        final FeatureState updatedState = new FeatureState(TestFeature.FEATURE_1)
                 .setEnabled(false)
                 .setStrategyId("def")
                 .setParameter("key2", "value2");

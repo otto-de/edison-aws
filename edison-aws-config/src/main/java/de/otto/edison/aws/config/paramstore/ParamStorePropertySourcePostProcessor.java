@@ -21,39 +21,39 @@ import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse;
 import java.util.Properties;
 
 import static java.util.Objects.requireNonNull;
-import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
-import static software.amazon.awssdk.services.ssm.model.ParameterType.SecureString;
+import static software.amazon.awssdk.core.regions.Region.EU_CENTRAL_1;
+import static software.amazon.awssdk.services.ssm.model.ParameterType.SECURE_STRING;
 
 @Component
 @ConditionalOnProperty(name = "edison.aws.config.paramstore.enabled", havingValue = "true")
 public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
 
-    private static final Logger LOG =  LoggerFactory.getLogger(ParamStorePropertySourcePostProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ParamStorePropertySourcePostProcessor.class);
 
     private static final String PARAMETER_STORE_PROPERTY_SOURCE = "parameterStorePropertySource";
     private ParamStoreConfigProperties properties;
     private AwsProperties awsProperties;
 
     @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        AwsConfiguration awsConfig = new AwsConfiguration();
+    public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        final AwsConfiguration awsConfig = new AwsConfiguration();
 
-        SSMClient awsSSM = SSMClient.builder()
+        final SSMClient awsSSM = SSMClient.builder()
                 .credentialsProvider(awsConfig.awsCredentialsProvider(awsProperties))
                 .build();
 
-        GetParametersByPathRequest request = GetParametersByPathRequest
+        final GetParametersByPathRequest request = GetParametersByPathRequest
                 .builder()
                 .path(properties.getPath())
                 .withDecryption(true)
                 .build();
 
-        GetParametersByPathResponse result = awsSSM.getParametersByPath(request);
+        final GetParametersByPathResponse result = awsSSM.getParametersByPath(request);
 
-        Properties propertiesSource = new Properties();
+        final Properties propertiesSource = new Properties();
         result.parameters().forEach(p -> {
-            String name = p.name().substring(properties.getPath().length() + 1);
-            String loggingValue = SecureString.toString().equals(p.type()) ? "*****" : p.value();
+            final String name = p.name().substring(properties.getPath().length() + 1);
+            final String loggingValue = SECURE_STRING == p.type() ? "*****" : p.value();
             LOG.info("Loaded '" + name + "' from ParametersStore, value='" + loggingValue + "', length=" + p.value().length());
 
             propertiesSource.setProperty(name, p.value());
@@ -65,13 +65,13 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
     }
 
     @Override
-    public void setEnvironment(Environment environment) {
+    public void setEnvironment(final Environment environment) {
         awsProperties = new AwsProperties();
         awsProperties.setProfile(environment.getProperty("aws.profile", "default"));
         awsProperties.setRegion(environment.getProperty("aws.region", EU_CENTRAL_1.value()));
 
-        String pathProperty = "edison.aws.config.paramstore.path";
-        String path = requireNonNull(environment.getProperty(pathProperty),
+        final String pathProperty = "edison.aws.config.paramstore.path";
+        final String path = requireNonNull(environment.getProperty(pathProperty),
                 "Property '" + pathProperty + "' must not be null");
 
         properties = new ParamStoreConfigProperties();

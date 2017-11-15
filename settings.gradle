@@ -1,6 +1,5 @@
 rootProject.name = 'edison-aws'
 
-include "edison-aws-dynamodb"
 include "edison-aws-s3"
 include "edison-aws-metrics"
 include "edison-aws-config"

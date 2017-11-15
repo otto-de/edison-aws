@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import static java.util.Objects.requireNonNull;
-import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
+import static software.amazon.awssdk.core.regions.Region.EU_CENTRAL_1;
 
 @Component
 @ConditionalOnProperty(name = "edison.aws.config.s3.enabled", havingValue = "true")
@@ -32,15 +32,15 @@ public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProce
     @Override
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
 
-        AwsConfiguration awsConfig = new AwsConfiguration();
-        S3Configuration s3Config = new S3Configuration();
+        final AwsConfiguration awsConfig = new AwsConfiguration();
+        final S3Configuration s3Config = new S3Configuration();
 
         final S3Client s3Client = s3Config.s3Client(awsProperties, awsConfig.awsCredentialsProvider(awsProperties));
 
-        S3BucketPropertyReader s3BucketPropertyReader = new S3BucketPropertyReader(s3Client, secretsProperties);
+        final S3BucketPropertyReader s3BucketPropertyReader = new S3BucketPropertyReader(s3Client, secretsProperties);
 
-        ConfigurableEnvironment env = beanFactory.getBean(ConfigurableEnvironment.class);
-        MutablePropertySources propertySources = env.getPropertySources();
+        final ConfigurableEnvironment env = beanFactory.getBean(ConfigurableEnvironment.class);
+        final MutablePropertySources propertySources = env.getPropertySources();
         propertySources.addLast(new PropertiesPropertySource(BUCKET_PROPERTY_SOURCE, s3BucketPropertyReader.getPropertiesFromS3()));
     }
 
@@ -50,10 +50,10 @@ public class S3BucketPropertySourcePostProcessor implements BeanFactoryPostProce
         awsProperties.setProfile(environment.getProperty("aws.profile", "default"));
         awsProperties.setRegion(environment.getProperty("aws.region", EU_CENTRAL_1.value()));
 
-        String bucketName = requireNonNull(
+        final String bucketName = requireNonNull(
                 environment.getProperty(EDISON_S3_PROPERTIES_BUCKETNAME),
                 "property '" + EDISON_S3_PROPERTIES_BUCKETNAME + "' must not be null");
-        String filename = requireNonNull(
+        final String filename = requireNonNull(
                 environment.getProperty(EDISON_S3_PROPERTIES_FILENAME),
                 "property '" + EDISON_S3_PROPERTIES_FILENAME + "' must not be null");
 

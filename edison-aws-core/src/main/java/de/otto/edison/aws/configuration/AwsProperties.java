@@ -2,7 +2,7 @@ package de.otto.edison.aws.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
+import static software.amazon.awssdk.core.regions.Region.EU_CENTRAL_1;
 
 @ConfigurationProperties(prefix = "aws")
 public class AwsProperties {
@@ -14,7 +14,7 @@ public class AwsProperties {
         return region;
     }
 
-    public void setRegion(String region) {
+    public void setRegion(final String region) {
         this.region = region;
     }
 
@@ -22,7 +22,7 @@ public class AwsProperties {
         return profile;
     }
 
-    public void setProfile(String profile) {
+    public void setProfile(final String profile) {
         this.profile = profile;
     }
 

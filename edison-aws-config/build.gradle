@@ -7,6 +7,7 @@ dependencies {
     compile libraries.aws_sdk_s3
     compile libraries.slf4j
 
+    testCompile test_libraries.junit
     testCompile test_libraries.mockito_core
     testCompile test_libraries.hamcrest_core
     testCompile test_libraries.hamcrest_library
