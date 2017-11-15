@@ -3,7 +3,7 @@ package de.otto.edison.aws.s3;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-import software.amazon.awssdk.sync.StreamingResponseHandler;
+import software.amazon.awssdk.core.sync.StreamingResponseHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class S3Service {
 
     private static final Logger LOG = getLogger(S3Service.class);
 
-    private S3Client s3Client;
+    private final S3Client s3Client;
 
     public S3Service(final S3Client s3Client) {
         this.s3Client = s3Client;
@@ -43,7 +43,7 @@ public class S3Service {
 
     public void upload(final String bucketName,
                        final File file) {
-        PutObjectResponse putObjectResponse = s3Client.putObject(PutObjectRequest.builder()
+        final PutObjectResponse putObjectResponse = s3Client.putObject(PutObjectRequest.builder()
                         .bucket(bucketName)
                         .key(file.getName())
                         .build(),
@@ -58,12 +58,12 @@ public class S3Service {
             if (Files.exists(destination)) {
                 Files.delete(destination);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             LOG.error("could not delete temp snapshotfile {}", destination.toString(), e);
             return false;
         }
-        GetObjectRequest request = GetObjectRequest.builder().bucket(bucketName).key(fileName).build();
-        GetObjectResponse getObjectResponse = s3Client.getObject(request, StreamingResponseHandler.toFile(destination));
+        final GetObjectRequest request = GetObjectRequest.builder().bucket(bucketName).key(fileName).build();
+        final GetObjectResponse getObjectResponse = s3Client.getObject(request, StreamingResponseHandler.toFile(destination));
         LOG.debug("download {} from bucket {}: ", fileName, bucketName, getObjectResponse.toString());
         return true;
     }
@@ -76,9 +76,9 @@ public class S3Service {
 
     public void deleteAllObjectsWithPrefixInBucket(final String bucketName,
                                                    final String prefix) {
-        ListObjectsV2Response listObjectResponse = s3Client.listObjectsV2(ListObjectsV2Request.builder().bucket(bucketName).build());
+        final ListObjectsV2Response listObjectResponse = s3Client.listObjectsV2(ListObjectsV2Request.builder().bucket(bucketName).build());
         if (listObjectResponse.keyCount() > 0) {
-            DeleteObjectsResponse deleteObjectsResponse = s3Client.deleteObjects(DeleteObjectsRequest.builder()
+            final DeleteObjectsResponse deleteObjectsResponse = s3Client.deleteObjects(DeleteObjectsRequest.builder()
                     .bucket(bucketName)
                     .delete(builder()
                             .objects(convertS3ObjectsToObjectIdentifiers(listObjectResponse, prefix))
@@ -98,7 +98,7 @@ public class S3Service {
     }
 
     public List<S3Object> listAll(final String bucketName) {
-        ListObjectsV2Response listObjectsV2Response = s3Client.listObjectsV2(ListObjectsV2Request.builder().bucket(bucketName).build());
+        final ListObjectsV2Response listObjectsV2Response = s3Client.listObjectsV2(ListObjectsV2Request.builder().bucket(bucketName).build());
 
         if (listObjectsV2Response.keyCount() > 0) {
             return listObjectsV2Response.contents();

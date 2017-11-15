@@ -9,8 +9,8 @@ import org.togglz.core.repository.StateRepository;
 import org.togglz.core.util.FeatureStateStorageWrapper;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-import software.amazon.awssdk.sync.RequestBody;
-import software.amazon.awssdk.sync.ResponseInputStream;
+import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.core.sync.ResponseInputStream;
 
 import java.io.IOException;
 
@@ -28,53 +28,53 @@ public class S3StateRepository implements StateRepository {
     private final S3Client s3Client;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public S3StateRepository(S3TogglzProperties s3TogglzProperties, S3Client s3Client) {
+    public S3StateRepository(final S3TogglzProperties s3TogglzProperties, final S3Client s3Client) {
         this.s3TogglzProperties = s3TogglzProperties;
         this.s3Client = s3Client;
     }
 
     @Override
-    public FeatureState getFeatureState(Feature feature) {
-        GetObjectRequest getRequest = GetObjectRequest.builder()
+    public FeatureState getFeatureState(final Feature feature) {
+        final GetObjectRequest getRequest = GetObjectRequest.builder()
                 .bucket(s3TogglzProperties.getBucketName())
                 .key(keyForFeature(feature))
                 .build();
         try (ResponseInputStream<GetObjectResponse> responseStream = s3Client.getObject(getRequest)) {
             if (responseStream != null) {
-                FeatureStateStorageWrapper wrapper = objectMapper.reader()
+                final FeatureStateStorageWrapper wrapper = objectMapper.reader()
                         .forType(FeatureStateStorageWrapper.class)
                         .readValue(responseStream);
                 return FeatureStateStorageWrapper.featureStateForWrapper(feature, wrapper);
             }
-        } catch (S3Exception ae) {
+        } catch (final S3Exception ae) {
             if (ERR_NO_SUCH_KEY.equals(ae.getErrorCode())) {
                 return null;
             }
             throw ae;
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new RuntimeException("Failed to get the feature state", e);
         }
         return null;
     }
 
     @Override
-    public void setFeatureState(FeatureState featureState) {
+    public void setFeatureState(final FeatureState featureState) {
         try {
-            FeatureStateStorageWrapper storageWrapper = FeatureStateStorageWrapper.wrapperForFeatureState(featureState);
-            String json = objectMapper.writeValueAsString(storageWrapper);
-            PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+            final FeatureStateStorageWrapper storageWrapper = FeatureStateStorageWrapper.wrapperForFeatureState(featureState);
+            final String json = objectMapper.writeValueAsString(storageWrapper);
+            final PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(s3TogglzProperties.getBucketName())
                     .key(keyForFeature(featureState.getFeature()))
                     .serverSideEncryption(ServerSideEncryption.AES256)
                     .build();
-            RequestBody requestBody = RequestBody.of(json);
+            final RequestBody requestBody = RequestBody.of(json);
             s3Client.putObject(putObjectRequest, requestBody);
         } catch (S3Exception | JsonProcessingException e) {
             throw new RuntimeException("Failed to set the feature state", e);
         }
     }
 
-    private String keyForFeature(Feature feature) {
+    private String keyForFeature(final Feature feature) {
         return s3TogglzProperties.getKeyPrefix() + feature.name();
     }
 }
