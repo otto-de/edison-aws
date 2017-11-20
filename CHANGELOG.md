@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.2.1
+* Refactor S3Service.download(..) to not use StreamingResponseHandler to simplify testing  
+
 ## 0.1.0-SNAPSHOT
 
 * Add edisons SSLLdapConnectionFactory config

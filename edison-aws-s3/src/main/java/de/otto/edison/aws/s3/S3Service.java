@@ -63,7 +63,7 @@ public class S3Service {
             return false;
         }
         final GetObjectRequest request = GetObjectRequest.builder().bucket(bucketName).key(fileName).build();
-        final GetObjectResponse getObjectResponse = s3Client.getObject(request, StreamingResponseHandler.toFile(destination));
+        final GetObjectResponse getObjectResponse = s3Client.getObject(request, destination);
         LOG.debug("download {} from bucket {}: ", fileName, bucketName, getObjectResponse.toString());
         return true;
     }
