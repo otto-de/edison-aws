@@ -11,15 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-@Component
-@EnableConfigurationProperties(S3ConfigProperties.class)
-@ConditionalOnProperty(name = "edison.aws.config.s3.enabled", havingValue = "true")
 public class S3BucketPropertyReader {
 
     private final S3Client s3Client;
     private final S3ConfigProperties s3ConfigProperties;
 
-    @Autowired
     public S3BucketPropertyReader(final S3Client s3Client,
                                   final S3ConfigProperties s3ConfigProperties) {
         this.s3Client = s3Client;
