@@ -8,6 +8,7 @@ import com.codahale.metrics.MetricRegistry;
 import de.otto.edison.aws.configuration.AwsProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -39,21 +40,11 @@ public class CloudWatchMetricsReporterConfiguration {
     }
 
     @Bean
-    public AmazonCloudWatchAsync cloudWatchAsync(final AWSCredentialsProvider cloudWatchCredentialsProvider,
+    public AmazonCloudWatchAsync cloudWatchAsync(final AWSCredentialsProvider awsCredentialsProvider,
                                                  final AwsProperties awsProperties) {
         return AmazonCloudWatchAsyncClient.asyncBuilder()
                 .withRegion(awsProperties.getRegion())
-                .withCredentials(cloudWatchCredentialsProvider)
+                .withCredentials(awsCredentialsProvider)
                 .build();
-    }
-
-    @Bean(name = "cloudWatchCredentialsProvider")
-    public AWSCredentialsProvider cloudWatchCredentialsProvider(final AwsProperties awsProperties) {
-        final List<AWSCredentialsProvider> providerList = new ArrayList<>();
-        providerList.add(new ContainerCredentialsProvider());
-        providerList.add(InstanceProfileCredentialsProvider.getInstance());
-        providerList.add(new EnvironmentVariableCredentialsProvider());
-        providerList.add(new ProfileCredentialsProvider(awsProperties.getProfile()));
-        return new AWSCredentialsProviderChain(providerList);
     }
 }
