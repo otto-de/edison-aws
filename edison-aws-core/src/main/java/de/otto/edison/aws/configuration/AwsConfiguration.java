@@ -17,9 +17,9 @@ public class AwsConfiguration {
                 .builder()
                 .credentialsProviders(
                         // instance profile is also needed for people not using ecs but directly using ec2 instances!!
-                        new ElasticContainerCredentialsProvider(),
-                        new InstanceProfileCredentialsProvider(),
-                        new EnvironmentVariableCredentialsProvider(),
+                        ElasticContainerCredentialsProvider.builder().build(),
+                        InstanceProfileCredentialsProvider.builder().build(),
+                        EnvironmentVariableCredentialsProvider.create(),
                         ProfileCredentialsProvider
                                 .builder()
                                 .profileName(awsProperties.getProfile())

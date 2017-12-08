@@ -25,8 +25,8 @@ public class S3StateRepositoryTest {
     @Before
     public void setup() {
         client = S3Client.builder()
-                .credentialsProvider(new StaticCredentialsProvider(
-                        new AwsCredentials("test", "test")))
+                .credentialsProvider(StaticCredentialsProvider.create(
+                        AwsCredentials.create("test", "test")))
                 .endpointOverride(URI.create("http://localhost:4572"))
                 .region(Region.EU_CENTRAL_1)
                 .build();

@@ -2,7 +2,7 @@ dependencies {
     compile project(":edison-aws-core")
 
     compile libraries.spring_boot_autoconfigure
-    compile libraries.aws_sdk_s3
+    compile libraries.aws_sdk_s3, without_log4j
     compile libraries.slf4j
 
     compileOnly libraries.edison_togglz

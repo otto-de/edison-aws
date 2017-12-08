@@ -4,7 +4,7 @@ dependencies {
     compile libraries.hibernate_validator
     compile libraries.aws_sdk_cloudwatch
     compile libraries.edison_jobs
-    compile libraries.aws_sdk_dynamo
+    compile libraries.aws_sdk_dynamo, without_log4j
     testCompile test_libraries.junit
     testCompile test_libraries.hamcrest_core
     testCompile test_libraries.hamcrest_library

@@ -18,7 +18,7 @@ public class DynamoDbTestConfiguration {
     public DynamoDBClient dynamoDBClient() {
         return DynamoDBClient.builder()
                 .endpointOverride(URI.create("http://localhost:4569")) // 172.17.0.2
-                .credentialsProvider(new StaticCredentialsProvider(new AwsCredentials("foobar", "foobar")))
+                .credentialsProvider(StaticCredentialsProvider.create(AwsCredentials.create("foobar", "foobar")))
                 .build();
     }
 }
