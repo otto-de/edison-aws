@@ -16,7 +16,6 @@ apply plugin: 'java'
 repositories {
     mavenCentral()
     maven { url 'http://repo.spring.io/libs-snapshot' }
-    maven { url 'https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/release' }
 }
 
 apply from: "${rootDir}/gradle/root/versions.gradle"
