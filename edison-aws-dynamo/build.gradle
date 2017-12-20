@@ -13,6 +13,10 @@ dependencies {
     testCompile test_libraries.spring_boot_starter_test
 }
 
+repositories {
+    maven { url 'https://s3.eu-central-1.amazonaws.com/dynamodb-local-frankfurt/release' }
+}
+
 // dynamodb local uses sql4java which uses a native lib. This has to be put on the java.library.path
 task copyNativeDeps(type: Copy) {
     from(configurations.testCompile) {
