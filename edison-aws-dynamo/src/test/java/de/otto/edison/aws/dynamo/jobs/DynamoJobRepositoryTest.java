@@ -230,4 +230,23 @@ public class DynamoJobRepositoryTest {
         assertThat(latest.get(0).getMessages(), is(emptyList()));
         assertThat(latest.get(2).getMessages(), is(emptyList()));
     }
+
+    @Test
+    public void shouldRemoveIfStopped() {
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).setStopped(now.minusSeconds(1)).build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).setStopped(null).build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+
+        //when
+        dynamoJobRepository.removeIfStopped("someJobId1");
+        dynamoJobRepository.removeIfStopped("someJobId2");
+
+        //then
+        List<JobInfo> allJobs = dynamoJobRepository.findAll();
+        assertThat(allJobs, hasSize(1));
+        assertThat(allJobs.get(0), is(jobInfo2));
+    }
 }

@@ -125,7 +125,20 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public void removeIfStopped(String jobId) {
+        Optional<JobInfo> jobInfo = findOne(jobId);
+        jobInfo.ifPresent(job -> {
+            if(job.isStopped()) {
+               remove(jobId);
+            }
+        });
+    }
 
+    private void remove(String jobId) {
+        DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
+                .tableName(dynamoJobRepoProperties.getTableName())
+                .key(ImmutableMapParameter.of(JobInfoConverter.ID, AttributeValue.builder().s(jobId).build()))
+                .build();
+        dynamoDBClient.deleteItem(deleteItemRequest);
     }
 
     @Override
