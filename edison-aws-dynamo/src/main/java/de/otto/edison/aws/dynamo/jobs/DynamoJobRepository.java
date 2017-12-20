@@ -12,6 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.convertJobInfo;
+import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
@@ -65,12 +66,21 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findLatestBy(String type, int maxCount) {
-        return null;
+        return findAll()
+                .stream()
+                .sorted(STARTED_TIME_DESC_COMPARATOR)
+                .filter(jobInfo -> jobInfo.getJobType().equalsIgnoreCase(type))
+                .limit(maxCount)
+                .collect(toList());
     }
 
     @Override
     public List<JobInfo> findRunningWithoutUpdateSince(OffsetDateTime timeOffset) {
-        return null;
+        return findAll()
+                .stream()
+                .filter(jobInfo -> !jobInfo.isStopped() && jobInfo.getLastUpdated().isBefore(timeOffset))
+                .sorted(STARTED_TIME_DESC_COMPARATOR)
+                .collect(toList());
     }
 
     @Override
@@ -81,7 +91,10 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findAllJobInfoWithoutMessages() {
-        return null;
+        return findAll().stream()
+                .sorted(STARTED_TIME_DESC_COMPARATOR)
+                .map(job -> job.copy().setMessages(emptyList()).build())
+                .collect(toList());
     }
 
     @Override

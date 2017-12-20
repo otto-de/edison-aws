@@ -1,6 +1,8 @@
 package de.otto.edison.aws.dynamo.jobs;
 
 import de.otto.edison.jobs.domain.JobInfo;
+import de.otto.edison.jobs.domain.JobMessage;
+import de.otto.edison.jobs.domain.Level;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,6 +22,8 @@ import java.util.stream.IntStream;
 
 import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.ID;
 import static de.otto.edison.aws.dynamo.jobs.testsupport.JobInfoMother.jobInfo;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -157,5 +161,73 @@ public class DynamoJobRepositoryTest {
         assertThat(latest.get(0), is(jobInfo2));
         assertThat(latest.get(1), is(jobInfo1));
         assertThat(latest.get(2), is(jobInfo3));
+    }
+
+    @Test
+    public void shouldFindLatestByType() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).setJobType("foo").build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).setJobType("bar").build();
+        JobInfo jobInfo3 = jobInfo("someJobId3").setStarted(now.minusMinutes(3)).setJobType("baz").build();
+        JobInfo jobInfo4 = jobInfo("someJobId4").setStarted(now.minusMinutes(5)).setJobType("foo").build();
+        JobInfo jobInfo5 = jobInfo("someJobId5").setStarted(now.minusMinutes(9)).setJobType("foo").build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+        dynamoJobRepository.createOrUpdate(jobInfo3);
+        dynamoJobRepository.createOrUpdate(jobInfo4);
+        dynamoJobRepository.createOrUpdate(jobInfo5);
+
+        //when
+        List<JobInfo> latest = dynamoJobRepository.findLatestBy("foo", 2);
+
+        //then
+        assertThat(latest, hasSize(2));
+        assertThat(latest.get(0), is(jobInfo1));
+        assertThat(latest.get(1), is(jobInfo4));
+    }
+
+    @Test
+    public void shouldFindRunningWithoutUpdateSince() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).setLastUpdated(now.minusMinutes(2)).setStopped(null).build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).setLastUpdated(now.minusSeconds(10)).setStopped(null).build();
+        JobInfo jobInfo3 = jobInfo("someJobId3").setStarted(now.minusMinutes(3)).setLastUpdated(now.minusSeconds(61)).setStopped(null).build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+        dynamoJobRepository.createOrUpdate(jobInfo3);
+
+        //when
+        List<JobInfo> latest = dynamoJobRepository.findRunningWithoutUpdateSince(now.minusMinutes(1));
+
+        //then
+        assertThat(latest, hasSize(2));
+        assertThat(latest.get(0), is(jobInfo1));
+        assertThat(latest.get(1), is(jobInfo3));
+    }
+
+    @Test
+    public void shouldFindAllJobInfoWithoutMessages() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).setMessages(singletonList(JobMessage.jobMessage(Level.INFO, "some message", now))).build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).setMessages(emptyList()).build();
+        JobInfo jobInfo3 = jobInfo("someJobId3").setStarted(now.minusMinutes(3)).setMessages(singletonList(JobMessage.jobMessage(Level.ERROR, "some other message", now))).build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+        dynamoJobRepository.createOrUpdate(jobInfo3);
+
+        //when
+        List<JobInfo> latest = dynamoJobRepository.findAllJobInfoWithoutMessages();
+
+        //then
+        assertThat(latest, hasSize(3));
+        assertThat(latest.get(1).getMessages(), is(emptyList()));
+        assertThat(latest.get(0).getMessages(), is(emptyList()));
+        assertThat(latest.get(2).getMessages(), is(emptyList()));
     }
 }
