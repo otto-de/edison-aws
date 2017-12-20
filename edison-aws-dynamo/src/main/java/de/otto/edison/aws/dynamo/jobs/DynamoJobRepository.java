@@ -1,6 +1,7 @@
 package de.otto.edison.aws.dynamo.jobs;
 
 import com.amazonaws.util.ImmutableMapParameter;
+import com.google.common.collect.Lists;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
 import de.otto.edison.jobs.repository.JobRepository;
@@ -127,8 +128,8 @@ public class DynamoJobRepository implements JobRepository {
     public void removeIfStopped(String jobId) {
         Optional<JobInfo> jobInfo = findOne(jobId);
         jobInfo.ifPresent(job -> {
-            if(job.isStopped()) {
-               remove(jobId);
+            if (job.isStopped()) {
+                remove(jobId);
             }
         });
     }
@@ -168,6 +169,27 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public void deleteAll() {
+        List<WriteRequest> deleteRequests = findAll().stream().map(jobInfo -> WriteRequest.builder()
+                .deleteRequest(DeleteRequest.builder()
+                        .key(ImmutableMapParameter.of(JobInfoConverter.ID, AttributeValue.builder().s(jobInfo.getJobId()).build()))
+                        .build())
+                .build()
+        ).collect(toList());
 
+        Lists.partition(deleteRequests, 25).forEach(this::deleteParts);
+    }
+
+    private void deleteParts(List<WriteRequest> part) {
+        BatchWriteItemResponse batchWriteItemResponse = batchDeleteItems(ImmutableMapParameter.of(dynamoJobRepoProperties.getTableName(), part));
+        while (!batchWriteItemResponse.unprocessedItems().isEmpty()) {
+            batchDeleteItems(batchWriteItemResponse.unprocessedItems());
+        }
+    }
+
+    private BatchWriteItemResponse batchDeleteItems(Map<String, List<WriteRequest>> requestItems) {
+        BatchWriteItemRequest batchWriteItemRequest = BatchWriteItemRequest.builder()
+                .requestItems(requestItems)
+                .build();
+        return dynamoDBClient.batchWriteItem(batchWriteItemRequest);
     }
 }
