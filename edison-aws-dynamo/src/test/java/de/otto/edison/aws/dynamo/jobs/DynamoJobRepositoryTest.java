@@ -134,4 +134,28 @@ public class DynamoJobRepositoryTest {
 
 
     }
+
+    @Test
+    public void shouldFindLatestJobsDistinct() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).setJobType("foo").build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).setJobType("bar").build();
+        JobInfo jobInfo3 = jobInfo("someJobId3").setStarted(now.minusMinutes(3)).setJobType("baz").build();
+        JobInfo jobInfo4 = jobInfo("someJobId4").setStarted(now.minusMinutes(5)).setJobType("foo").build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+        dynamoJobRepository.createOrUpdate(jobInfo3);
+        dynamoJobRepository.createOrUpdate(jobInfo4);
+
+        //when
+        List<JobInfo> latest = dynamoJobRepository.findLatestJobsDistinct();
+
+        //then
+        assertThat(latest, hasSize(3));
+        assertThat(latest.get(0), is(jobInfo2));
+        assertThat(latest.get(1), is(jobInfo1));
+        assertThat(latest.get(2), is(jobInfo3));
+    }
 }
