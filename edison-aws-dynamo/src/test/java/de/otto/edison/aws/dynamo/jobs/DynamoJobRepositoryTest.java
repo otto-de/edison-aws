@@ -16,6 +16,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.OffsetDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
@@ -24,6 +25,7 @@ import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.ID;
 import static de.otto.edison.aws.dynamo.jobs.testsupport.JobInfoMother.jobInfo;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -262,5 +264,87 @@ public class DynamoJobRepositoryTest {
         //then
         List<JobInfo> allJobs = dynamoJobRepository.findAll();
         assertThat(allJobs, hasSize(0));
+    }
+
+    @Test
+    public void shouldAppendMessageToJobItem() {
+        //given
+        JobMessage firstMessage = JobMessage.jobMessage(Level.INFO, "first message", OffsetDateTime.now());
+
+        JobInfo jobInfo1 = jobInfo("someJobId").setMessages(Collections.singletonList(firstMessage)).build();
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+
+        //when
+        JobMessage secondMessage = JobMessage.jobMessage(Level.WARNING, "some message", OffsetDateTime.now());
+        dynamoJobRepository.appendMessage("someJobId", secondMessage);
+
+        //then
+        Optional<JobInfo> jobInfo = dynamoJobRepository.findOne("someJobId");
+        assertThat(jobInfo.get().getMessages(), contains(firstMessage, secondMessage));
+    }
+
+    @Test
+    public void shouldSetJobStatus() {
+        //given
+        JobInfo jobInfo1 = jobInfo("someJobId").setStatus(JobInfo.JobStatus.OK).build();
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+
+        //when
+        dynamoJobRepository.setJobStatus("someJobId", JobInfo.JobStatus.ERROR);
+
+        //then
+        Optional<JobInfo> jobInfo = dynamoJobRepository.findOne("someJobId");
+        assertThat(jobInfo.get().getStatus(), is(JobInfo.JobStatus.ERROR));
+
+    }
+
+    @Test
+    public void shouldSetLastUpdate() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId").setLastUpdated(now.minusMinutes(5)).build();
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+
+        //when
+        dynamoJobRepository.setLastUpdate("someJobId", now);
+
+        //then
+        Optional<JobInfo> jobInfo = dynamoJobRepository.findOne("someJobId");
+        assertThat(jobInfo.get().getLastUpdated(), is(now));
+
+    }
+
+    @Test
+    public void shouldReportRepositorySize() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).build();
+        JobInfo jobInfo3 = jobInfo("someJobId3").setStarted(now.minusMinutes(3)).build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+        dynamoJobRepository.createOrUpdate(jobInfo3);
+
+        //when
+        long size = dynamoJobRepository.size();
+
+        //then
+        assertThat(size, is(3L));
+    }
+
+    @Test
+    public void shouldFindStatus() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).setStatus(JobInfo.JobStatus.DEAD).build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+
+        //when
+        JobInfo.JobStatus status = dynamoJobRepository.findStatus("someJobId1");
+
+        //then
+        assertThat(status, is(JobInfo.JobStatus.DEAD));
     }
 }

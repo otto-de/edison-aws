@@ -144,27 +144,44 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public JobInfo.JobStatus findStatus(String jobId) {
-        return null;
+        Optional<JobInfo> jobInfo = findOne(jobId);
+        if (jobInfo.isPresent()) {
+            return jobInfo.get().getStatus();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public void appendMessage(String jobId, JobMessage jobMessage) {
-
+        Optional<JobInfo> jobInfo = findOne(jobId);
+        jobInfo.ifPresent(jobInfo1 -> {
+            JobInfo modifiedJobInfo = jobInfo1.copy().addMessage(jobMessage).build();
+            createOrUpdate(modifiedJobInfo);
+        });
     }
 
     @Override
     public void setJobStatus(String jobId, JobInfo.JobStatus jobStatus) {
-
+        Optional<JobInfo> jobInfo = findOne(jobId);
+        jobInfo.ifPresent(jobInfo1 -> {
+            JobInfo modifiedJobInfo = jobInfo1.copy().setStatus(jobStatus).build();
+            createOrUpdate(modifiedJobInfo);
+        });
     }
 
     @Override
     public void setLastUpdate(String jobId, OffsetDateTime lastUpdate) {
-
+        Optional<JobInfo> jobInfo = findOne(jobId);
+        jobInfo.ifPresent(jobInfo1 -> {
+            JobInfo modifiedJobInfo = jobInfo1.copy().setLastUpdated(lastUpdate).build();
+            createOrUpdate(modifiedJobInfo);
+        });
     }
 
     @Override
     public long size() {
-        return 0;
+        return findAll().size();
     }
 
     @Override
