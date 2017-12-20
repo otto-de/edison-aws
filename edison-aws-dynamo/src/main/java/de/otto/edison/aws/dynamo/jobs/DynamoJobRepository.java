@@ -8,16 +8,16 @@ import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.OffsetDateTime;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.convertJobInfo;
+import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
 
 public class DynamoJobRepository implements JobRepository {
 
+    private static final Comparator<JobInfo> STARTED_TIME_DESC_COMPARATOR = Comparator.comparing(JobInfo::getStarted, OffsetDateTime::compareTo).reversed();
     private DynamoDBClient dynamoDBClient;
     private DynamoJobRepoProperties dynamoJobRepoProperties;
 
@@ -43,19 +43,24 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findLatest(int maxCount) {
-        ScanRequest scanRequest = ScanRequest.builder()
-                .tableName(dynamoJobRepoProperties.getTableName())
-                .build();
-        ScanResponse scanResponse = dynamoDBClient.scan(scanRequest);
-        return toJobInfoList(scanResponse).stream()
-                .sorted(Comparator.comparing(JobInfo::getStarted, OffsetDateTime::compareTo).reversed())
+        return findAll()
+                .stream()
+                .sorted(STARTED_TIME_DESC_COMPARATOR)
                 .limit(maxCount)
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<JobInfo> findLatestJobsDistinct() {
-        return null;
+        Set<String> typeSet = new HashSet<>();
+
+        return findAll()
+                .stream()
+                .sorted(STARTED_TIME_DESC_COMPARATOR)
+                .filter(j -> nonNull(j.getJobType()))
+                .filter(j -> typeSet.add(j.getJobType()))
+                .collect(toList());
+
     }
 
     @Override
