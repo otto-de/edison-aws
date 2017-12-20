@@ -1,5 +1,7 @@
 package de.otto.edison.aws.dynamo.jobs;
 
+import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
+import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -12,13 +14,23 @@ import java.net.URI;
 
 @Configuration
 public class DynamoDbTestConfiguration {
+
     @Bean
     @Profile("test")
     @Primary
     public DynamoDBClient dynamoDBClient() {
         return DynamoDBClient.builder()
-                .endpointOverride(URI.create("http://localhost:4569")) // 172.17.0.2
+                .endpointOverride(URI.create("http://localhost:8000"))
                 .credentialsProvider(StaticCredentialsProvider.create(AwsCredentials.create("foobar", "foobar")))
                 .build();
     }
+
+    @Bean
+    @Profile("test")
+    public DynamoDBProxyServer dynamoDBProxyServer() throws Exception {
+        DynamoDBProxyServer server = ServerRunner.createServerFromCommandLineArgs(new String[]{"-inMemory"});
+        server.start();
+        return server;
+    }
+
 }

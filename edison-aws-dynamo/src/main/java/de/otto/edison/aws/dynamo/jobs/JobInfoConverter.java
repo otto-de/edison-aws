@@ -89,8 +89,8 @@ public class JobInfoConverter {
     }
 
     private static AttributeValue createDateAttributeValue(OffsetDateTime dateTime) {
-        String formatedDateTime = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(dateTime);
-        return AttributeValue.builder().s(formatedDateTime).build();
+        String formattedDateTime = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(dateTime);
+        return AttributeValue.builder().s(formattedDateTime).build();
     }
 
     private static final Optional<String> stringValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
@@ -101,7 +101,7 @@ public class JobInfoConverter {
     }
 
     private static final Optional<OffsetDateTime> dateValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
-        if (attributeValueMap.containsKey(key)) {;
+        if (attributeValueMap.containsKey(key)) {
             String formattedDateTime = attributeValueMap.get(key).s();
             OffsetDateTime offsetDateTime = OffsetDateTime.parse(formattedDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
             return Optional.of(offsetDateTime);

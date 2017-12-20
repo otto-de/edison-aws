@@ -3,7 +3,6 @@ package de.otto.edison.aws.dynamo.jobs;
 import de.otto.edison.jobs.domain.JobInfo;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +26,7 @@ import static org.junit.Assert.assertThat;
 @SpringBootTest
 public class DynamoJobRepositoryTest {
 
-    public static final String TABLE_NAME = "someTestTable";
+    private static final String TABLE_NAME = "jobInfo";
 
     @Autowired
     private DynamoDBClient dynamoDBClient;
@@ -35,29 +34,23 @@ public class DynamoJobRepositoryTest {
 
     @Before
     public void before() {
-        createTestTable();
+        createJobInfoTable();
         dynamoJobRepository = new DynamoJobRepository(dynamoDBClient, new DynamoJobRepoProperties(true, TABLE_NAME));
     }
 
     @After
     public void after() {
-        deleteTestTable();
+        deleteJobInfoTable();
     }
 
-    private void createTestTable() {
+    private void createJobInfoTable() {
         dynamoDBClient.createTable(CreateTableRequest.builder()
                 .tableName(TABLE_NAME)
                 .keySchema(
                         KeySchemaElement.builder().attributeName(ID).keyType(KeyType.HASH).build()
                 )
                 .attributeDefinitions(
-                        AttributeDefinition.builder().attributeName(HOSTNAME).attributeType(ScalarAttributeType.S).build(),
-                        AttributeDefinition.builder().attributeName(JOB_TYPE).attributeType(ScalarAttributeType.S).build(),
-                        AttributeDefinition.builder().attributeName(JOB_STATUS).attributeType(ScalarAttributeType.S).build(),
-                        AttributeDefinition.builder().attributeName(STARTED).attributeType(ScalarAttributeType.S).build(),
-                        AttributeDefinition.builder().attributeName(STOPPED).attributeType(ScalarAttributeType.S).build(),
-                        AttributeDefinition.builder().attributeName(LAST_UPDATED).attributeType(ScalarAttributeType.S).build()
-                        // TODO: Job messages as List
+                        AttributeDefinition.builder().attributeName(ID).attributeType(ScalarAttributeType.S).build()
                 )
                 .provisionedThroughput(ProvisionedThroughput.builder()
                         .readCapacityUnits(1L)
@@ -66,13 +59,12 @@ public class DynamoJobRepositoryTest {
                 .build());
     }
 
-    private void deleteTestTable() {
+    private void deleteJobInfoTable() {
         dynamoDBClient.deleteTable(DeleteTableRequest.builder().tableName(TABLE_NAME).build());
     }
 
     @Test
-    @Ignore
-    public void shouldWriteAndReadJobInfo() throws Exception {
+    public void shouldWriteAndReadJobInfo() {
         // given
         JobInfo jobInfo = jobInfo("someJobId").build();
 
