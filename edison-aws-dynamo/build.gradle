@@ -4,6 +4,7 @@ dependencies {
     compile libraries.hibernate_validator
     compile libraries.aws_sdk_cloudwatch
     compile libraries.edison_jobs
+    compile libraries.guava
     compile libraries.aws_sdk_dynamo, without_log4j
 
     testCompile test_libraries.dynamodb_local

@@ -38,7 +38,8 @@ ext {
             spring_boot_devtools     : "org.springframework.boot:spring-boot-devtools:${versions.spring_boot}",
             metrics_core             : "io.dropwizard.metrics:metrics-core:${versions.metrics}",
             metrics_spring           : "com.ryantenney.metrics:metrics-spring:${versions.metrics_spring}",
-            slf4j                    : "org.slf4j:slf4j-api:${versions.slf4j}"
+            slf4j                    : "org.slf4j:slf4j-api:${versions.slf4j}",
+            guava                    : "com.google.guava:guava:23.5-jre"
     ]
     test_libraries = [
             spring_boot_starter_test: "org.springframework.boot:spring-boot-starter-test:${versions.spring_boot}",

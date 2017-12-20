@@ -249,4 +249,18 @@ public class DynamoJobRepositoryTest {
         assertThat(allJobs, hasSize(1));
         assertThat(allJobs.get(0), is(jobInfo2));
     }
+
+    @Test
+    public void shouldDeleteAll() {
+        IntStream.range(0, 90)
+                .mapToObj(i -> jobInfo("someJobId-" + i).setJobType("type-a").build())
+                .forEach(jobInfo -> dynamoJobRepository.createOrUpdate(jobInfo));
+
+        //when
+        dynamoJobRepository.deleteAll();
+
+        //then
+        List<JobInfo> allJobs = dynamoJobRepository.findAll();
+        assertThat(allJobs, hasSize(0));
+    }
 }
