@@ -13,10 +13,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
+import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
-import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.*;
+import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.ID;
 import static de.otto.edison.aws.dynamo.jobs.testsupport.JobInfoMother.jobInfo;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -67,8 +71,7 @@ public class DynamoJobRepositoryTest {
     public void shouldWriteAndReadJobInfo() {
         // given
         JobInfo jobInfo = jobInfo("someJobId").build();
-
-        JobInfo createdJobInfo = dynamoJobRepository.createOrUpdate(jobInfo);
+        dynamoJobRepository.createOrUpdate(jobInfo);
 
         // when
         Optional<JobInfo> jobInfoFromDb = dynamoJobRepository.findOne("someJobId");
@@ -77,4 +80,58 @@ public class DynamoJobRepositoryTest {
         assertThat(jobInfoFromDb.get(), is(jobInfo));
     }
 
+    @Test
+    public void shouldFindAllJobInfos() {
+        //given
+        IntStream.range(0, 50)
+                .mapToObj(i -> jobInfo("someJobId-" + i).build())
+                .forEach(jobInfo -> dynamoJobRepository.createOrUpdate(jobInfo));
+
+        //when
+        List<JobInfo> jobInfos = dynamoJobRepository.findAll();
+
+        //then
+        assertThat(jobInfos, hasSize(50));
+    }
+
+    @Test
+    public void shouldFindByType() {
+        //given
+        IntStream.range(0, 10)
+                .mapToObj(i -> jobInfo("someJobId-" + i).setJobType("type-a").build())
+                .forEach(jobInfo -> dynamoJobRepository.createOrUpdate(jobInfo));
+        IntStream.range(10, 20)
+                .mapToObj(i -> jobInfo("someJobId-" + i).setJobType("type-b").build())
+                .forEach(jobInfo -> dynamoJobRepository.createOrUpdate(jobInfo));
+
+        //when
+        List<JobInfo> jobInfos = dynamoJobRepository.findByType("type-b");
+
+        //then
+        assertThat(jobInfos, hasSize(10));
+        assertThat(jobInfos.stream().filter(jobInfo -> jobInfo.getJobType().equals("type-b")).count(), is(10L));
+    }
+
+    @Test
+    public void shouldFindLatest() {
+        //given
+        OffsetDateTime now = OffsetDateTime.now();
+        JobInfo jobInfo1 = jobInfo("someJobId1").setStarted(now.minusSeconds(7)).build();
+        JobInfo jobInfo2 = jobInfo("someJobId2").setStarted(now.minusSeconds(5)).build();
+        JobInfo jobInfo3 = jobInfo("someJobId3").setStarted(now.minusMinutes(3)).build();
+
+        dynamoJobRepository.createOrUpdate(jobInfo1);
+        dynamoJobRepository.createOrUpdate(jobInfo2);
+        dynamoJobRepository.createOrUpdate(jobInfo3);
+
+        //when
+        List<JobInfo> latest = dynamoJobRepository.findLatest(2);
+
+        //then
+        assertThat(latest, hasSize(2));
+        assertThat(latest.get(0), is(jobInfo2));
+        assertThat(latest.get(1), is(jobInfo1));
+
+
+    }
 }

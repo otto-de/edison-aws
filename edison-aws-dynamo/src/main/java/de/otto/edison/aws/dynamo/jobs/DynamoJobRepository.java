@@ -1,18 +1,18 @@
 package de.otto.edison.aws.dynamo.jobs;
 
+import com.amazonaws.util.ImmutableMapParameter;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
 import de.otto.edison.jobs.repository.JobRepository;
 import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
-import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
-import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
-import software.amazon.awssdk.services.dynamodb.model.GetItemResponse;
-import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
+import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.OffsetDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.convertJobInfo;
 
@@ -43,7 +43,14 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findLatest(int maxCount) {
-        return null;
+        ScanRequest scanRequest = ScanRequest.builder()
+                .tableName(dynamoJobRepoProperties.getTableName())
+                .build();
+        ScanResponse scanResponse = dynamoDBClient.scan(scanRequest);
+        return toJobInfoList(scanResponse).stream()
+                .sorted(Comparator.comparing(JobInfo::getStarted, OffsetDateTime::compareTo).reversed())
+                .limit(maxCount)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -63,7 +70,8 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findAll() {
-        return null;
+        ScanResponse scanResponse = dynamoDBClient.scan(ScanRequest.builder().tableName(dynamoJobRepoProperties.getTableName()).build());
+        return toJobInfoList(scanResponse);
     }
 
     @Override
@@ -73,7 +81,17 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findByType(String jobType) {
-        return null;
+        ScanRequest scanRequest = ScanRequest.builder()
+                .tableName(dynamoJobRepoProperties.getTableName())
+                .filterExpression(JobInfoConverter.JOB_TYPE + "= :jobType")
+                .expressionAttributeValues(ImmutableMapParameter.of(":jobType", AttributeValue.builder().s(jobType).build()))
+                .build();
+        ScanResponse scanResponse = dynamoDBClient.scan(scanRequest);
+        return toJobInfoList(scanResponse);
+    }
+
+    private List<JobInfo> toJobInfoList(ScanResponse scanResponse) {
+        return scanResponse.items().stream().map(JobInfoConverter::convert).collect(Collectors.toList());
     }
 
     @Override
