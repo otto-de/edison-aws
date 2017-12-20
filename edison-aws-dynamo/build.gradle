@@ -5,10 +5,27 @@ dependencies {
     compile libraries.aws_sdk_cloudwatch
     compile libraries.edison_jobs
     compile libraries.aws_sdk_dynamo, without_log4j
+
+    testCompile test_libraries.dynamodb_local
     testCompile test_libraries.junit
     testCompile test_libraries.hamcrest_core
     testCompile test_libraries.hamcrest_library
     testCompile test_libraries.spring_boot_starter_test
+}
+
+// dynamodb local uses sql4java which uses a native lib. This has to be put on the java.library.path
+task copyNativeDeps(type: Copy) {
+    from(configurations.testCompile) {
+        include "*.dylib"
+        include "*.so"
+        include "*.dll"
+    }
+    into 'build/libs'
+}
+
+test.dependsOn copyNativeDeps
+test.doFirst {
+    systemProperty "java.library.path", 'build/libs'
 }
 
 artifacts {
