@@ -17,14 +17,14 @@ import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
-public class DynamoJobRepository implements JobRepository {
+public class DynamoDbJobRepository implements JobRepository {
 
     private static final Comparator<JobInfo> STARTED_TIME_DESC_COMPARATOR = Comparator.comparing(JobInfo::getStarted, OffsetDateTime::compareTo).reversed();
     private DynamoDBClient dynamoDBClient;
-    private DynamoJobRepoProperties dynamoJobRepoProperties;
+    private DynamoDbJobRepoProperties dynamoJobRepoProperties;
 
-    public DynamoJobRepository(final DynamoDBClient dynamoDBClient,
-                               final DynamoJobRepoProperties dynamoJobRepoProperties) {
+    public DynamoDbJobRepository(final DynamoDBClient dynamoDBClient,
+                                 final DynamoDbJobRepoProperties dynamoJobRepoProperties) {
         this.dynamoDBClient = dynamoDBClient;
         this.dynamoJobRepoProperties = dynamoJobRepoProperties;
     }

@@ -52,7 +52,7 @@ uploadArchives {
             }
 
             pom.project {
-                name 'edison-aws-dynamo'
+                name 'edison-aws-dynamodb'
                 packaging 'jar'
                 description 'CloudWatch metrics reporter library of the edison-aws project.'
                 url 'http://github.com/otto-de/edison-aws'

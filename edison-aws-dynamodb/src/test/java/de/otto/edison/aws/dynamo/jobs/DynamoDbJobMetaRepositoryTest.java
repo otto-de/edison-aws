@@ -17,8 +17,8 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 import java.util.Collections;
 import java.util.Set;
 
-import static de.otto.edison.aws.dynamo.jobs.DynamoJobMetaRepository.JOB_TYPE;
-import static de.otto.edison.aws.dynamo.jobs.DynamoJobMetaRepository.KEY_DISABLED;
+import static de.otto.edison.aws.dynamo.jobs.DynamoDbJobMetaRepository.JOB_TYPE;
+import static de.otto.edison.aws.dynamo.jobs.DynamoDbJobMetaRepository.KEY_DISABLED;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -28,19 +28,19 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles("test")
 @ContextConfiguration(classes = DynamoDbTestConfiguration.class)
 @SpringBootTest
-public class DynamoJobMetaRepositoryTest {
+public class DynamoDbJobMetaRepositoryTest {
 
     private static final String TABLE_NAME = "jobMeta";
 
 
     @Autowired
     private DynamoDBClient dynamoDBClient;
-    private DynamoJobMetaRepository dynamoJobMetaRepository;
+    private DynamoDbJobMetaRepository dynamoJobMetaRepository;
 
     @Before
     public void before() {
         createJobInfoTable();
-        dynamoJobMetaRepository = new DynamoJobMetaRepository(dynamoDBClient, new DynamoJobRepoProperties(true, "jobInfo", TABLE_NAME));
+        dynamoJobMetaRepository = new DynamoDbJobMetaRepository(dynamoDBClient, new DynamoDbJobRepoProperties(true, "jobInfo", TABLE_NAME));
     }
 
     @After

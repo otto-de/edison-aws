@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.emptyMap;
 import static java.util.stream.Collectors.toMap;
 
-public class DynamoJobMetaRepository implements JobMetaRepository {
+public class DynamoDbJobMetaRepository implements JobMetaRepository {
 
     static final String JOB_TYPE = "JOB_TYPE";
     static final String KEY_RUNNING = "running";
@@ -22,7 +22,7 @@ public class DynamoJobMetaRepository implements JobMetaRepository {
     private final DynamoDBClient dynamoDBClient;
     private final String jobMetaTableName;
 
-    public DynamoJobMetaRepository(DynamoDBClient dynamoDBClient, DynamoJobRepoProperties properties) {
+    public DynamoDbJobMetaRepository(DynamoDBClient dynamoDBClient, DynamoDbJobRepoProperties properties) {
         this.dynamoDBClient = dynamoDBClient;
         this.jobMetaTableName = properties.getJobMetaTableName();
     }
