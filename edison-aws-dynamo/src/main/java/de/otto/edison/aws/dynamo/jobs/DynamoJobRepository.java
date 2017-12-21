@@ -33,7 +33,7 @@ public class DynamoJobRepository implements JobRepository {
     public Optional<JobInfo> findOne(String jobId) {
         Map<String, AttributeValue> jobIdMap = JobInfoConverter.createJobIdMap(jobId);
         GetItemRequest itemRequest = GetItemRequest.builder()
-                .tableName(dynamoJobRepoProperties.getTableName())
+                .tableName(dynamoJobRepoProperties.getJobInfoTableName())
                 .key(jobIdMap)
                 .build();
         GetItemResponse itemResponse = dynamoDBClient.getItem(itemRequest);
@@ -86,7 +86,7 @@ public class DynamoJobRepository implements JobRepository {
 
     @Override
     public List<JobInfo> findAll() {
-        ScanResponse scanResponse = dynamoDBClient.scan(ScanRequest.builder().tableName(dynamoJobRepoProperties.getTableName()).build());
+        ScanResponse scanResponse = dynamoDBClient.scan(ScanRequest.builder().tableName(dynamoJobRepoProperties.getJobInfoTableName()).build());
         return toJobInfoList(scanResponse);
     }
 
@@ -101,7 +101,7 @@ public class DynamoJobRepository implements JobRepository {
     @Override
     public List<JobInfo> findByType(String jobType) {
         ScanRequest scanRequest = ScanRequest.builder()
-                .tableName(dynamoJobRepoProperties.getTableName())
+                .tableName(dynamoJobRepoProperties.getJobInfoTableName())
                 .filterExpression(JobInfoConverter.JOB_TYPE + "= :jobType")
                 .expressionAttributeValues(ImmutableMapParameter.of(":jobType", AttributeValue.builder().s(jobType).build()))
                 .build();
@@ -117,7 +117,7 @@ public class DynamoJobRepository implements JobRepository {
     public JobInfo createOrUpdate(JobInfo job) {
         Map<String, AttributeValue> item = convertJobInfo(job);
         PutItemRequest putItemRequest = PutItemRequest.builder()
-                .tableName(dynamoJobRepoProperties.getTableName())
+                .tableName(dynamoJobRepoProperties.getJobInfoTableName())
                 .item(item)
                 .build();
         dynamoDBClient.putItem(putItemRequest);
@@ -136,7 +136,7 @@ public class DynamoJobRepository implements JobRepository {
 
     private void remove(String jobId) {
         DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
-                .tableName(dynamoJobRepoProperties.getTableName())
+                .tableName(dynamoJobRepoProperties.getJobInfoTableName())
                 .key(ImmutableMapParameter.of(JobInfoConverter.ID, AttributeValue.builder().s(jobId).build()))
                 .build();
         dynamoDBClient.deleteItem(deleteItemRequest);
@@ -197,7 +197,7 @@ public class DynamoJobRepository implements JobRepository {
     }
 
     private void deleteParts(List<WriteRequest> part) {
-        BatchWriteItemResponse batchWriteItemResponse = batchDeleteItems(ImmutableMapParameter.of(dynamoJobRepoProperties.getTableName(), part));
+        BatchWriteItemResponse batchWriteItemResponse = batchDeleteItems(ImmutableMapParameter.of(dynamoJobRepoProperties.getJobInfoTableName(), part));
         while (!batchWriteItemResponse.unprocessedItems().isEmpty()) {
             batchDeleteItems(batchWriteItemResponse.unprocessedItems());
         }

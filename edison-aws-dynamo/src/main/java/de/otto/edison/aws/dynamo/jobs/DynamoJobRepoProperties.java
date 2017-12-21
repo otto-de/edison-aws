@@ -6,21 +6,31 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class DynamoJobRepoProperties {
 
     private boolean enabled;
-    private String tableName;
+    private String jobInfoTableName;
+    private String jobMetaTableName;
 
     public DynamoJobRepoProperties() {}
 
-    public DynamoJobRepoProperties(boolean enabled, String tableName) {
+    public DynamoJobRepoProperties(boolean enabled, String jobInfoTableName, String jobMetaTableName) {
         this.enabled = enabled;
-        this.tableName = tableName;
+        this.jobInfoTableName = jobInfoTableName;
+        this.jobMetaTableName = jobMetaTableName;
     }
 
-    public String getTableName() {
-        return tableName;
+    public String getJobInfoTableName() {
+        return jobInfoTableName;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setJobInfoTableName(String jobInfoTableName) {
+        this.jobInfoTableName = jobInfoTableName;
+    }
+
+    public String getJobMetaTableName() {
+        return jobMetaTableName;
+    }
+
+    public void setJobMetaTableName(String jobMetaTableName) {
+        this.jobMetaTableName = jobMetaTableName;
     }
 
     public boolean isEnabled() {

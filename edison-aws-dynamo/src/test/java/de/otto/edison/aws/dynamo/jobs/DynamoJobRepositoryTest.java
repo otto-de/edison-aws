@@ -45,7 +45,7 @@ public class DynamoJobRepositoryTest {
     @Before
     public void before() {
         createJobInfoTable();
-        dynamoJobRepository = new DynamoJobRepository(dynamoDBClient, new DynamoJobRepoProperties(true, TABLE_NAME));
+        dynamoJobRepository = new DynamoJobRepository(dynamoDBClient, new DynamoJobRepoProperties(true, TABLE_NAME, "jobMeta"));
     }
 
     @After
