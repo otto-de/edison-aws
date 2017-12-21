@@ -34,18 +34,18 @@ import static org.junit.Assert.assertThat;
 @ActiveProfiles("test")
 @ContextConfiguration(classes = DynamoDbTestConfiguration.class)
 @SpringBootTest
-public class DynamoJobRepositoryTest {
+public class DynamoDbJobRepositoryTest {
 
     private static final String TABLE_NAME = "jobInfo";
 
     @Autowired
     private DynamoDBClient dynamoDBClient;
-    private DynamoJobRepository dynamoJobRepository;
+    private DynamoDbJobRepository dynamoJobRepository;
 
     @Before
     public void before() {
         createJobInfoTable();
-        dynamoJobRepository = new DynamoJobRepository(dynamoDBClient, new DynamoJobRepoProperties(true, TABLE_NAME, "jobMeta"));
+        dynamoJobRepository = new DynamoDbJobRepository(dynamoDBClient, new DynamoDbJobRepoProperties(true, TABLE_NAME, "jobMeta"));
     }
 
     @After
