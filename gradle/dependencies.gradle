@@ -47,7 +47,7 @@ ext {
             hamcrest_core           : "org.hamcrest:hamcrest-core:${test_versions.hamcrest}",
             hamcrest_library        : "org.hamcrest:hamcrest-library:${test_versions.hamcrest}",
             junit                   : "junit:junit:${test_versions.junit}",
-            dynamodb_local          : "com.amazonaws:DynamoDBLocal:1.11.+"
+            dynamodb_local          : "com.amazonaws:DynamoDBLocal:[1.11,2.0)"
     ]
     gradle_plugins = [
             versions     : "com.github.ben-manes:gradle-versions-plugin:${plugin_versions.versions}",
