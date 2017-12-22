@@ -1,7 +1,11 @@
 # Release Notes
 
+## 0.2.3
+* Use preview 7 of AWS SDK 2
+* dynamodb job repositories for edison jobs
+
 ## 0.2.2
-* Refactore aws-metrics: do not use local aws credentials provider  - use provider from aws-core
+* Refactor aws-metrics: do not use local aws credentials provider  - use provider from aws-core
 
 ## 0.2.1
 * Refactor S3Service.download(..) to not use StreamingResponseHandler to simplify testing  
