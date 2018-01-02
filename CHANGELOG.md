@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.2.5
+* Fix bug with enabled jobs in Job Meta Repository
+
 ## 0.2.4
 * Fix naming issues in dynamo db module
 
