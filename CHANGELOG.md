@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.2.4
+* Fix naming issues in dynamo db module
+
 ## 0.2.3
 * Use preview 7 of AWS SDK 2
 * dynamodb job repositories for edison jobs

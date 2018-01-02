@@ -19,14 +19,14 @@ import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
 public class DynamoDbJobsConfiguration {
 
     @Bean
-    @ConditionalOnProperty(name = "edison.aws.dynamodb.jobs.info-table-name")
+    @ConditionalOnProperty(name = "edison.aws.dynamodb.jobs.job-info-table-name")
     public JobRepository jobRepository(final DynamoDBClient dynamoDBClient,
                                        final DynamoDbJobRepoProperties dynamoDbJobRepoProperties) {
         return new DynamoDbJobRepository(dynamoDBClient, dynamoDbJobRepoProperties);
     }
 
     @Bean
-    @ConditionalOnProperty(name = "edison.aws.dynamodb.jobs.meta-table-name")
+    @ConditionalOnProperty(name = "edison.aws.dynamodb.jobs.job-meta-table-name")
     public JobMetaRepository jobMetaRepository(final DynamoDBClient dynamoDBClient,
                                                final DynamoDbJobRepoProperties dynamoDbJobRepoProperties) {
         return new DynamoDbJobMetaRepository(dynamoDBClient, dynamoDbJobRepoProperties);
