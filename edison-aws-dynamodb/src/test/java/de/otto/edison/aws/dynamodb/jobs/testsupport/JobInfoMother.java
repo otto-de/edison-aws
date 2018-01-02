@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.jobs.testsupport;
+package de.otto.edison.aws.dynamodb.jobs.testsupport;
 
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;

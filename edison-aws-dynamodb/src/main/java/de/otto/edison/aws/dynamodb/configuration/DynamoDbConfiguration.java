@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.configuration;
+package de.otto.edison.aws.dynamodb.configuration;
 
 import de.otto.edison.aws.configuration.AwsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -9,7 +9,7 @@ import software.amazon.awssdk.core.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
 
 @Configuration
-@ConditionalOnProperty(name = "edison.aws.dynamo.jobs.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(name = "edison.aws.dynamodb.enabled", havingValue = "true", matchIfMissing = true)
 public class DynamoDbConfiguration {
 
     @Bean

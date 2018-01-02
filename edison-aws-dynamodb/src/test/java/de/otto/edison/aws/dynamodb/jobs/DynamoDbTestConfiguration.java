@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.jobs;
+package de.otto.edison.aws.dynamodb.jobs;
 
 import com.amazonaws.services.dynamodbv2.local.main.ServerRunner;
 import com.amazonaws.services.dynamodbv2.local.server.DynamoDBProxyServer;

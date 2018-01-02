@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.jobs;
+package de.otto.edison.aws.dynamodb.jobs;
 
 import de.otto.edison.jobs.domain.JobMeta;
 import de.otto.edison.jobs.repository.JobMetaRepository;

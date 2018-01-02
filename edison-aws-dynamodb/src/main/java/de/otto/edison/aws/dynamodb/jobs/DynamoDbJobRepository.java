@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.jobs;
+package de.otto.edison.aws.dynamodb.jobs;
 
 import com.amazonaws.util.ImmutableMapParameter;
 import com.google.common.collect.Lists;
@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.convertJobInfo;
+import static de.otto.edison.aws.dynamodb.jobs.JobInfoConverter.convertJobInfo;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;

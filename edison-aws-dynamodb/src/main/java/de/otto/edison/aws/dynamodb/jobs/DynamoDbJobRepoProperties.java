@@ -1,18 +1,16 @@
-package de.otto.edison.aws.dynamo.jobs;
+package de.otto.edison.aws.dynamodb.jobs;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "edison.aws.dynamo.jobs")
+@ConfigurationProperties(prefix = "edison.aws.dynamodb.jobs")
 public class DynamoDbJobRepoProperties {
 
-    private boolean enabled;
     private String jobInfoTableName;
     private String jobMetaTableName;
 
     public DynamoDbJobRepoProperties() {}
 
-    public DynamoDbJobRepoProperties(boolean enabled, String jobInfoTableName, String jobMetaTableName) {
-        this.enabled = enabled;
+    public DynamoDbJobRepoProperties(String jobInfoTableName, String jobMetaTableName) {
         this.jobInfoTableName = jobInfoTableName;
         this.jobMetaTableName = jobMetaTableName;
     }
@@ -33,11 +31,4 @@ public class DynamoDbJobRepoProperties {
         this.jobMetaTableName = jobMetaTableName;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
 }
