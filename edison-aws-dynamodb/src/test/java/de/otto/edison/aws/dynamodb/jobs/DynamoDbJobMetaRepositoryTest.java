@@ -237,6 +237,21 @@ public class DynamoDbJobMetaRepositoryTest {
     }
 
     @Test
+    public void shouldSetDisabledCommentToEmptyStringWhenEnabled() {
+        //given
+        dynamoJobMetaRepository.setRunningJob("someJobType", "someJobId");
+        dynamoJobMetaRepository.setValue("someJobType", "foo", "bar");
+
+        //when
+        JobMeta jobMeta = dynamoJobMetaRepository.getJobMeta("someJobType");
+
+        //then
+        assertThat(jobMeta.getJobType(), is("someJobType"));
+        assertThat(jobMeta.isDisabled(), is(false));
+        assertThat(jobMeta.getDisabledComment(), is(""));
+    }
+
+    @Test
     public void shouldReturnEmptyJobMetaWhenJobTypeDoesNotExist() {
         //when
         JobMeta jobMeta = dynamoJobMetaRepository.getJobMeta("someJobType");

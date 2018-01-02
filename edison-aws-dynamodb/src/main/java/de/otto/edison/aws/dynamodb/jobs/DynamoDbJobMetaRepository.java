@@ -41,7 +41,10 @@ public class DynamoDbJobMetaRepository implements JobMetaRepository {
                     ));
             final boolean isRunning = item.containsKey(KEY_RUNNING);
             final boolean isDisabled = item.containsKey(KEY_DISABLED);
-            final String comment = item.get(KEY_DISABLED).s();
+            String comment = null;
+            if (isDisabled && item.get(KEY_DISABLED) != null) {
+                comment = item.get(KEY_DISABLED).s();
+            }
             return new JobMeta(jobType, isRunning, isDisabled, comment, meta);
         } else {
             return new JobMeta(jobType, false, false, "", emptyMap());
