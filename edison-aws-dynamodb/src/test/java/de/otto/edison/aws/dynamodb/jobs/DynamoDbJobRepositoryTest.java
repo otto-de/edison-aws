@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.jobs;
+package de.otto.edison.aws.dynamodb.jobs;
 
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
@@ -21,8 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
-import static de.otto.edison.aws.dynamo.jobs.JobInfoConverter.ID;
-import static de.otto.edison.aws.dynamo.jobs.testsupport.JobInfoMother.jobInfo;
+import static de.otto.edison.aws.dynamodb.jobs.JobInfoConverter.ID;
+import static de.otto.edison.aws.dynamodb.jobs.testsupport.JobInfoMother.jobInfo;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.contains;
@@ -45,7 +45,7 @@ public class DynamoDbJobRepositoryTest {
     @Before
     public void before() {
         createJobInfoTable();
-        dynamoJobRepository = new DynamoDbJobRepository(dynamoDBClient, new DynamoDbJobRepoProperties(true, TABLE_NAME, "jobMeta"));
+        dynamoJobRepository = new DynamoDbJobRepository(dynamoDBClient, new DynamoDbJobRepoProperties(TABLE_NAME, "jobMeta"));
     }
 
     @After

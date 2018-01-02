@@ -1,9 +1,9 @@
-package de.otto.edison.aws.dynamo.configuration;
+package de.otto.edison.aws.dynamodb.configuration;
 
 import de.otto.edison.aws.configuration.AwsProperties;
-import de.otto.edison.aws.dynamo.jobs.DynamoDbJobMetaRepository;
-import de.otto.edison.aws.dynamo.jobs.DynamoDbJobRepoProperties;
-import de.otto.edison.aws.dynamo.jobs.DynamoDbJobRepository;
+import de.otto.edison.aws.dynamodb.jobs.DynamoDbJobMetaRepository;
+import de.otto.edison.aws.dynamodb.jobs.DynamoDbJobRepoProperties;
+import de.otto.edison.aws.dynamodb.jobs.DynamoDbJobRepository;
 import de.otto.edison.jobs.repository.JobMetaRepository;
 import de.otto.edison.jobs.repository.JobRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

@@ -1,4 +1,4 @@
-package de.otto.edison.aws.dynamo.jobs;
+package de.otto.edison.aws.dynamodb.jobs;
 
 import com.google.common.collect.ImmutableMap;
 import de.otto.edison.jobs.domain.JobMeta;
@@ -17,8 +17,8 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 import java.util.Collections;
 import java.util.Set;
 
-import static de.otto.edison.aws.dynamo.jobs.DynamoDbJobMetaRepository.JOB_TYPE;
-import static de.otto.edison.aws.dynamo.jobs.DynamoDbJobMetaRepository.KEY_DISABLED;
+import static de.otto.edison.aws.dynamodb.jobs.DynamoDbJobMetaRepository.JOB_TYPE;
+import static de.otto.edison.aws.dynamodb.jobs.DynamoDbJobMetaRepository.KEY_DISABLED;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -40,7 +40,7 @@ public class DynamoDbJobMetaRepositoryTest {
     @Before
     public void before() {
         createJobInfoTable();
-        dynamoJobMetaRepository = new DynamoDbJobMetaRepository(dynamoDBClient, new DynamoDbJobRepoProperties(true, "jobInfo", TABLE_NAME));
+        dynamoJobMetaRepository = new DynamoDbJobMetaRepository(dynamoDBClient, new DynamoDbJobRepoProperties("jobInfo", TABLE_NAME));
     }
 
     @After
