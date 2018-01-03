@@ -1,6 +1,7 @@
 package de.otto.edison.aws.dynamodb.jobs;
 
 import com.amazonaws.util.ImmutableMapParameter;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static de.otto.edison.aws.dynamodb.jobs.JobInfoConverter.MESSAGES;
 import static de.otto.edison.aws.dynamodb.jobs.JobInfoConverter.convertJobInfo;
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
@@ -154,11 +156,16 @@ public class DynamoDbJobRepository implements JobRepository {
 
     @Override
     public void appendMessage(String jobId, JobMessage jobMessage) {
-        Optional<JobInfo> jobInfo = findOne(jobId);
-        jobInfo.ifPresent(jobInfo1 -> {
-            JobInfo modifiedJobInfo = jobInfo1.copy().addMessage(jobMessage).build();
-            createOrUpdate(modifiedJobInfo);
-        });
+        AttributeValue listOfJobMessageMap = AttributeValue.builder()
+                .l(JobInfoConverter.mapJobMessage(jobMessage))
+                .build();
+        
+        dynamoDBClient.updateItem(UpdateItemRequest.builder()
+                .tableName(dynamoJobRepoProperties.getJobInfoTableName())
+                .key(JobInfoConverter.createJobIdMap(jobId))
+                .updateExpression("SET " + MESSAGES + " = list_append(" + MESSAGES + ", :m)")
+                .expressionAttributeValues(ImmutableMap.of(":m", listOfJobMessageMap))
+                .build());
     }
 
     @Override

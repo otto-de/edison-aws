@@ -45,7 +45,7 @@ public class JobInfoConverter {
         return itemsMap;
     }
 
-    private static AttributeValue mapJobMessage(JobMessage msg) {
+    public static AttributeValue mapJobMessage(JobMessage msg) {
         Map<String, AttributeValue> msgMap = new HashMap<>();
         msgMap.put(MSG, createStringAttributeValue(msg.getMessage()));
         msgMap.put(MSG_LEVEL, createStringAttributeValue(msg.getLevel().getKey()));
