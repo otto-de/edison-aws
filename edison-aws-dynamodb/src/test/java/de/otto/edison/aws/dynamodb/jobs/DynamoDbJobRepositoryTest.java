@@ -1,5 +1,6 @@
 package de.otto.edison.aws.dynamodb.jobs;
 
+import com.google.common.collect.ImmutableList;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
 import de.otto.edison.jobs.domain.Level;
@@ -346,5 +347,22 @@ public class DynamoDbJobRepositoryTest {
 
         //then
         assertThat(status, is(JobInfo.JobStatus.DEAD));
+    }
+
+    @Test
+    public void shouldNotFailOnEmptyStuff() {
+        // given
+        JobInfo jobInfo = JobInfo.builder()
+                .setJobId("someJob")
+                .setStatus(JobInfo.JobStatus.OK)
+                .setStarted(OffsetDateTime.now())
+                .setLastUpdated(OffsetDateTime.now())
+                .build();
+
+        // when
+        dynamoJobRepository.createOrUpdate(jobInfo);
+
+        // then
+        assertThat(dynamoJobRepository.size(), is(1L));
     }
 }

@@ -1,5 +1,6 @@
 package de.otto.edison.aws.dynamodb.jobs;
 
+import com.google.common.collect.ImmutableMap;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
 import de.otto.edison.jobs.domain.Level;
@@ -82,6 +83,26 @@ public class JobInfoConverterTest {
 
         Map<String, AttributeValue> result = JobInfoConverter.convertJobInfo(jobInfo);
 
-        assertThat(result.get(JobInfoConverter.HOSTNAME).s(), is(nullValue()));
+        assertThat(result.get(JobInfoConverter.HOSTNAME).nul(), is(true));
+    }
+
+    @Test
+    public void shouldHandleNullValuesWhenReading() {
+        Map<String, AttributeValue> attrMap = ImmutableMap.<String, AttributeValue>builder()
+                .put(JobInfoConverter.ID, attrValS("someJobId"))
+                .put(JobInfoConverter.STARTED, attrValS(ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now())))
+                .put(JobInfoConverter.JOB_STATUS, attrValS("OK"))
+                .put(JobInfoConverter.LAST_UPDATED, attrValS(ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now())))
+                .put(JobInfoConverter.HOSTNAME, AttributeValue.builder().nul(true).build())
+                .put(JobInfoConverter.MESSAGES, AttributeValue.builder().l().build())
+                .build();
+
+        JobInfo result = JobInfoConverter.convert(attrMap);
+
+        assertThat(result.getHostname(), is(nullValue()));
+    }
+
+    private AttributeValue attrValS(String stringValue) {
+        return AttributeValue.builder().s(stringValue).build();
     }
 }

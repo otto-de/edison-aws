@@ -86,7 +86,7 @@ public class JobInfoConverter {
 
     private static AttributeValue createStringAttributeValue(String value) {
         if (value == null || "".equals(value)) {
-            return AttributeValue.builder().build();
+            return AttributeValue.builder().nul(true).build();
         }
         return AttributeValue.builder().s(value).build();
     }
@@ -96,19 +96,22 @@ public class JobInfoConverter {
         return createStringAttributeValue(formattedDateTime);
     }
 
-    private static final Optional<String> stringValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
-        if (attributeValueMap.containsKey(key)) {
-            return Optional.of(attributeValueMap.get(key).s());
+    private static Optional<String> stringValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
+        AttributeValue attributeValue = attributeValueMap.get(key);
+        if (isAttributeSet(attributeValue)) {
+            return Optional.of(attributeValue.s());
         }
         return Optional.empty();
     }
 
-    private static final Optional<OffsetDateTime> dateValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
-        if (attributeValueMap.containsKey(key)) {
-            String formattedDateTime = attributeValueMap.get(key).s();
-            OffsetDateTime offsetDateTime = OffsetDateTime.parse(formattedDateTime, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-            return Optional.of(offsetDateTime);
-        }
-        return Optional.empty();
+    private static Optional<OffsetDateTime> dateValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
+        return stringValueFromAttribute(attributeValueMap, key)
+                .map(s -> OffsetDateTime.parse(s, DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+    }
+
+    private static boolean isAttributeSet(AttributeValue attributeValue) {
+        return attributeValue != null
+                && (attributeValue.nul() == null
+                || !attributeValue.nul());
     }
 }
