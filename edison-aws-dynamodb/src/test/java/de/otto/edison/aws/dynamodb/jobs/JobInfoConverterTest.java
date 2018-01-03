@@ -14,6 +14,7 @@ import java.util.Map;
 import static java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.nullValue;
 
 public class JobInfoConverterTest {
 
@@ -66,4 +67,21 @@ public class JobInfoConverterTest {
         assertThat(convertJobInfo, is(jobInfo));
     }
 
+    @Test
+    public void shouldUseNullForEmptyStrings() {
+        OffsetDateTime date = OffsetDateTime.now();
+        JobInfo jobInfo = JobInfo.builder()
+                .setJobId("someJobId")
+                .setHostname("")
+                .setStatus(JobInfo.JobStatus.OK)
+                .setJobType("someJobeType")
+                .setStarted(date)
+                .setStopped(date)
+                .setLastUpdated(date)
+                .build();
+
+        Map<String, AttributeValue> result = JobInfoConverter.convertJobInfo(jobInfo);
+
+        assertThat(result.get(JobInfoConverter.HOSTNAME).s(), is(nullValue()));
+    }
 }
