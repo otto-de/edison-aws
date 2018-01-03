@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.2.6
+* Make appending log messages in DynamoDB Job Repository more efficient
+
 ## 0.2.5
 * Fix bug with enabled jobs in Job Meta Repository
 
