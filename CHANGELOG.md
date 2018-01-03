@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.2.7
+* Replace empty Strings with null for DynamoDB
+
 ## 0.2.6
 * Make appending log messages in DynamoDB Job Repository more efficient
 
