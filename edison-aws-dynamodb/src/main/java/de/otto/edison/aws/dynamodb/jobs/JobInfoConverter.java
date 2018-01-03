@@ -85,12 +85,15 @@ public class JobInfoConverter {
     }
 
     private static AttributeValue createStringAttributeValue(String value) {
+        if (value == null || "".equals(value)) {
+            return AttributeValue.builder().build();
+        }
         return AttributeValue.builder().s(value).build();
     }
 
     private static AttributeValue createDateAttributeValue(OffsetDateTime dateTime) {
         String formattedDateTime = DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(dateTime);
-        return AttributeValue.builder().s(formattedDateTime).build();
+        return createStringAttributeValue(formattedDateTime);
     }
 
     private static final Optional<String> stringValueFromAttribute(Map<String, AttributeValue> attributeValueMap, String key) {
