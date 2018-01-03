@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.2.8
+* Fix sending empty attribute values to dynamodb. Caused strange exceptions.
+
 ## 0.2.7
 * Replace empty Strings with null for DynamoDB
 
