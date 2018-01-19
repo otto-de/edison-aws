@@ -3,6 +3,7 @@ package de.otto.edison.aws.s3;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
+import software.amazon.awssdk.core.sync.StreamingResponseHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +12,6 @@ import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
-import static de.otto.edison.aws.s3.S3Service.EncryptionType.NONE;
 import static java.util.stream.Collectors.toList;
 import static org.slf4j.LoggerFactory.getLogger;
 import static software.amazon.awssdk.services.s3.model.Delete.builder;
@@ -21,22 +21,6 @@ public class S3Service {
     private static final Logger LOG = getLogger(S3Service.class);
 
     private final S3Client s3Client;
-
-    public enum EncryptionType {
-        NONE(""),
-        AES_256("AES256"),
-        AWS_KMS("aws:kms");
-
-        private final String value;
-
-        EncryptionType(String value) {
-            this.value = value;
-        }
-
-        public String getValue() {
-            return value;
-        }
-    }
 
     public S3Service(final S3Client s3Client) {
         this.s3Client = s3Client;
@@ -58,23 +42,13 @@ public class S3Service {
     }
 
     public void upload(final String bucketName,
-                       final File file,
-                       final EncryptionType encryptionType) {
-        PutObjectRequest.Builder builder = PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(file.getName());
-
-        if (encryptionType != NONE) {
-            builder.serverSideEncryption(encryptionType.getValue());
-        }
-
-        final PutObjectResponse putObjectResponse = s3Client.putObject(builder.build(), file.toPath());
-        LOG.debug("upload {} to bucket {}: ", file.getName(), bucketName, putObjectResponse.toString());
-    }
-
-    public void upload(final String bucketName,
                        final File file) {
-        upload(bucketName, file, NONE);
+        final PutObjectResponse putObjectResponse = s3Client.putObject(PutObjectRequest.builder()
+                        .bucket(bucketName)
+                        .key(file.getName())
+                        .build(),
+                file.toPath());
+        LOG.debug("upload {} to bucket {}: ", file.getName(), bucketName, putObjectResponse.toString());
     }
 
     public boolean download(final String bucketName,
