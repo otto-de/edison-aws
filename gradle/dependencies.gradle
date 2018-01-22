@@ -26,7 +26,7 @@ ext {
     libraries = [
             hibernate_validator      : "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
             aws_sdk_core             : "software.amazon.awssdk:core:${versions.aws_sdk}",
-            aws_sdk_cloudwatch       : "com.amazonaws:aws-java-sdk-cloudwatch:${versions.old_aws_sdk}",
+            aws_sdk_cloudwatch       : "software.amazon.awssdk:cloudwatch:${versions.aws_sdk}",
             aws_sdk_s3               : "software.amazon.awssdk:s3:${versions.aws_sdk}",
             aws_sdk_dynamo           : "software.amazon.awssdk:dynamodb:${versions.aws_sdk}",
             aws_sdk_ssm              : "software.amazon.awssdk:ssm:${versions.aws_sdk}",

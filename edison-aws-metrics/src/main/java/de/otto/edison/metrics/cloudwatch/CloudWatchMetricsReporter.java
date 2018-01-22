@@ -1,16 +1,25 @@
 package de.otto.edison.metrics.cloudwatch;
 
-import com.codahale.metrics.*;
+
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Counting;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.ScheduledReporter;
+import com.codahale.metrics.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsync;
-import com.amazonaws.services.cloudwatch.model.MetricDatum;
-import com.amazonaws.services.cloudwatch.model.PutMetricDataRequest;
+import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
+import software.amazon.awssdk.services.cloudwatch.model.MetricDatum;
+import software.amazon.awssdk.services.cloudwatch.model.PutMetricDataRequest;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.util.List;
 import java.util.SortedMap;
 
-import java.util.Date;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
@@ -18,13 +27,14 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
 
     private static final Logger LOG = LoggerFactory.getLogger(CloudWatchMetricsReporter.class);
 
-    private final AmazonCloudWatchAsync cloudWatchClient;
+    private final CloudWatchAsyncClient cloudWatchClient;
     private final String namespace;
+    private Clock clock;
 
     public CloudWatchMetricsReporter(final MetricRegistry registry,
                                      final List<String> allowedMetrics,
                                      final String namespace,
-                                     final AmazonCloudWatchAsync cloudWatchClient) {
+                                     final CloudWatchAsyncClient cloudWatchClient) {
         super(
                 registry,
                 "cloudWatch-reporter",
@@ -47,6 +57,10 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
         timers.forEach(this::reportCounter);
     }
 
+    public void setClock(final Clock clock) {
+        this.clock = clock;
+    }
+
     private void reportGauge(final String name, final Gauge<Number> gauge) {
         reportToCloudWatch(name, gauge.getValue().doubleValue());
     }
@@ -56,14 +70,15 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
     }
 
     private void reportToCloudWatch(final String name, final double value) {
-        cloudWatchClient.putMetricDataAsync(new PutMetricDataRequest()
-                .withNamespace(namespace)
-                .withMetricData(new MetricDatum()
-                        .withMetricName(name)
-                        .withValue(value)
-                        .withTimestamp(new Date())
-                ));
+        cloudWatchClient.putMetricData(PutMetricDataRequest.builder()
+                .namespace(namespace)
+                .metricData(MetricDatum.builder()
+                        .metricName(name)
+                        .value(value)
+                        .timestamp(clock != null ? clock.instant() :Instant.now())
+                        .build())
+                .build());
 
-        LOG.info("sending metric to cloudWatch: " + name + " : " + value);
+        LOG.debug("sending metric to cloudWatch: " + name + " : " + value);
     }
 }
