@@ -1,6 +1,5 @@
 package de.otto.edison.aws.dynamodb.jobs;
 
-import com.amazonaws.util.ImmutableMapParameter;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import de.otto.edison.jobs.domain.JobInfo;
@@ -105,7 +104,7 @@ public class DynamoDbJobRepository implements JobRepository {
         ScanRequest scanRequest = ScanRequest.builder()
                 .tableName(dynamoJobRepoProperties.getJobInfoTableName())
                 .filterExpression(JobInfoConverter.JOB_TYPE + "= :jobType")
-                .expressionAttributeValues(ImmutableMapParameter.of(":jobType", AttributeValue.builder().s(jobType).build()))
+                .expressionAttributeValues(ImmutableMap.of(":jobType", AttributeValue.builder().s(jobType).build()))
                 .build();
         ScanResponse scanResponse = dynamoDBClient.scan(scanRequest);
         return toJobInfoList(scanResponse);
@@ -139,7 +138,7 @@ public class DynamoDbJobRepository implements JobRepository {
     private void remove(String jobId) {
         DeleteItemRequest deleteItemRequest = DeleteItemRequest.builder()
                 .tableName(dynamoJobRepoProperties.getJobInfoTableName())
-                .key(ImmutableMapParameter.of(JobInfoConverter.ID, AttributeValue.builder().s(jobId).build()))
+                .key(ImmutableMap.of(JobInfoConverter.ID, AttributeValue.builder().s(jobId).build()))
                 .build();
         dynamoDBClient.deleteItem(deleteItemRequest);
     }
@@ -195,7 +194,7 @@ public class DynamoDbJobRepository implements JobRepository {
     public void deleteAll() {
         List<WriteRequest> deleteRequests = findAll().stream().map(jobInfo -> WriteRequest.builder()
                 .deleteRequest(DeleteRequest.builder()
-                        .key(ImmutableMapParameter.of(JobInfoConverter.ID, AttributeValue.builder().s(jobInfo.getJobId()).build()))
+                        .key(ImmutableMap.of(JobInfoConverter.ID, AttributeValue.builder().s(jobInfo.getJobId()).build()))
                         .build())
                 .build()
         ).collect(toList());
@@ -204,7 +203,7 @@ public class DynamoDbJobRepository implements JobRepository {
     }
 
     private void deleteParts(List<WriteRequest> part) {
-        BatchWriteItemResponse batchWriteItemResponse = batchDeleteItems(ImmutableMapParameter.of(dynamoJobRepoProperties.getJobInfoTableName(), part));
+        BatchWriteItemResponse batchWriteItemResponse = batchDeleteItems(ImmutableMap.of(dynamoJobRepoProperties.getJobInfoTableName(), part));
         while (!batchWriteItemResponse.unprocessedItems().isEmpty()) {
             batchDeleteItems(batchWriteItemResponse.unprocessedItems());
         }
