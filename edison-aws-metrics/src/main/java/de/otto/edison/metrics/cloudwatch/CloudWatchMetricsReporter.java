@@ -44,8 +44,8 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
         this.namespace = namespace;
     }
 
-    private static boolean shouldReportToCloudWatch(final String name, final List<String> allowedMetrics) {
-        return allowedMetrics.contains(name);
+    protected static boolean shouldReportToCloudWatch(final String name, final List<String> allowedMetrics) {
+        return allowedMetrics.stream().anyMatch(e->name.matches(e));
     }
 
     @Override
