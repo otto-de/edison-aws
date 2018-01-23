@@ -14,6 +14,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -52,6 +53,12 @@ public class CloudWatchMetricsReporterTest {
                         .build())
                 .build());
         verifyNoMoreInteractions(cloudWatchClient);
+    }
+
+    @Test
+    public void shouldReportToCloudWatch() {
+        assertTrue(CloudWatchMetricsReporter.shouldReportToCloudWatch("heap", singletonList("heap.*")));
+        assertTrue(CloudWatchMetricsReporter.shouldReportToCloudWatch("heap.used", singletonList("heap.*")));
     }
 
 }
