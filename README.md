@@ -6,7 +6,7 @@ Collection of independent libraries on top of [edison-microservice](https://gith
 
 ## Status
 
-[![release](https://maven-badges.herokuapp.com/maven-central/de.otto.edison/edison-aws-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.otto.edison/edison-core)
+[![release](https://maven-badges.herokuapp.com/maven-central/de.otto.edison/edison-aws-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.otto.edison/edison-aws-core)
 [![license](https://img.shields.io/github/license/otto-de/edison-aws.svg)](./LICENSE)
 
 UNSTABLE - EARLY IN DEVELOPMENT
