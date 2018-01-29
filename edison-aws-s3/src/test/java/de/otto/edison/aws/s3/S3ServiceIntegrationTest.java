@@ -6,20 +6,22 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import software.amazon.awssdk.core.auth.AwsCredentials;
+import software.amazon.awssdk.core.auth.StaticCredentialsProvider;
+import software.amazon.awssdk.core.regions.Region;
+import software.amazon.awssdk.services.s3.S3AdvancedConfiguration;
+import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URI;
 import java.util.List;
 
 import static java.nio.file.Files.createTempFile;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -27,15 +29,24 @@ import static org.junit.Assert.assertThat;
 @TestPropertySource("classpath:application-test.properties")
 public class S3ServiceIntegrationTest {
 
-    // TODO: Migrate s3 tests to LocalStack!
+    private static final String TESTBUCKET = "testbucket";
 
-    private static final String TESTBUCKET = "de-otto-s3-service-integration-test-bucket";
-
-    @Autowired
     private S3Service s3Service;
 
     @Before
     public void setUp() throws Exception {
+
+        S3Client s3Client = S3Client.builder()
+                .credentialsProvider(StaticCredentialsProvider.create(AwsCredentials.create("test", "test")))
+                .region(Region.US_EAST_1)
+                .endpointOverride(new URI("http://localhost:4572"))
+                .advancedConfiguration(S3AdvancedConfiguration.builder()
+                        .pathStyleAccessEnabled(true)
+                        .build())
+                .build();
+
+        s3Service = new S3Service(s3Client);
+
         s3Service.createBucket(TESTBUCKET);
         s3Service.deleteAllObjectsInBucket(TESTBUCKET);
     }
@@ -54,12 +65,14 @@ public class S3ServiceIntegrationTest {
             writer.flush();
         }
         s3Service.upload(TESTBUCKET, tempFile);
-        final File prefixedTempFile = createTempFile("prefixed", ".txt").toFile();
+        final File prefixedTempFile = createTempFile("prefix", ".txt").toFile();
         try (FileWriter writer = new FileWriter(prefixedTempFile)) {
             writer.append("Hello World!");
             writer.flush();
         }
         s3Service.upload(TESTBUCKET, prefixedTempFile);
+
+        System.out.println(prefixedTempFile.getName());
 
         //when
         s3Service.deleteAllObjectsWithPrefixInBucket(TESTBUCKET, "prefix");

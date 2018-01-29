@@ -3,7 +3,6 @@ package de.otto.edison.aws.s3;
 import org.slf4j.Logger;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
-import software.amazon.awssdk.core.sync.StreamingResponseHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -78,12 +77,13 @@ public class S3Service {
                                                    final String prefix) {
         final ListObjectsV2Response listObjectResponse = s3Client.listObjectsV2(ListObjectsV2Request.builder().bucket(bucketName).build());
         if (listObjectResponse.keyCount() > 0) {
-            final DeleteObjectsResponse deleteObjectsResponse = s3Client.deleteObjects(DeleteObjectsRequest.builder()
+            DeleteObjectsRequest deleteObjectsRequest = DeleteObjectsRequest.builder()
                     .bucket(bucketName)
                     .delete(builder()
                             .objects(convertS3ObjectsToObjectIdentifiers(listObjectResponse, prefix))
                             .build())
-                    .build());
+                    .build();
+            final DeleteObjectsResponse deleteObjectsResponse = s3Client.deleteObjects(deleteObjectsRequest);
             LOG.debug("deleteAllObjectsWithPrefixInBucket in bucket {} with prefix {}: {}", bucketName, prefix, deleteObjectsResponse);
         } else {
             LOG.debug("deleteAllObjectsWithPrefixInBucket listObjects found no keys in bucket {} with prefix {}: {}", bucketName, prefix, listObjectResponse);
