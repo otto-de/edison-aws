@@ -3,6 +3,7 @@
 ## 0.2.9
 * Update aws metrics to aws sdk 2.0.0
 * Configure allowed metrics with wildcards
+* Add ParamStoreProperties as last source to overwrite all others
 
 ## 0.2.8
 * Fix sending empty attribute values to dynamodb. Caused strange exceptions.
