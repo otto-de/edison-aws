@@ -61,7 +61,7 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
 
         final ConfigurableEnvironment env = beanFactory.getBean(ConfigurableEnvironment.class);
         final MutablePropertySources propertySources = env.getPropertySources();
-        propertySources.addLast(new PropertiesPropertySource(PARAMETER_STORE_PROPERTY_SOURCE, propertiesSource));
+        propertySources.addFirst(new PropertiesPropertySource(PARAMETER_STORE_PROPERTY_SOURCE, propertiesSource));
     }
 
     @Override
