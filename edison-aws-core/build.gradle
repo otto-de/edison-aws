@@ -2,7 +2,6 @@ dependencies {
     compile libraries.spring_boot_autoconfigure
     compile libraries.aws_sdk_core
     compile libraries.slf4j
-    compile libraries.edison_core
 }
 
 artifacts {
