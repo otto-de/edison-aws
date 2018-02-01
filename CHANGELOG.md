@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.3.0-SNAPSHOT
+## 0.3.0
 * **Breaking change:**
   Remove AwsLdapConfiguration bean - 
   Set the new property `edison.ldap.encryptionType` in edison-microservice (1.2.8 or later) to `SSL` to get the same behavior 
