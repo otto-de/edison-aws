@@ -37,7 +37,7 @@ subprojects {
     // DO NOT FORGET TO DOCUMENT CHANGES IN CHANGELOG.md
     //
     // Add a GitHub release for every new release: https://github.com/otto-de/edison-aws/releases
-    version = '0.2.10-SNAPSHOT'
+    version = '0.3.0-SNAPSHOT'
     group = 'de.otto.edison'
 
     repositories {
@@ -58,4 +58,11 @@ subprojects {
     apply from: "${rootDir}/gradle/jacoco.gradle"
     apply from: "${rootDir}/gradle/maven.gradle"
     apply from: "${rootDir}/gradle/signing.gradle"
+}
+
+task startLocalStack(type:Exec) {
+    commandLine "docker", "run", "--name", "localstack_for_testing", "-d", "-p", "4567-4583:4567-4583", "-p", "8080:8080", "localstack/localstack:latest"
+}
+task stopLocalStack(type: Exec) {
+    commandLine 'docker', 'rm', '-f', 'localstack_for_testing'
 }

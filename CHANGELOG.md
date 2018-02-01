@@ -1,6 +1,10 @@
 # Release Notes
 
-## 0.2.10-SNAPSHOT
+## 0.3.0-SNAPSHOT
+* **Breaking change:**
+  Remove AwsLdapConfiguration bean - 
+  Set the new property `edison.ldap.encryptionType` in edison-microservice (1.2.8 or later) to `SSL` to get the same behavior 
+* Remove dependency to edison-core
 
 ## 0.2.9
 * Update aws metrics to aws sdk 2.0.0
