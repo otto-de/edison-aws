@@ -52,9 +52,9 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
     public void report(final SortedMap<String, Gauge> gauges, final SortedMap<String, Counter> counters, final SortedMap<String, Histogram> histograms, final SortedMap<String, Meter> meters, final SortedMap<String, Timer> timers) {
         gauges.forEach(this::reportGauge);
         counters.forEach(this::reportCounter);
-        histograms.forEach(this::reportCounter);
-        meters.forEach(this::reportCounter);
-        timers.forEach(this::reportCounter);
+        histograms.forEach(this::reportHistogram);
+        meters.forEach(this::reportMeter);
+        timers.forEach(this::reportTimer);
     }
 
     public void setClock(final Clock clock) {
@@ -67,6 +67,24 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
 
     private void reportCounter(final String name, final Counting counter) {
         reportToCloudWatch(name, counter.getCount());
+    }
+
+    private void reportHistogram(final String name, final Histogram histogram) {
+        reportToCloudWatch(name, histogram.getCount());
+        reportToCloudWatch(name+".mean", histogram.getSnapshot().getMean());
+        reportToCloudWatch(name+".min", histogram.getSnapshot().getMin());
+        reportToCloudWatch(name+".max", histogram.getSnapshot().getMax());}
+
+    private void reportMeter(final String name, final Meter meter) {
+        reportToCloudWatch(name, meter.getCount());
+        reportToCloudWatch(name+".mean", meter.getMeanRate());
+    }
+
+    private void reportTimer(final String name, final Timer timer) {
+        reportToCloudWatch(name, timer.getCount());
+        reportToCloudWatch(name+".mean", timer.getSnapshot().getMean());
+        reportToCloudWatch(name+".min", timer.getSnapshot().getMin());
+        reportToCloudWatch(name+".max", timer.getSnapshot().getMax());
     }
 
     private void reportToCloudWatch(final String name, final double value) {

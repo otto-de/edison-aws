@@ -1,6 +1,6 @@
 package de.otto.edison.metrics.cloudwatch;
 
-import com.codahale.metrics.Meter;
+import com.codahale.metrics.Counter;
 import com.codahale.metrics.MetricRegistry;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,8 +35,8 @@ public class CloudWatchMetricsReporterTest {
         // given
         final Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         final MetricRegistry registry = new MetricRegistry();
-        registry.register("cpu", new Meter());
-        registry.register("ram", new Meter());
+        registry.register("cpu", new Counter());
+        registry.register("ram", new Counter());
         testee = new CloudWatchMetricsReporter(registry, singletonList("cpu"), "metrics", cloudWatchClient);
         testee.setClock(clock);
 
