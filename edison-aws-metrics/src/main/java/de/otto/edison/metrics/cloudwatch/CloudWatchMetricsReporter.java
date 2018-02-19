@@ -1,6 +1,5 @@
 package de.otto.edison.metrics.cloudwatch;
 
-
 import com.codahale.metrics.Counter;
 import com.codahale.metrics.Counting;
 import com.codahale.metrics.Gauge;
@@ -12,11 +11,13 @@ import com.codahale.metrics.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
+import software.amazon.awssdk.services.cloudwatch.model.Dimension;
 import software.amazon.awssdk.services.cloudwatch.model.MetricDatum;
 import software.amazon.awssdk.services.cloudwatch.model.PutMetricDataRequest;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Collection;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -29,11 +30,13 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
 
     private final CloudWatchAsyncClient cloudWatchClient;
     private final String namespace;
+    private final Collection<Dimension> dimensions;
     private Clock clock;
 
     public CloudWatchMetricsReporter(final MetricRegistry registry,
                                      final List<String> allowedMetrics,
                                      final String namespace,
+                                     final Collection<Dimension> dimensions,
                                      final CloudWatchAsyncClient cloudWatchClient) {
         super(
                 registry,
@@ -41,6 +44,7 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
                 (name, metric) -> shouldReportToCloudWatch(name, allowedMetrics), SECONDS, MILLISECONDS
         );
         this.cloudWatchClient = cloudWatchClient;
+        this.dimensions = dimensions;
         this.namespace = namespace;
     }
 
@@ -88,8 +92,9 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
                 .namespace(namespace)
                 .metricData(MetricDatum.builder()
                         .metricName(name)
+                        .dimensions(dimensions)
                         .value(value)
-                        .timestamp(clock != null ? clock.instant() :Instant.now())
+                        .timestamp(clock != null ? clock.instant() : Instant.now())
                         .build())
                 .build());
 
