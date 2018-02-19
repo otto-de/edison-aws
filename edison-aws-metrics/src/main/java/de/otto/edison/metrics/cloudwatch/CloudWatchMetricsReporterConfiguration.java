@@ -12,8 +12,9 @@ import software.amazon.awssdk.core.auth.AwsCredentialsProvider;
 import software.amazon.awssdk.core.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 
-
 import java.util.concurrent.TimeUnit;
+
+import static de.otto.edison.metrics.cloudwatch.DimensionsConverter.convertDimensions;
 
 @Configuration
 @EnableConfigurationProperties({AwsProperties.class, CloudWatchMetricsProperties.class})
@@ -30,6 +31,7 @@ public class CloudWatchMetricsReporterConfiguration {
                 metricRegistry,
                 metricsProperties.getAllowedMetrics(),
                 metricsProperties.getNamespace(),
+                convertDimensions(metricsProperties.getDimensions()),
                 cloudWatchAsync);
         reporter.start(1, TimeUnit.MINUTES);
         LOG.info("started cloudWatch metrics reporter");
