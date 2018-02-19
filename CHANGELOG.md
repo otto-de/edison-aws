@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.1
+* Add support for dimensions when writing metrics
+
 ## 0.3.0
 * **Breaking change:**
   Remove AwsLdapConfiguration bean - 
