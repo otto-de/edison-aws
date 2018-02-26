@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ParamStoreConfigProperties {
     private boolean enabled;
     private String path;
-
+    private boolean addWithLowestPrecedence;
 
     public ParamStoreConfigProperties() {
     }
@@ -25,5 +25,13 @@ public class ParamStoreConfigProperties {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public boolean isAddWithLowestPrecedence() {
+        return addWithLowestPrecedence;
+    }
+
+    public void setAddWithLowestPrecedence(final boolean addWithLowestPrecedence) {
+        this.addWithLowestPrecedence = addWithLowestPrecedence;
     }
 }
