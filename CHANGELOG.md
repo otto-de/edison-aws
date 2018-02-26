@@ -1,7 +1,7 @@
 # Release Notes
 
 ## 0.3.2
-* [edison-aws-config] add property `addWithLowestPrecedence` to configure the precedence for ssm properties.
+* [edison-aws-config] add property `edison.aws.config.paramstore.addWithLowestPrecedence` to configure the precedence for ssm properties.
 
 ## 0.3.1
 * Add support for dimensions when writing metrics
