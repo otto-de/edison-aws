@@ -42,28 +42,20 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
         final GetParametersByPathRequest.Builder requestBuilder = GetParametersByPathRequest
                 .builder()
                 .path(properties.getPath())
+                .recursive(true)
                 .withDecryption(true);
 
         final Properties propertiesSource = new Properties();
 
-        boolean hasNext = false;
-        String nextToken = "";
-        do {
-            if (hasNext) {
-                requestBuilder.nextToken(nextToken);
-            }
-            final GetParametersByPathRequest request = requestBuilder.build();
-            final GetParametersByPathResponse result = ssmClient.getParametersByPath(request);
-            result.parameters().forEach(p -> {
-                final String name = p.name().substring(properties.getPath().length() + 1);
-                final String loggingValue = SECURE_STRING == p.type() ? "*****" : p.value();
-                LOG.info("Loaded '" + name + "' from ParametersStore, value='" + loggingValue + "', length=" + p.value().length());
+        final GetParametersByPathRequest request = requestBuilder.build();
+        final GetParametersByPathResponse result = ssmClient.getParametersByPath(request);
+        result.parameters().forEach(p -> {
+            final String name = p.name().substring(properties.getPath().length() + 1);
+            final String loggingValue = SECURE_STRING == p.type() ? "*****" : p.value();
+            LOG.info("Loaded '" + name + "' from ParametersStore, value='" + loggingValue + "', length=" + p.value().length());
 
-                propertiesSource.setProperty(name, p.value());
-            });
-            nextToken = result.nextToken();
-            hasNext = hasNextToken(result.nextToken());
-        } while (hasNext);
+            propertiesSource.setProperty(name, p.value());
+        });
 
         final ConfigurableEnvironment env = beanFactory.getBean(ConfigurableEnvironment.class);
         final MutablePropertySources propertySources = env.getPropertySources();
@@ -72,10 +64,6 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
         } else {
             propertySources.addFirst(new PropertiesPropertySource(PARAMETER_STORE_PROPERTY_SOURCE, propertiesSource));
         }
-    }
-
-    private boolean hasNextToken(final String nextToken) {
-        return !"".equals(nextToken) && nextToken != null;
     }
 
     @Override
