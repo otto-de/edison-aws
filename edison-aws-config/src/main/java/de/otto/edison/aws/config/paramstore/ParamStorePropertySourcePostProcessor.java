@@ -28,36 +28,42 @@ import static software.amazon.awssdk.services.ssm.model.ParameterType.SECURE_STR
 @ConditionalOnProperty(name = "edison.aws.config.paramstore.enabled", havingValue = "true")
 public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostProcessor, EnvironmentAware {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ParamStorePropertySourcePostProcessor.class);
+    private static final Logger LOG = LoggerFactory.getLogger(
+            de.otto.edison.aws.config.paramstore.ParamStorePropertySourcePostProcessor.class);
 
     private static final String PARAMETER_STORE_PROPERTY_SOURCE = "parameterStorePropertySource";
     private ParamStoreConfigProperties properties;
     private AwsProperties awsProperties;
+    private SSMClient ssmClient;
 
     @Override
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        final AwsConfiguration awsConfig = new AwsConfiguration();
 
-        final SSMClient awsSSM = SSMClient.builder()
-                .credentialsProvider(awsConfig.awsCredentialsProvider(awsProperties))
-                .build();
-
-        final GetParametersByPathRequest request = GetParametersByPathRequest
+        final GetParametersByPathRequest.Builder requestBuilder = GetParametersByPathRequest
                 .builder()
                 .path(properties.getPath())
-                .withDecryption(true)
-                .build();
-
-        final GetParametersByPathResponse result = awsSSM.getParametersByPath(request);
+                .withDecryption(true);
 
         final Properties propertiesSource = new Properties();
-        result.parameters().forEach(p -> {
-            final String name = p.name().substring(properties.getPath().length() + 1);
-            final String loggingValue = SECURE_STRING == p.type() ? "*****" : p.value();
-            LOG.info("Loaded '" + name + "' from ParametersStore, value='" + loggingValue + "', length=" + p.value().length());
 
-            propertiesSource.setProperty(name, p.value());
-        });
+        boolean hasNext = false;
+        String nextToken = "";
+        do {
+            if (hasNext) {
+                requestBuilder.nextToken(nextToken);
+            }
+            final GetParametersByPathRequest request = requestBuilder.build();
+            final GetParametersByPathResponse result = ssmClient.getParametersByPath(request);
+            result.parameters().forEach(p -> {
+                final String name = p.name().substring(properties.getPath().length() + 1);
+                final String loggingValue = SECURE_STRING == p.type() ? "*****" : p.value();
+                LOG.info("Loaded '" + name + "' from ParametersStore, value='" + loggingValue + "', length=" + p.value().length());
+
+                propertiesSource.setProperty(name, p.value());
+            });
+            nextToken = result.nextToken();
+            hasNext = hasNextToken(result.nextToken());
+        } while (hasNext);
 
         final ConfigurableEnvironment env = beanFactory.getBean(ConfigurableEnvironment.class);
         final MutablePropertySources propertySources = env.getPropertySources();
@@ -66,6 +72,10 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
         } else {
             propertySources.addFirst(new PropertiesPropertySource(PARAMETER_STORE_PROPERTY_SOURCE, propertiesSource));
         }
+    }
+
+    private boolean hasNextToken(final String nextToken) {
+        return !"".equals(nextToken) && nextToken != null;
     }
 
     @Override
@@ -77,8 +87,18 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
         final String pathProperty = "edison.aws.config.paramstore.path";
         final String path = requireNonNull(environment.getProperty(pathProperty),
                 "Property '" + pathProperty + "' must not be null");
-
         properties = new ParamStoreConfigProperties();
+        properties.setAddWithLowestPrecedence(
+                Boolean.parseBoolean(environment.getProperty("edison.aws.config.paramstore.addWithLowestPrecedence", "false")));
         properties.setPath(path);
+
+        final AwsConfiguration awsConfig = new AwsConfiguration();
+        setSsmClient(SSMClient.builder()
+                .credentialsProvider(awsConfig.awsCredentialsProvider(awsProperties))
+                .build());
+    }
+
+    void setSsmClient(final SSMClient ssmClient) {
+        this.ssmClient = ssmClient;
     }
 }

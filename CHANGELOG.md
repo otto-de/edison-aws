@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.3
+* Added paging for getParametersByPath, because it normally returns a maximum of 10 parameters. Also added unit tests for ParamStorePropertySourcePostProcessor.
+
 ## 0.3.2
 * [edison-aws-config] add property `edison.aws.config.paramstore.addWithLowestPrecedence` to configure the precedence for ssm properties.
 
