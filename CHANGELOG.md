@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.4
+* [edison-aws-config] Add paging again, because `recursive` is only loading the properties recursive from the path and is not doing the paging.
+
 ## 0.3.3
 * Added paging for getParametersByPath, because it normally returns a maximum of 10 parameters. Also added unit tests for ParamStorePropertySourcePostProcessor.
 
