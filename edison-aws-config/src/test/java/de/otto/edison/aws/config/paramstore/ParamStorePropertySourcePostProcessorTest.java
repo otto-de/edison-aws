@@ -11,7 +11,6 @@ import software.amazon.awssdk.services.ssm.SSMClient;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathRequest;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse;
 import software.amazon.awssdk.services.ssm.model.Parameter;
-import software.amazon.awssdk.services.ssm.model.ParameterMetadata;
 
 import java.util.ArrayList;
 import java.util.List;
