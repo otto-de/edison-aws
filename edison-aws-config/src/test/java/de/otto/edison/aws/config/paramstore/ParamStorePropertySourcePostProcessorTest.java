@@ -87,6 +87,7 @@ public class ParamStorePropertySourcePostProcessorTest {
         final GetParametersByPathResponse firstPage = mock(GetParametersByPathResponse.class);
         final List<Parameter> parametersFirstPage = new ArrayList<>();
         parametersFirstPage.add(Parameter.builder().name("/the/path/param1").value("val1").build());
+        parametersFirstPage.add(Parameter.builder().name("/the/path/param2").value("val2").build());
         when(firstPage.parameters()).thenReturn(parametersFirstPage);
         when(firstPage.nextToken()).thenReturn("firstPageNextToken");
         GetParametersByPathRequest firstRequest = GetParametersByPathRequest.builder()
@@ -99,7 +100,7 @@ public class ParamStorePropertySourcePostProcessorTest {
 
         final GetParametersByPathResponse secondPage = mock(GetParametersByPathResponse.class);
         final List<Parameter> parametersSecondPage = new ArrayList<>();
-        parametersSecondPage.add(Parameter.builder().name("/the/path/param2").value("val2").build());
+        parametersSecondPage.add(Parameter.builder().name("/the/path/param3").value("val3").build());
         when(secondPage.parameters()).thenReturn(parametersSecondPage);
         when(secondPage.nextToken()).thenReturn(null);
         GetParametersByPathRequest secondRequest = GetParametersByPathRequest.builder()
@@ -118,7 +119,8 @@ public class ParamStorePropertySourcePostProcessorTest {
 
         // then
         PropertySource<?> propertySource = envMock.getPropertySources().get("parameterStorePropertySource");
-        assertThat(propertySource.getProperty("/the/path/param1"), is("val1"));
-        assertThat(propertySource.getProperty("/the/path/param2"), is("val2"));
+        assertThat(propertySource.getProperty("param1"), is("val1"));
+        assertThat(propertySource.getProperty("param2"), is("val2"));
+        assertThat(propertySource.getProperty("param3"), is("val3"));
     }
 }
