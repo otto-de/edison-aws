@@ -4,9 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import software.amazon.awssdk.core.sync.StreamingResponseHandler;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.core.sync.StreamingResponseHandler;
 
 import java.util.Properties;
 
@@ -28,12 +28,12 @@ public class S3BucketPropertyReaderTest {
     private S3BucketPropertyReader testee;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
     }
 
     @Test
-    public void shouldReadPropertiesFromS3() throws Exception {
+    public void shouldReadPropertiesFromS3() {
         // given
         when(s3ConfigProperties.getBucketname()).thenReturn("someBucket");
         when(s3ConfigProperties.getFilename()).thenReturn("someFileName");
@@ -42,6 +42,7 @@ public class S3BucketPropertyReaderTest {
         properties.put("foo", "bar");
         properties.put("key", "value");
 
+        //noinspection unchecked
         when(s3Client.getObject(any(GetObjectRequest.class), any(StreamingResponseHandler.class))).thenReturn(properties);
 
         // when

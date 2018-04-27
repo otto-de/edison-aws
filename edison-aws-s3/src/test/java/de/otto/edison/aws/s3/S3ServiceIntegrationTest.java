@@ -52,7 +52,7 @@ public class S3ServiceIntegrationTest {
     }
 
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         s3Service.deleteAllObjectsInBucket(TESTBUCKET);
     }
 

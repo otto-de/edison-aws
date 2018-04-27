@@ -19,7 +19,7 @@ import java.util.Properties;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,7 +40,7 @@ public class ParamStorePropertySourcePostProcessorTest {
     private ParamStorePropertySourcePostProcessor postProcessor;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         initMocks(this);
         when(environment.getProperty("edison.aws.config.paramstore.path")).thenReturn("/the/path");
         postProcessor.setEnvironment(environment);

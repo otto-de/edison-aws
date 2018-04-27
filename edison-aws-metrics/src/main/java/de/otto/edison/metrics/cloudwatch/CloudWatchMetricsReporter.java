@@ -49,7 +49,7 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
     }
 
     protected static boolean shouldReportToCloudWatch(final String name, final List<String> allowedMetrics) {
-        return allowedMetrics.stream().anyMatch(e->name.matches(e));
+        return allowedMetrics.stream().anyMatch(name::matches);
     }
 
     @Override
@@ -79,12 +79,12 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
 
     private void reportMeter(final String name, final Meter meter) {
         reportToCloudWatch(name, meter.getCount());
-        reportToCloudWatch(name+".mean", meter.getMeanRate());
+        reportToCloudWatch(name + ".mean", meter.getMeanRate());
     }
 
     private void reportTimer(final String name, final Timer timer) {
         reportToCloudWatch(name, timer.getCount());
-        reportToCloudWatch(name+".mean", timer.getMeanRate());
+        reportToCloudWatch(name + ".mean", timer.getMeanRate());
     }
 
     private void reportToCloudWatch(final String name, final double value) {
@@ -98,6 +98,6 @@ public class CloudWatchMetricsReporter extends ScheduledReporter {
                         .build())
                 .build());
 
-        LOG.debug("sending metric to cloudWatch: " + name + " : " + value);
+        LOG.debug("sending metric to cloudWatch: {} : {}", name, value);
     }
 }
