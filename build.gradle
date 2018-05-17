@@ -37,7 +37,7 @@ subprojects {
     // DO NOT FORGET TO DOCUMENT CHANGES IN CHANGELOG.md
     //
     // Add a GitHub release for every new release: https://github.com/otto-de/edison-aws/releases
-    version = '0.3.5-SNAPSHOT'
+    version = '0.3.5'
     group = 'de.otto.edison'
 
     repositories {
