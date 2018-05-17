@@ -2,6 +2,7 @@
 
 ## 0.3.5
 * Use preview 9 of AWS SDK 2
+* introduce cache-ttl for s3 togglz state repository
 
 ## 0.3.4
 * [edison-aws-config] Add paging again, because `recursive` is only loading the properties recursive from the path and is not doing the paging.

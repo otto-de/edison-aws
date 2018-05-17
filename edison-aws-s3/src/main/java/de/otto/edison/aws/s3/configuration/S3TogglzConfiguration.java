@@ -21,6 +21,6 @@ public class S3TogglzConfiguration {
     public StateRepository stateRepository(final S3TogglzProperties s3TogglzProperties,
                                            final S3Client s3Client) {
         S3StateRepository togglzRepository = new S3StateRepository(s3TogglzProperties, s3Client);
-        return new CachingStateRepository(togglzRepository, 30000);
+        return new CachingStateRepository(togglzRepository, s3TogglzProperties.getCacheTtl());
     }
 }

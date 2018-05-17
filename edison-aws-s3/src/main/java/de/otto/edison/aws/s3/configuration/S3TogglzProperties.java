@@ -2,11 +2,19 @@ package de.otto.edison.aws.s3.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import javax.validation.constraints.Min;
+
 @ConfigurationProperties(prefix = "edison.aws.s3.togglz")
 public class S3TogglzProperties {
     private boolean enabled = true;
     private String bucketName;
     private String keyPrefix = "togglz/";
+
+    /**
+     * Number of millis used to cache toggle state. cache-ttl=0 will disable caching.
+     */
+    @Min(0)
+    private int cacheTtl = 30000;
 
     public boolean isEnabled() {
         return enabled;
@@ -30,5 +38,13 @@ public class S3TogglzProperties {
 
     public void setKeyPrefix(String keyPrefix) {
         this.keyPrefix = keyPrefix;
+    }
+
+    public int getCacheTtl() {
+        return cacheTtl;
+    }
+
+    public void setCacheTtl(final int cacheTtl) {
+        this.cacheTtl = cacheTtl;
     }
 }
