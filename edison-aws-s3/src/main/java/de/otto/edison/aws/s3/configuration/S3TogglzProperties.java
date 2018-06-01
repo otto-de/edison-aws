@@ -9,6 +9,7 @@ public class S3TogglzProperties {
     private boolean enabled = true;
     private String bucketName;
     private String keyPrefix = "togglz/";
+    private boolean prefetch = false;
 
     /**
      * Number of millis used to cache toggle state. cache-ttl=0 will disable caching.
@@ -38,6 +39,15 @@ public class S3TogglzProperties {
 
     public void setKeyPrefix(String keyPrefix) {
         this.keyPrefix = keyPrefix;
+    }
+
+    public boolean isPrefetch() {
+        return prefetch;
+    }
+
+    public S3TogglzProperties setPrefetch(final boolean prefetch) {
+        this.prefetch = prefetch;
+        return this;
     }
 
     public int getCacheTtl() {

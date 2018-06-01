@@ -1,5 +1,6 @@
 package de.otto.edison.aws.s3.configuration;
 
+import de.otto.edison.aws.s3.togglz.PrefetchCachingStateRepository;
 import de.otto.edison.aws.s3.togglz.S3StateRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -21,6 +22,10 @@ public class S3TogglzConfiguration {
     public StateRepository stateRepository(final S3TogglzProperties s3TogglzProperties,
                                            final S3Client s3Client) {
         S3StateRepository togglzRepository = new S3StateRepository(s3TogglzProperties, s3Client);
-        return new CachingStateRepository(togglzRepository, s3TogglzProperties.getCacheTtl());
+        if (s3TogglzProperties.isPrefetch()) {
+            return new PrefetchCachingStateRepository(togglzRepository);
+        } else {
+            return new CachingStateRepository(togglzRepository, s3TogglzProperties.getCacheTtl());
+        }
     }
 }

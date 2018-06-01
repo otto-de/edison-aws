@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.6-SNAPSHOT
+* introduce prefetching s3 togglz state repository
+
 ## 0.3.5
 * Use preview 9 of AWS SDK 2
 * introduce cache-ttl for s3 togglz state repository
