@@ -45,9 +45,8 @@ public class S3TogglzProperties {
         return prefetch;
     }
 
-    public S3TogglzProperties setPrefetch(final boolean prefetch) {
+    public void setPrefetch(final boolean prefetch) {
         this.prefetch = prefetch;
-        return this;
     }
 
     public int getCacheTtl() {
