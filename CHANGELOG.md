@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.3.6-SNAPSHOT
+## 0.3.6
 * introduce prefetching s3 togglz state repository
 
 ## 0.3.5
