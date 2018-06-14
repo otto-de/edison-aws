@@ -52,10 +52,10 @@ public class PrefetchCachingStateRepository implements StateRepository {
     @Scheduled(initialDelay = 0, fixedRate = SCHEDULE_RATE)
     private void prefetchFeatureStates() {
         if (cache.size() == 0) {
-            LOG.info("Initialize state for features");
+            LOG.debug("Initialize state for features");
             initializeFeatureStates();
         } else {
-            LOG.info("Refreshing state for features");
+            LOG.debug("Refreshing state for features");
             cache.replaceAll((feature, cacheEntry) -> new CacheEntry(delegate.getFeatureState(feature)));
         }
     }
