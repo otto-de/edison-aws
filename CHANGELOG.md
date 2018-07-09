@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.7
+* Updated to edison 1.2.19
+
 ## 0.3.6
 * introduce prefetching s3 togglz state repository
 

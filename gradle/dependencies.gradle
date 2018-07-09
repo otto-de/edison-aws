@@ -5,7 +5,7 @@
 ext {
     versions = [
             hibernate_validator: '6.0.4.Final',
-            edison             : '1.2.8',
+            edison             : '1.2.19',
             spring_boot        : '1.5.8.RELEASE',
             aws_sdk            : '2.0.0-preview-9',
             old_aws_sdk        : '1.11.216',
