@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import static java.util.Objects.requireNonNull;
-import static software.amazon.awssdk.core.regions.Region.EU_CENTRAL_1;
+import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 
 @Component
 @ConditionalOnProperty(name = "edison.aws.config.s3.enabled", havingValue = "true")

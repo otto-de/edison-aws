@@ -7,10 +7,10 @@ import org.togglz.core.Feature;
 import org.togglz.core.repository.FeatureState;
 import org.togglz.core.repository.StateRepository;
 import org.togglz.core.util.FeatureStateStorageWrapper;
+import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.core.sync.RequestBody;
-import software.amazon.awssdk.core.sync.ResponseInputStream;
 
 import java.io.IOException;
 
@@ -67,7 +67,7 @@ public class S3StateRepository implements StateRepository {
                     .key(keyForFeature(featureState.getFeature()))
                     .serverSideEncryption(ServerSideEncryption.AES256)
                     .build();
-            final RequestBody requestBody = RequestBody.of(json);
+            final RequestBody requestBody = RequestBody.fromString(json);
             s3Client.putObject(putObjectRequest, requestBody);
         } catch (S3Exception | JsonProcessingException e) {
             throw new RuntimeException("Failed to set the feature state", e);

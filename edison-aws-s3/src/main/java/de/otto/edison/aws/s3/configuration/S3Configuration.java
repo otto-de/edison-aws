@@ -6,10 +6,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import software.amazon.awssdk.core.auth.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.services.s3.S3Client;
 
-import static software.amazon.awssdk.core.regions.Region.of;
+import static software.amazon.awssdk.regions.Region.of;
+
 
 @Configuration
 @EnableConfigurationProperties(AwsProperties.class)

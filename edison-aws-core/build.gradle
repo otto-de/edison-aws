@@ -1,6 +1,7 @@
 dependencies {
     compile libraries.spring_boot_autoconfigure
     compile libraries.aws_sdk_core
+    compile libraries.aws_sdk_auth
     compile libraries.slf4j
 }
 

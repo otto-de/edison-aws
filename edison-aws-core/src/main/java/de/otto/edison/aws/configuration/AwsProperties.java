@@ -2,7 +2,8 @@ package de.otto.edison.aws.configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-import static software.amazon.awssdk.core.regions.Region.EU_CENTRAL_1;
+import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
+
 
 @ConfigurationProperties(prefix = "aws")
 public class AwsProperties {

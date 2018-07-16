@@ -24,7 +24,7 @@ import java.util.Properties;
 
 import static io.netty.util.internal.StringUtil.isNullOrEmpty;
 import static java.util.Objects.requireNonNull;
-import static software.amazon.awssdk.core.regions.Region.EU_CENTRAL_1;
+import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 import static software.amazon.awssdk.services.ssm.model.ParameterType.SECURE_STRING;
 
 @Component

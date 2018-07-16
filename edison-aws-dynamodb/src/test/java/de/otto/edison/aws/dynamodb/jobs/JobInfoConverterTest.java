@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
 import de.otto.edison.jobs.domain.Level;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
@@ -94,7 +95,7 @@ public class JobInfoConverterTest {
                 .put(JobInfoConverter.JOB_STATUS, attrValS("OK"))
                 .put(JobInfoConverter.LAST_UPDATED, attrValS(ISO_OFFSET_DATE_TIME.format(OffsetDateTime.now())))
                 .put(JobInfoConverter.HOSTNAME, AttributeValue.builder().nul(true).build())
-                .put(JobInfoConverter.MESSAGES, AttributeValue.builder().l().build())
+                .put(JobInfoConverter.MESSAGES, AttributeValue.builder().l(Lists.emptyList()).build())
                 .build();
 
         JobInfo result = JobInfoConverter.convert(attrMap);
