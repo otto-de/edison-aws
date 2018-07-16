@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.3.8
+* Update to aws-sdk-preview-10
+
 ## 0.3.7
 * Updated to edison 1.2.19
 
