@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.3.8
+## 0.4.1
 * Update to aws-sdk-preview-10
 
 ## 0.3.7
