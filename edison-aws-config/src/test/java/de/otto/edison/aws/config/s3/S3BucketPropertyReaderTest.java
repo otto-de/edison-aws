@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 import java.util.Properties;
 
@@ -32,6 +33,7 @@ public class S3BucketPropertyReaderTest {
         initMocks(this);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     public void shouldReadPropertiesFromS3() {
         // given
@@ -42,8 +44,7 @@ public class S3BucketPropertyReaderTest {
         properties.put("foo", "bar");
         properties.put("key", "value");
 
-        //noinspection unchecked
-        when(s3Client.getObject(any(GetObjectRequest.class), any(ResponseTransformer.class))).thenReturn(properties);
+        when(s3Client.getObject(any(GetObjectRequest.class), (ResponseTransformer<GetObjectResponse, Properties>) any(ResponseTransformer.class))).thenReturn(properties);
 
         // when
         final Properties propertiesFromS3 = testee.getPropertiesFromS3();
