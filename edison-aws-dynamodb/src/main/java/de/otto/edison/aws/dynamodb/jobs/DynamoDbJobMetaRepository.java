@@ -2,9 +2,9 @@ package de.otto.edison.aws.dynamodb.jobs;
 
 import de.otto.edison.jobs.domain.JobMeta;
 import de.otto.edison.jobs.repository.JobMetaRepository;
-import software.amazon.awssdk.core.util.ImmutableMapParameter;
-import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
+import software.amazon.awssdk.utils.ImmutableMap;
 
 import java.util.Map;
 import java.util.Set;
@@ -19,10 +19,10 @@ public class DynamoDbJobMetaRepository implements JobMetaRepository {
     static final String KEY_RUNNING = "running";
     static final String KEY_DISABLED = "disabled";
 
-    private final DynamoDBClient dynamoDBClient;
+    private final DynamoDbClient dynamoDBClient;
     private final String jobMetaTableName;
 
-    public DynamoDbJobMetaRepository(DynamoDBClient dynamoDBClient, DynamoDbJobRepoProperties properties) {
+    public DynamoDbJobMetaRepository(DynamoDbClient dynamoDBClient, DynamoDbJobRepoProperties properties) {
         this.dynamoDBClient = dynamoDBClient;
         this.jobMetaTableName = properties.getJobMetaTableName();
     }
@@ -56,10 +56,10 @@ public class DynamoDbJobMetaRepository implements JobMetaRepository {
     public boolean createValue(String jobType, String key, String value) {
         UpdateItemRequest request = UpdateItemRequest.builder()
                 .tableName(jobMetaTableName)
-                .key(ImmutableMapParameter.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
+                .key(ImmutableMap.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
                 .updateExpression("SET " + key + " = :value")
                 .conditionExpression("attribute_not_exists(" + key + ")")
-                .expressionAttributeValues(ImmutableMapParameter.of(":value", AttributeValue.builder().s(value).build()))
+                .expressionAttributeValues(ImmutableMap.of(":value", AttributeValue.builder().s(value).build()))
                 .returnValues(ReturnValue.ALL_NEW)
                 .build();
 
@@ -125,17 +125,17 @@ public class DynamoDbJobMetaRepository implements JobMetaRepository {
 
         return UpdateItemRequest.builder()
                 .tableName(jobMetaTableName)
-                .key(ImmutableMapParameter.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
+                .key(ImmutableMap.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
                 .returnValues(ReturnValue.UPDATED_OLD)
                 .updateExpression("SET " + key + " = :value")
-                .expressionAttributeValues(ImmutableMapParameter.of(":value", attributeValue))
+                .expressionAttributeValues(ImmutableMap.of(":value", attributeValue))
                 .build();
     }
 
     private UpdateItemRequest removeKeyRequest(String jobType, String key) {
         return UpdateItemRequest.builder()
                 .tableName(jobMetaTableName)
-                .key(ImmutableMapParameter.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
+                .key(ImmutableMap.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
                 .returnValues(ReturnValue.UPDATED_OLD)
                 .updateExpression("REMOVE " + key)
                 .build();
@@ -150,7 +150,7 @@ public class DynamoDbJobMetaRepository implements JobMetaRepository {
     private GetItemResponse getItem(String jobType) {
         GetItemRequest request = GetItemRequest.builder()
                 .tableName(jobMetaTableName)
-                .key(ImmutableMapParameter.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
+                .key(ImmutableMap.of(JOB_TYPE, AttributeValue.builder().s(jobType).build()))
                 .consistentRead(true)
                 .build();
         return dynamoDBClient.getItem(request);

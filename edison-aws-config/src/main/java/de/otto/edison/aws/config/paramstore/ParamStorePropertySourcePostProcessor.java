@@ -14,7 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.MutablePropertySources;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.stereotype.Component;
-import software.amazon.awssdk.services.ssm.SSMClient;
+import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathRequest;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse;
 import software.amazon.awssdk.services.ssm.model.Parameter;
@@ -37,7 +37,7 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
     private static final String PARAMETER_STORE_PROPERTY_SOURCE = "parameterStorePropertySource";
     private ParamStoreConfigProperties properties;
     private AwsProperties awsProperties;
-    private SSMClient ssmClient;
+    private SsmClient ssmClient;
 
     @Override
     public void postProcessBeanFactory(final ConfigurableListableBeanFactory beanFactory) throws BeansException {
@@ -85,7 +85,7 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
     public void setEnvironment(final Environment environment) {
         awsProperties = new AwsProperties();
         awsProperties.setProfile(environment.getProperty("aws.profile", "default"));
-        awsProperties.setRegion(environment.getProperty("aws.region", EU_CENTRAL_1.value()));
+        awsProperties.setRegion(environment.getProperty("aws.region", EU_CENTRAL_1.toString()));
 
         final String pathProperty = "edison.aws.config.paramstore.path";
         final String path = requireNonNull(environment.getProperty(pathProperty),
@@ -96,12 +96,12 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
         properties.setPath(path);
 
         final AwsConfiguration awsConfig = new AwsConfiguration();
-        setSsmClient(SSMClient.builder()
+        setSsmClient(SsmClient.builder()
                 .credentialsProvider(awsConfig.awsCredentialsProvider(awsProperties))
                 .build());
     }
 
-    void setSsmClient(final SSMClient ssmClient) {
+    void setSsmClient(final SsmClient ssmClient) {
         this.ssmClient = ssmClient;
     }
 }

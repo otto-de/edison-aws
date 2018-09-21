@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.OffsetDateTime;
@@ -40,7 +40,7 @@ public class DynamoDbJobRepositoryTest {
     private static final String TABLE_NAME = "jobInfo";
 
     @Autowired
-    private DynamoDBClient dynamoDBClient;
+    private DynamoDbClient dynamoDBClient;
     private DynamoDbJobRepository dynamoJobRepository;
 
     @Before

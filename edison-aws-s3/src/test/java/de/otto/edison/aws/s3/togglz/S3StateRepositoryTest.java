@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.togglz.core.Feature;
 import org.togglz.core.repository.FeatureState;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -26,7 +26,7 @@ public class S3StateRepositoryTest {
     public void setup() {
         client = S3Client.builder()
                 .credentialsProvider(StaticCredentialsProvider.create(
-                        AwsCredentials.create("test", "test")))
+                        AwsBasicCredentials.create("test", "test")))
                 .endpointOverride(URI.create("http://localhost:4572"))
                 .region(Region.EU_CENTRAL_1)
                 .build();

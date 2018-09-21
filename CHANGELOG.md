@@ -1,5 +1,8 @@
 # Release Notes
 
+## 0.5.0
+* Update to aws-sdk-preview-12
+
 ## 0.4.2
 * Fix validation warning at startup
 

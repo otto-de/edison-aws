@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.services.ssm.SSMClient;
+import software.amazon.awssdk.services.ssm.SsmClient;
 
 @Configuration
 @EnableConfigurationProperties(ParamStoreConfigProperties.class)
@@ -13,8 +13,8 @@ import software.amazon.awssdk.services.ssm.SSMClient;
 public class ParamStoreConfiguration {
 
     @Bean
-    public SSMClient awsSSM(AwsCredentialsProvider awsCredentialsProvider) {
-        return SSMClient.builder()
+    public SsmClient awsSSM(AwsCredentialsProvider awsCredentialsProvider) {
+        return SsmClient.builder()
             .credentialsProvider(awsCredentialsProvider)
             .build();
     }

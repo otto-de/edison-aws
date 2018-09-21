@@ -9,10 +9,9 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3AdvancedConfiguration;
 import software.amazon.awssdk.services.s3.S3Client;
 
 import java.io.File;
@@ -23,6 +22,7 @@ import java.util.List;
 import static java.nio.file.Files.createTempFile;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
+import static software.amazon.awssdk.services.s3.S3Configuration.builder;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {AwsConfiguration.class, S3Configuration.class})
@@ -37,12 +37,10 @@ public class S3ServiceIntegrationTest {
     public void setUp() throws Exception {
 
         S3Client s3Client = S3Client.builder()
-                .credentialsProvider(StaticCredentialsProvider.create(AwsCredentials.create("test", "test")))
+                .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create("test", "test")))
                 .region(Region.US_EAST_1)
                 .endpointOverride(new URI("http://localhost:4572"))
-                .advancedConfiguration(S3AdvancedConfiguration.builder()
-                        .pathStyleAccessEnabled(true)
-                        .build())
+                .serviceConfiguration(builder().pathStyleAccessEnabled(true).build())
                 .build();
 
         s3Service = new S3Service(s3Client);

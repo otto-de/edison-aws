@@ -8,7 +8,7 @@ import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 @ConfigurationProperties(prefix = "aws")
 public class AwsProperties {
 
-    private String region = EU_CENTRAL_1.value();
+    private String region = EU_CENTRAL_1.toString();
     private String profile = "default";
 
     public String getRegion() {

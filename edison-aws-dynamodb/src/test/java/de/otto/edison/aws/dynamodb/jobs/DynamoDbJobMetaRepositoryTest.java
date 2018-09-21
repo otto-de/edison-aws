@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.Collections;
@@ -34,7 +34,7 @@ public class DynamoDbJobMetaRepositoryTest {
 
 
     @Autowired
-    private DynamoDBClient dynamoDBClient;
+    private DynamoDbClient dynamoDBClient;
     private DynamoDbJobMetaRepository dynamoJobMetaRepository;
 
     @Before

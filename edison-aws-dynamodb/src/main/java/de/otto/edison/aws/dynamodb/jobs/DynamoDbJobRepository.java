@@ -5,7 +5,7 @@ import com.google.common.collect.Lists;
 import de.otto.edison.jobs.domain.JobInfo;
 import de.otto.edison.jobs.domain.JobMessage;
 import de.otto.edison.jobs.repository.JobRepository;
-import software.amazon.awssdk.services.dynamodb.DynamoDBClient;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.time.OffsetDateTime;
@@ -21,10 +21,10 @@ import static java.util.stream.Collectors.toList;
 public class DynamoDbJobRepository implements JobRepository {
 
     private static final Comparator<JobInfo> STARTED_TIME_DESC_COMPARATOR = Comparator.comparing(JobInfo::getStarted, OffsetDateTime::compareTo).reversed();
-    private DynamoDBClient dynamoDBClient;
+    private DynamoDbClient dynamoDBClient;
     private DynamoDbJobRepoProperties dynamoJobRepoProperties;
 
-    public DynamoDbJobRepository(final DynamoDBClient dynamoDBClient,
+    public DynamoDbJobRepository(final DynamoDbClient dynamoDBClient,
                                  final DynamoDbJobRepoProperties dynamoJobRepoProperties) {
         this.dynamoDBClient = dynamoDBClient;
         this.dynamoJobRepoProperties = dynamoJobRepoProperties;

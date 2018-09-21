@@ -47,7 +47,7 @@ public class S3StateRepository implements StateRepository {
                 return FeatureStateStorageWrapper.featureStateForWrapper(feature, wrapper);
             }
         } catch (final S3Exception ae) {
-            if (ERR_NO_SUCH_KEY.equals(ae.errorCode())) {
+            if (ERR_NO_SUCH_KEY.equals(ae.awsErrorDetails().errorCode())) {
                 return null;
             }
             throw ae;

@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.env.*;
 import org.springframework.mock.env.MockEnvironment;
-import software.amazon.awssdk.services.ssm.SSMClient;
+import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathRequest;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse;
 import software.amazon.awssdk.services.ssm.model.Parameter;
@@ -34,7 +34,7 @@ public class ParamStorePropertySourcePostProcessorTest {
     private ConfigurableListableBeanFactory beanFactory;
 
     @Mock
-    private SSMClient ssmClient;
+    private SsmClient ssmClient;
 
     @InjectMocks
     private ParamStorePropertySourcePostProcessor postProcessor;
