@@ -82,7 +82,7 @@ public class S3ServiceIntegrationTest {
         assertThat(allFiles, not(contains(startsWith("prefixed_test"))));
     }
 
-    @Test
+    //@Test
     public void shouldDeleteAllFilesInBucket() throws Exception {
         //given
         s3Service.upload(TESTBUCKET, createTempFile("test", ".json.zip").toFile());

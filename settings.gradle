@@ -3,5 +3,4 @@ rootProject.name = 'edison-aws'
 include "edison-aws-config"
 include "edison-aws-core"
 include "edison-aws-dynamodb"
-include "edison-aws-metrics"
 include "edison-aws-s3"
