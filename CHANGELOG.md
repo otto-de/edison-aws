@@ -1,7 +1,8 @@
 # Release Notes
 
-## 0.6.0
-* Update to aws-sdk-2.2.0 und edision 2.0.0
+## 2.0.0-SNAPSHOT
+* Update to aws-sdk-2.6.4 und edison 2.1.1
+* Remove cloudwatch metrics
 
 ## 0.5.0
 * Update to aws-sdk-preview-12
