@@ -20,6 +20,7 @@ The libraries are used in different projects at OTTO.
 It's purpose is to provide a common implementation for cross-cutting requirements like:
 
 * Get property files from S3 to load secret properties
+* Reporting of metrics to cloudWatch
 
 ... plus all the features of [edison-microservice](https://github.com/otto-de/edison-microservice).
 
@@ -27,6 +28,7 @@ It's purpose is to provide a common implementation for cross-cutting requirement
 
 Edison Modules:
 * [`edison-aws-core`](edison-aws-core/README.md): TODO.
+* [`edison-aws-metrics`](edison-aws-metrics/README.md): TODO.
 * [`edison-aws-config`](edison-aws-config/README.md): TODO.
 * [`edison-aws-s3`](edison-aws-s3/README.md): TODO.
 
