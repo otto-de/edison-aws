@@ -4,6 +4,8 @@ dependencies {
     compile libraries.spring_boot_autoconfigure
     compile libraries.hibernate_validator
     compile libraries.aws_sdk_cloudwatch
+    compile libraries.micrometer
+    compile libraries.micrometer_cloudwatch
 
     testCompile test_libraries.junit
     testCompile test_libraries.hamcrest_core
