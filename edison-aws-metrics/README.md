@@ -14,6 +14,6 @@ Set dimensions:
 `edison.aws.metrics.cloudwatch.dimensions.someName = someValue`
 `edison.aws.metrics.cloudwatch.dimensions.someOtherName = someOtherValue`
 
-Set allowedMetrics:
-`edison.aws.metrics.cloudwatch.allowedMetrics = someAllowedMetric`
-`edison.aws.metrics.cloudwatch.allowedMetrics = someOtherAllowedMetric`
+Set allowedmetrics:
+`edison.aws.metrics.cloudwatch.allowedmetrics = someAllowedMetric`
+`edison.aws.metrics.cloudwatch.allowedmetrics = someOtherAllowedMetric`
