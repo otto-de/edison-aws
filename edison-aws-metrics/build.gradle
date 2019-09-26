@@ -2,6 +2,7 @@ dependencies {
     compile project(":edison-aws-core")
     compile libraries.aws_sdk_core
     compile libraries.spring_boot_autoconfigure
+    compile libraries.spring_boot_starter_actuator
     compile libraries.hibernate_validator
     compile libraries.aws_sdk_cloudwatch
     compile libraries.micrometer

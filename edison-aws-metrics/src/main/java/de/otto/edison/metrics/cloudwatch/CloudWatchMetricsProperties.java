@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 @Validated
-@ConfigurationProperties(prefix = "edison.aws.metrics.cloudWatch")
+@ConfigurationProperties(prefix = "edison.aws.metrics.cloudwatch")
 public class CloudWatchMetricsProperties {
 
-    private @NotEmpty List<String> allowedMetrics;
+    private @NotEmpty List<String> allowedmetrics;
 
     private @NotEmpty String namespace;
 
@@ -28,12 +28,12 @@ public class CloudWatchMetricsProperties {
         this.enabled = enabled;
     }
 
-    public List<String> getAllowedMetrics() {
-        return allowedMetrics;
+    public List<String> getAllowedmetrics() {
+        return allowedmetrics;
     }
 
-    public void setAllowedMetrics(final List<String> allowedMetrics) {
-        this.allowedMetrics = allowedMetrics;
+    public void setAllowedmetrics(final List<String> allowedmetrics) {
+        this.allowedmetrics = allowedmetrics;
     }
 
     public String getNamespace() {

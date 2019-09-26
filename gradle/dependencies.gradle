@@ -34,6 +34,7 @@ ext {
             edison_jobs              : "de.otto.edison:edison-jobs:${versions.edison}",
             spring_boot              : "org.springframework.boot:spring-boot:${versions.spring_boot}",
             spring_boot_autoconfigure: "org.springframework.boot:spring-boot-autoconfigure:${versions.spring_boot}",
+            spring_boot_starter_actuator: "org.springframework.boot:spring-boot-starter-actuator:${versions.spring_boot}",
             spring_boot_devtools     : "org.springframework.boot:spring-boot-devtools:${versions.spring_boot}",
             slf4j                    : "org.slf4j:slf4j-api:${versions.slf4j}",
             guava                    : "com.google.guava:guava:23.5-jre",
