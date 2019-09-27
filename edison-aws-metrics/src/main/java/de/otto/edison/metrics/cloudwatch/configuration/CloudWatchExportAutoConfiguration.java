@@ -46,7 +46,7 @@ import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
  */
 @Configuration
 @EnableConfigurationProperties({CloudWatchProperties.class, CloudWatchMetricsProperties.class})
-//@ConditionalOnProperty(prefix = "management.metrics.export.cloudwatch", name = "namespace")
+@ConditionalOnProperty(prefix = "management.metrics.export.cloudwatch", name = "namespace")
 @ConditionalOnClass({ CloudWatchMeterRegistry.class })
 public class CloudWatchExportAutoConfiguration {
 
