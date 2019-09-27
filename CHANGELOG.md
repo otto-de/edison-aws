@@ -1,5 +1,8 @@
 # Release Notes
 
+## 2.0.2
+ * Add memory metric
+
 ## 2.0.1
  * Add metric values endpoint
 
