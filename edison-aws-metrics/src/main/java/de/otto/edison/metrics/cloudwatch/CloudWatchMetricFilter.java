@@ -5,6 +5,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.internal.DefaultMeter;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,26 @@ public class CloudWatchMetricFilter {
     }
 
     private Meter.Id mapMetric(final Meter.Id metric) {
-        final List<Tag> tags = dimensions.entrySet().stream().map(e -> Tag.of(e.getKey(), e.getValue())).collect(Collectors.toList());
-        return metric.withTags(tags);
+        final List<Tag> configuredCloudwatchTags = dimensions.entrySet().stream().map(e -> Tag.of(e.getKey(), e.getValue())).collect(Collectors.toList());
+        final List<Tag> existingTags = metric.getTags();
+        if (nonNull(existingTags) && !existingTags.isEmpty()) {
+            final String newName = metric.getName() + "." + String.join(".", existingTags.stream().map(e->toCamelCase(e.getValue(), true)).collect(Collectors.toList()));
+            return metric.withName(newName).replaceTags(configuredCloudwatchTags);
+        }
+        return metric.replaceTags(configuredCloudwatchTags);
+    }
+
+    private String toCamelCase(final String value, final boolean startWithLowerCase) {
+        if (nonNull(value)) {
+            String[] strings = StringUtils.split(value.toLowerCase(), " ");
+            if (strings != null) {
+                for (int i = startWithLowerCase ? 1 : 0; i < strings.length; i++) {
+                    strings[i] = StringUtils.capitalize(strings[i]);
+                }
+                return String.join("", strings);
+            }
+        }
+        return value;
     }
 
 }
