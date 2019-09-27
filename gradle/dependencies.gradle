@@ -9,7 +9,8 @@ ext {
             spring_boot        : '2.1.4.RELEASE',
             aws_sdk            : '2.6.4',
             slf4j              : '1.7.25',
-            micrometer         : '1.2.1'
+            micrometer         : '1.2.1',
+            guava              : '23.0'
     ]
     test_versions = [
             mockito : '2.28.2',
@@ -39,7 +40,8 @@ ext {
             slf4j                    : "org.slf4j:slf4j-api:${versions.slf4j}",
             guava                    : "com.google.guava:guava:23.5-jre",
             micrometer               : "io.micrometer:micrometer-core:${versions.micrometer}",
-            micrometer_cloudwatch    : "io.micrometer:micrometer-registry-cloudwatch2:${versions.micrometer}"
+            micrometer_cloudwatch    : "io.micrometer:micrometer-registry-cloudwatch2:${versions.micrometer}",
+            guava                    : "com.google.guava:guava:${versions.guava}"
     ]
     test_libraries = [
             spring_boot_starter_test: "org.springframework.boot:spring-boot-starter-test:${versions.spring_boot}",

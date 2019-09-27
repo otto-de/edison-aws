@@ -4,6 +4,7 @@ import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.MeterFilter;
+import io.micrometer.core.instrument.internal.DefaultMeter;
 
 import java.util.List;
 import java.util.Map;
@@ -27,9 +28,9 @@ public class CloudWatchMetricFilter {
         return meters.stream().map(e->filter(e)).filter(e->nonNull(e)).collect(Collectors.toList());
     }
 
-    private Meter filter(final Meter meter) {
+    protected Meter filter(final Meter meter) {
         if (matchMetric(meter.getId()))  {
-            return new FilteredMeter(mapMetric(meter.getId()), meter.measure());
+            return new DefaultMeter(mapMetric(meter.getId()), meter.getId().getType(), meter.measure());
         }
         return null;
     }
@@ -50,7 +51,7 @@ public class CloudWatchMetricFilter {
     }
 
     private boolean matchMetricName(final String metricName) {
-        return allowedMetrics.stream().anyMatch(e->e.matches(metricName));
+        return allowedMetrics.stream().anyMatch(metricName::matches);
     }
 
     private Meter.Id mapMetric(final Meter.Id metric) {

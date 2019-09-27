@@ -8,6 +8,9 @@ import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,9 +39,10 @@ public class MetricValuesEndpoint {
         final List<MetricResponse> result = new ArrayList<MetricResponse>();
         for (Meter meter : meters) {
             Map<Statistic, Double> samples = getSamples(singletonList(meter));
+            Map<String, Set<String>> availableTags = getAvailableTags(singletonList(meter));
             Meter.Id meterId = meter.getId();
             result.add(new MetricResponse(meterId.getName(), meterId.getDescription(), meterId.getBaseUnit(),
-                asList(samples, Sample::new), null));
+                asList(samples, Sample::new), asList(availableTags, AvailableTag::new)));
         }
         return result;
 
@@ -62,6 +66,26 @@ public class MetricValuesEndpoint {
 
     private BiFunction<Double, Double, Double> mergeFunction(Statistic statistic) {
         return Statistic.MAX.equals(statistic) ? Double::max : Double::sum;
+    }
+
+    private Map<String, Set<String>> getAvailableTags(Collection<Meter> meters) {
+        Map<String, Set<String>> availableTags = new HashMap<>();
+        meters.forEach((meter) -> mergeAvailableTags(availableTags, meter));
+        return availableTags;
+    }
+
+    private void mergeAvailableTags(Map<String, Set<String>> availableTags, Meter meter) {
+        meter.getId().getTags().forEach((tag) -> {
+            Set<String> value = Collections.singleton(tag.getValue());
+            availableTags.merge(tag.getKey(), value, this::merge);
+        });
+    }
+
+    private <T> Set<T> merge(Set<T> set1, Set<T> set2) {
+        Set<T> result = new HashSet<>(set1.size() + set2.size());
+        result.addAll(set1);
+        result.addAll(set2);
+        return result;
     }
 
     /**
