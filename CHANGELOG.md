@@ -1,5 +1,8 @@
 # Release Notes
 
+## 2.0.1
+ * Add metric values endpoint
+
 ## 2.0.0
 * Update to aws-sdk-2.6.4 und edison 2.1.1
 * Change Codahale Matrics to Micrometer Metrics
