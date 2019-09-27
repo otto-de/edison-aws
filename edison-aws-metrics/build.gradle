@@ -8,6 +8,7 @@ dependencies {
     compile libraries.micrometer
     compile libraries.micrometer_cloudwatch
     compile libraries.guava
+    compile libraries.apache_commons
 
     testCompile test_libraries.junit
     testCompile test_libraries.hamcrest_core
