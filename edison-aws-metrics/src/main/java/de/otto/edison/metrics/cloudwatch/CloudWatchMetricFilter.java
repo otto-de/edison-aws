@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 public class CloudWatchMetricFilter {
@@ -55,12 +56,15 @@ public class CloudWatchMetricFilter {
         return allowedMetrics.stream().anyMatch(metricName::matches);
     }
 
-    private Meter.Id mapMetric(final Meter.Id metric) {
+    private Meter.Id mapMetric(Meter.Id metric) {
         final List<Tag> configuredCloudwatchTags = dimensions.entrySet().stream().map(e -> Tag.of(e.getKey(), e.getValue())).collect(Collectors.toList());
         final List<Tag> existingTags = metric.getTags();
+        if (isNull(metric.getBaseUnit())) {
+            metric = metric.withBaseUnit("None");
+        }
         if (nonNull(existingTags) && !existingTags.isEmpty()) {
             final String newName = metric.getName() + "." + String.join(".", existingTags.stream().map(e->toCamelCase(e.getValue(), true)).collect(Collectors.toList()));
-            return metric.withName(newName).replaceTags(configuredCloudwatchTags);
+            metric = metric.withName(newName);
         }
         return metric.replaceTags(configuredCloudwatchTags);
     }

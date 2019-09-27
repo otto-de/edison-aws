@@ -47,6 +47,7 @@ public class CloudWatchMetricFilterTest {
 
         // then
         assertThat(filterMetric.getId(), is(new Meter.Id("jvm.memory.max", Tags.of("By_Environment" , "live"), null, null, null)));
+        assertThat(filterMetric.getId().getBaseUnit(), is("None"));
     }
 
     @Test
