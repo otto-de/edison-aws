@@ -7,6 +7,7 @@ dependencies {
     compile libraries.aws_sdk_cloudwatch
     compile libraries.micrometer
     compile libraries.micrometer_cloudwatch
+    compile libraries.guava
 
     testCompile test_libraries.junit
     testCompile test_libraries.hamcrest_core
