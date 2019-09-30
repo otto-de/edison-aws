@@ -1,11 +1,14 @@
 package de.otto.edison.metrics.cloudwatch;
 
+import com.google.common.collect.Streams;
+import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.internal.DefaultMeter;
 import org.apache.commons.lang3.StringUtils;
+import software.amazon.awssdk.services.cloudwatch.model.StandardUnit;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
+import static software.amazon.awssdk.services.cloudwatch.model.StandardUnit.UNKNOWN_TO_SDK_VERSION;
 
 public class CloudWatchMetricFilter {
 
@@ -32,9 +36,13 @@ public class CloudWatchMetricFilter {
 
     protected Meter filter(final Meter meter) {
         if (matchMetric(meter.getId()))  {
-            return new DefaultMeter(mapMetric(meter.getId()), meter.getId().getType(), meter.measure());
+            return new DefaultMeter(mapMetric(meter.getId()), meter.getId().getType(), getDefaultMeasurementWithoutStatistic(meter));
         }
         return null;
+    }
+
+    private List<Measurement> getDefaultMeasurementWithoutStatistic(final Meter meter) {
+        return Streams.stream(meter.measure()).map(e->new Measurement(() -> e.getValue(), null)).collect(Collectors.toList());
     }
 
     private void registerFilter(final MeterRegistry meterRegistry) {
@@ -59,7 +67,7 @@ public class CloudWatchMetricFilter {
     private Meter.Id mapMetric(Meter.Id metric) {
         final List<Tag> configuredCloudwatchTags = dimensions.entrySet().stream().map(e -> Tag.of(e.getKey(), e.getValue())).collect(Collectors.toList());
         final List<Tag> existingTags = metric.getTags();
-        if (isNull(metric.getBaseUnit())) {
+        if (isNull(metric.getBaseUnit()) || !isValidUnit(metric.getBaseUnit())) {
             metric = metric.withBaseUnit("None");
         }
         if (nonNull(existingTags) && !existingTags.isEmpty()) {
@@ -67,6 +75,10 @@ public class CloudWatchMetricFilter {
             metric = metric.withName(newName);
         }
         return metric.replaceTags(configuredCloudwatchTags);
+    }
+
+    private boolean isValidUnit(final String baseUnit) {
+        return StandardUnit.fromValue(baseUnit) != UNKNOWN_TO_SDK_VERSION;
     }
 
     private String toCamelCase(final String value, final boolean startWithLowerCase) {

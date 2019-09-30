@@ -1,5 +1,8 @@
 # Release Notes
 
+## 2.0.3
+ * Bugfix remove statistics tags
+
 ## 2.0.2
  * Add memory metric
 
