@@ -15,7 +15,9 @@ import org.mockito.Mock;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.samePropertyValuesAs;
 import static org.junit.Assert.assertThat;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -30,7 +32,7 @@ public class CloudWatchMetricFilterTest {
         initMocks(this);
         final CloudWatchMetricsProperties cloudWatchMetricsProperties = new CloudWatchMetricsProperties();
         cloudWatchMetricsProperties.setDimensions(ImmutableMap.of("By_Environment","live"));
-        cloudWatchMetricsProperties.setAllowedmetrics(ImmutableList.of("jvm.memory.*"));
+        cloudWatchMetricsProperties.setAllowedmetrics(ImmutableList.of("jvm.memory.*","logback.events.*"));
         cloudWatchMetricFilter = new CloudWatchMetricFilter((cloudWatchMetricsProperties));
     }
 
@@ -38,7 +40,7 @@ public class CloudWatchMetricFilterTest {
     public void shouldCreateCloudwatchMetric() {
         // given
         final Meter.Id meterId = new Meter.Id("jvm.memory.max", Tags.empty(), null, null, null);
-        final Measurement measurement = new Measurement(() -> 1.0D, Statistic.COUNT);
+        final Measurement measurement = new Measurement(() -> 1.0D, null);
         final List<Measurement> measurementList = Collections.singletonList(measurement);
         final Meter metric =  new DefaultMeter(meterId, Meter.Type.COUNTER, measurementList);
 
@@ -66,4 +68,36 @@ public class CloudWatchMetricFilterTest {
         assertThat(filterMetric.getId(), is(new Meter.Id("jvm.memory.max.heap.psEdenSpace", Tags.of("By_Environment" , "live"), null, null, null)));
     }
 
+    @Test
+    public void shouldCreateCloudwatchMetricWithUnknownUnit() {
+        // given
+        final Meter.Id meterId = new Meter.Id("logback.events.count", Tags.empty(), "events", null, null);
+        final Measurement measurement = new Measurement(() -> 1.0D, Statistic.COUNT);
+        final List<Measurement> measurementList = Collections.singletonList(measurement);
+        final Meter metric =  new DefaultMeter(meterId, Meter.Type.COUNTER, measurementList);
+
+        // when
+        final Meter filterMetric = cloudWatchMetricFilter.filter(metric);
+
+        // then
+        assertThat(filterMetric.getId(), is(new Meter.Id("logback.events.count", Tags.of("By_Environment" , "live"), null, null, null)));
+        assertThat(filterMetric.getId().getBaseUnit(), is("None"));
+    }
+
+    @Test
+    public void shouldCreateCloudwatchMetricWithStatistic() {
+        // given
+        final Meter.Id meterId = new Meter.Id("jvm.memory.max", Tags.empty(), "Bytes", null, null);
+        final Measurement measurement = new Measurement(() -> 1.0D, Statistic.COUNT);
+        final List<Measurement> measurementList = Collections.singletonList(measurement);
+        final Meter metric =  new DefaultMeter(meterId, Meter.Type.COUNTER, measurementList);
+
+        // when
+        final Meter filterMetric = cloudWatchMetricFilter.filter(metric);
+
+        // then
+        assertThat(filterMetric.getId(), is(new Meter.Id("jvm.memory.max", Tags.of("By_Environment" , "live"), null, null, null)));
+        assertThat(filterMetric.getId().getBaseUnit(), is("Bytes"));
+        assertThat(filterMetric.measure().iterator().next(), is(samePropertyValuesAs(singletonList(new Measurement(() -> 1.0D, Statistic.COUNT)).get(0))));
+    }
 }

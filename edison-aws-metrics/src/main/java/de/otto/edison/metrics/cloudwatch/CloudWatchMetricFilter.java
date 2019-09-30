@@ -36,7 +36,7 @@ public class CloudWatchMetricFilter {
 
     protected Meter filter(final Meter meter) {
         if (matchMetric(meter.getId()))  {
-            return new DefaultMeter(mapMetric(meter.getId()), meter.getId().getType(), getDefaultMeasurementWithoutStatistic(meter));
+            return new DefaultMeter(mapMetric(meter.getId()), meter.getId().getType(), meter.measure());
         }
         return null;
     }
