@@ -43,11 +43,11 @@ public class MemoryUsageMetric {
                 .register(meterRegistry);
 
         Gauge.builder("memory.heap.used", this, MemoryUsageMetric::getHeapUsed)
-                .baseUnit(BaseUnits.BYTES)
+                .baseUnit("Bytes")
                 .register(meterRegistry);
 
         Gauge.builder("memory.heap.max", this, MemoryUsageMetric::getHeapMax)
-                .baseUnit(BaseUnits.BYTES)
+                .baseUnit("Bytes")
                 .register(meterRegistry);
     }
 

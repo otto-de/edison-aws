@@ -51,6 +51,7 @@ import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 public class CloudWatchExportAutoConfiguration {
 
 	@Bean
+    @ConditionalOnMissingBean
 	@ConditionalOnProperty(value = "management.metrics.export.cloudwatch.enabled", matchIfMissing = true)
 	public CloudWatchMeterRegistry cloudWatchMeterRegistry(final CloudWatchMetricFilter cloudWatchMetricFilter,
 															 final CloudWatchConfig cloudWatchConfig,
@@ -60,6 +61,7 @@ public class CloudWatchExportAutoConfiguration {
 	}
 
     @Bean
+    @ConditionalOnMissingBean
     public CloudWatchMetricFilter cloudWatchMetricFilter(
             final CloudWatchMetricsProperties metricsProperties) {
         final CloudWatchMetricFilter cloudWatchMetricFilter = new CloudWatchMetricFilter(metricsProperties);
