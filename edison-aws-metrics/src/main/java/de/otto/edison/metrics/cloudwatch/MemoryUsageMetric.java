@@ -53,7 +53,9 @@ public class MemoryUsageMetric {
 
     double getHeapUsage() {
         final MemoryUsage usage = mxBean.getHeapMemoryUsage();
-        return usage.getUsed() / usage.getMax();
+        final double memoryUsed =  usage.getUsed();
+        final double memoryMax = usage.getMax();
+        return memoryUsed / memoryMax;
     }
 
     double getHeapUsed() {
