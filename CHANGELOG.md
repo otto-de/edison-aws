@@ -1,5 +1,8 @@
 # Release Notes
 
+## 2.0.4
+ * Bugfix calculate memory usage
+
 ## 2.0.3
  * Bugfix remove statistics tags
 
