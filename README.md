@@ -34,11 +34,13 @@ Edison Modules:
 
 ## Setup
 
-Make sure you have Java 1.8 and gradle 4.x installed on your computer.
+Make sure you have Java 11 and gradle 6.x installed on your computer.
 
 ### Testing
 
 In order to execute the tests, you need to have a running [Localstack](https://github.com/localstack/localstack)!
+    
+    gradle startLocalStack
 
 Test and create coverage report
 

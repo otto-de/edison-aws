@@ -18,11 +18,11 @@ import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathRequest;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathResponse;
 import software.amazon.awssdk.services.ssm.model.Parameter;
+import software.amazon.awssdk.utils.StringUtils;
 
 import java.util.List;
 import java.util.Properties;
 
-import static io.netty.util.internal.StringUtil.isNullOrEmpty;
 import static java.util.Objects.requireNonNull;
 import static software.amazon.awssdk.regions.Region.EU_CENTRAL_1;
 import static software.amazon.awssdk.services.ssm.model.ParameterType.SECURE_STRING;
@@ -53,7 +53,7 @@ public class ParamStorePropertySourcePostProcessor implements BeanFactoryPostPro
         addParametersToPropertiesSource(propertiesSource, firstPage.parameters());
         String nextToken = firstPage.nextToken();
 
-        while (!isNullOrEmpty(nextToken)) {
+        while (!StringUtils.isBlank(nextToken)) {
             final GetParametersByPathResponse nextPage = ssmClient.getParametersByPath(requestBuilder
                     .nextToken(nextToken)
                     .build()

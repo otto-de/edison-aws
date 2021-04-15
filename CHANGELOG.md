@@ -1,5 +1,8 @@
 # Release Notes
 
+## 2.4.0
+* Update to edison 2.4.x and JDK 11
+
 ## 2.0.4
  * Bugfix calculate memory usage
 

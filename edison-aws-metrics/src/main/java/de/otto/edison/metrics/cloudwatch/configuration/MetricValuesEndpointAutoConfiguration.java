@@ -19,7 +19,7 @@ package de.otto.edison.metrics.cloudwatch.configuration;
 import de.otto.edison.metrics.cloudwatch.controller.MetricValuesEndpoint;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
-import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnEnabledEndpoint;
+import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
 import org.springframework.boot.actuate.autoconfigure.metrics.CompositeMeterRegistryAutoConfiguration;
 import org.springframework.boot.actuate.autoconfigure.metrics.MetricsAutoConfiguration;
 import org.springframework.boot.actuate.metrics.MetricsEndpoint;
@@ -39,7 +39,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 @ConditionalOnClass(Timed.class)
-@ConditionalOnEnabledEndpoint(endpoint = MetricValuesEndpoint.class)
+@ConditionalOnAvailableEndpoint(endpoint = MetricValuesEndpoint.class)
 @ConditionalOnProperty(prefix = "management.metrics.export.cloudwatch", name = "namespace")
 @AutoConfigureAfter({ MetricsAutoConfiguration.class, CompositeMeterRegistryAutoConfiguration.class })
 public class MetricValuesEndpointAutoConfiguration {

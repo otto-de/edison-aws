@@ -4,27 +4,36 @@
  */
 ext {
     versions = [
-            hibernate_validator: '6.0.17.Final',
-            edison             : '2.1.1',
-            spring_boot        : '2.1.4.RELEASE',
-            aws_sdk            : '2.6.4',
-            slf4j              : '1.7.25',
-            micrometer         : '1.2.1',
-            guava              : '23.0',
-            apache_commons     : '3.4'
+            hibernate_validator: '6.2.0.Final',
+            java_validation_api: '2.0.1.Final',
+            edison             : '2.4.6',
+            spring_boot        : '2.4.3',
+            aws_sdk            : '2.16.38',
+            slf4j              : '1.7.26',
+            micrometer         : '1.6.4',
+            guava              : '29.0-jre',
+            apache_commons     : '3.4',
+            togglz             : '2.9.6'
     ]
     test_versions = [
-            mockito : '2.28.2',
-            hamcrest: '1.3',
-            junit   : '4.12'
+            //mockito : '2.28.2',
+            //hamcrest: '1.3',
+            junit   : '4.12',
+            //junit_jupiter         : '5.7.1',
+            hamcrest      : '2.2',
+            mockito  : '3.9.0'
     ]
     plugin_versions = [
-            versions     : '0.17.0',
-            jacoco       : '0.7.9',
-            nexus_staging: '0.11.0'
+            //versions     : '0.17.0',
+            //jacoco       : '0.7.9',
+            //nexus_staging: '0.11.0'
+            versions     : '0.25.0',
+            jacoco       : '0.8.6',
+            nexus_staging: '0.30.0'
     ]
     libraries = [
             hibernate_validator      : "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
+            java_validation_api      : "javax.validation:validation-api:${versions.java_validation_api}",
             aws_sdk_auth             : "software.amazon.awssdk:auth:${versions.aws_sdk}",
             aws_sdk_core             : "software.amazon.awssdk:core:${versions.aws_sdk}",
             aws_sdk_cloudwatch       : "software.amazon.awssdk:cloudwatch:${versions.aws_sdk}",
@@ -39,7 +48,6 @@ ext {
             spring_boot_starter_actuator: "org.springframework.boot:spring-boot-starter-actuator:${versions.spring_boot}",
             spring_boot_devtools     : "org.springframework.boot:spring-boot-devtools:${versions.spring_boot}",
             slf4j                    : "org.slf4j:slf4j-api:${versions.slf4j}",
-            guava                    : "com.google.guava:guava:23.5-jre",
             micrometer               : "io.micrometer:micrometer-core:${versions.micrometer}",
             micrometer_cloudwatch    : "io.micrometer:micrometer-registry-cloudwatch2:${versions.micrometer}",
             guava                    : "com.google.guava:guava:${versions.guava}",
@@ -51,7 +59,11 @@ ext {
             hamcrest_core           : "org.hamcrest:hamcrest-core:${test_versions.hamcrest}",
             hamcrest_library        : "org.hamcrest:hamcrest-library:${test_versions.hamcrest}",
             junit                   : "junit:junit:${test_versions.junit}",
-            dynamodb_local          : "com.amazonaws:DynamoDBLocal:[1.11,2.0)"
+            //junit_jupiter                   : "org.junit.jupiter:junit-jupiter-api:${test_versions.junit}",
+            junit_params            : "org.junit.jupiter:junit-jupiter-params:${test_versions.junit}",
+            junit_engine            : "org.junit.jupiter:junit-jupiter-engine:${test_versions.junit}",
+            dynamodb_local          : "com.amazonaws:DynamoDBLocal:[1.11,2.0)",
+            togglz_testing          : "org.togglz:togglz-testing:${versions.togglz}",
     ]
     gradle_plugins = [
             versions     : "com.github.ben-manes:gradle-versions-plugin:${plugin_versions.versions}",
