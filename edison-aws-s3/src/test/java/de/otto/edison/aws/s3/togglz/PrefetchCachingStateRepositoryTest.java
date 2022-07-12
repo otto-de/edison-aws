@@ -9,9 +9,9 @@ import org.togglz.core.repository.StateRepository;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -59,6 +59,6 @@ public class PrefetchCachingStateRepositoryTest {
 
         FeatureState featureStateFromCache = prefetchCachingStateRepository.getFeatureState(feature);
         assertThat(featureStateFromCache, is(featureState));
-        verifyZeroInteractions(stateRepository);
+        verify(stateRepository, never());
     }
 }

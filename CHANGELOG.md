@@ -1,5 +1,14 @@
 # Release Notes
 
+## 2.7.0
+* edison-microservice '2.7.0'
+
+## 2.4.2
+* edison-microservice '2.4.7'
+
+## 2.4.1
+* aws_sdk '2.16.25'
+
 ## 2.4.0
 * Update to edison 2.4.x and JDK 11
 

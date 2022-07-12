@@ -34,7 +34,7 @@ Edison Modules:
 
 ## Setup
 
-Make sure you have Java 11 and gradle 6.x installed on your computer.
+Make sure you have Java 13 and gradle 6.x installed on your computer.
 
 ### Testing
 

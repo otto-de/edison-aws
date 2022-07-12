@@ -6,14 +6,15 @@ ext {
     versions = [
             hibernate_validator: '6.2.0.Final',
             java_validation_api: '2.0.1.Final',
-            edison             : '2.4.6',
-            spring_boot        : '2.4.3',
-            aws_sdk            : '2.16.38',
+            edison             : '2.7.0',
+            spring_boot        : '2.7.0',
+            aws_sdk            : '2.17.203',
             slf4j              : '1.7.26',
-            micrometer         : '1.6.4',
-            guava              : '29.0-jre',
+            micrometer         : '1.9.1',
+            guava              : '30.0-jre',
             apache_commons     : '3.4',
-            togglz             : '2.9.6'
+            togglz             : '2.9.1',
+            jackson            : '2.13.3'
     ]
     test_versions = [
             //mockito : '2.28.2',
@@ -51,7 +52,11 @@ ext {
             micrometer               : "io.micrometer:micrometer-core:${versions.micrometer}",
             micrometer_cloudwatch    : "io.micrometer:micrometer-registry-cloudwatch2:${versions.micrometer}",
             guava                    : "com.google.guava:guava:${versions.guava}",
-            apache_commons           : "org.apache.commons:commons-lang3:${versions.apache_commons}"
+            apache_commons           : "org.apache.commons:commons-lang3:${versions.apache_commons}",
+            jackson                            : "com.fasterxml.jackson.core:jackson-core:${versions.jackson}",
+            jackson_databind                   : "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}",
+            jackson_annotations                : "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
+
     ]
     test_libraries = [
             spring_boot_starter_test: "org.springframework.boot:spring-boot-starter-test:${versions.spring_boot}",

@@ -4,6 +4,7 @@ dependencies {
     compile libraries.spring_boot_autoconfigure
     compile libraries.aws_sdk_s3, without_log4j
     compile libraries.slf4j
+    compile libraries.jackson, libraries.jackson_databind, libraries.jackson_annotations
 
     compile libraries.java_validation_api
 
