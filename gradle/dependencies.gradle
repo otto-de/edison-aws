@@ -6,22 +6,19 @@ ext {
     versions = [
             hibernate_validator: '6.2.0.Final',
             java_validation_api: '2.0.1.Final',
-            edison             : '2.7.0',
-            spring_boot        : '2.7.0',
-            aws_sdk            : '2.17.203',
+            edison             : '3.0.0-M2',
+            spring_boot        : '3.0.2',
+            aws_sdk            : '2.20.7',
             slf4j              : '1.7.26',
             micrometer         : '1.9.1',
             guava              : '30.0-jre',
             apache_commons     : '3.4',
-            togglz             : '2.9.1',
-            jackson            : '2.13.3'
+            togglz             : '4.0.0-M1',
+            jackson            : '2.14.2'
     ]
     test_versions = [
-            //mockito : '2.28.2',
-            //hamcrest: '1.3',
-            junit   : '4.12',
-            //junit_jupiter         : '5.7.1',
-            hamcrest      : '2.2',
+            junit    : '5.9.2',
+            hamcrest : '2.2',
             mockito  : '3.9.0'
     ]
     plugin_versions = [
@@ -29,7 +26,7 @@ ext {
             //jacoco       : '0.7.9',
             //nexus_staging: '0.11.0'
             versions     : '0.25.0',
-            jacoco       : '0.8.6',
+            jacoco       : '0.8.8',
             nexus_staging: '0.30.0'
     ]
     libraries = [
