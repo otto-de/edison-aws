@@ -1,19 +1,19 @@
 dependencies {
-    compile project(":edison-aws-core")
-    compile libraries.aws_sdk_core
-    compile libraries.spring_boot_autoconfigure
-    compile libraries.spring_boot_starter_actuator
-    compile libraries.hibernate_validator
-    compile libraries.aws_sdk_cloudwatch
-    compile libraries.micrometer
-    compile libraries.micrometer_cloudwatch
-    compile libraries.guava
-    compile libraries.apache_commons
+    implementation project(":edison-aws-core")
+    implementation libraries.aws_sdk_core
+    implementation libraries.spring_boot_autoconfigure
+    implementation libraries.spring_boot_starter_actuator
+    implementation libraries.hibernate_validator
+    implementation libraries.aws_sdk_cloudwatch
+    implementation libraries.micrometer
+    implementation libraries.micrometer_cloudwatch
+    implementation libraries.guava
+    implementation libraries.apache_commons
 
-    testCompile test_libraries.junit
-    testCompile test_libraries.hamcrest_core
-    testCompile test_libraries.hamcrest_library
-    testCompile test_libraries.mockito_core
+    testImplementation test_libraries.junit_jupiter
+    testImplementation test_libraries.hamcrest_core
+    testImplementation test_libraries.hamcrest_library
+    testImplementation test_libraries.mockito_core
 }
 
 artifacts {
@@ -22,45 +22,63 @@ artifacts {
     archives sourcesJar
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-
-            pom.project {
-                name 'edison-aws-metrics'
-                packaging 'jar'
-                description 'CloudWatch metrics reporter library of the edison-aws project.'
-                url 'http://github.com/otto-de/edison-aws'
-
-                scm {
-                    url 'scm:git@github.com:otto-de/edison-aws.git'
-                    connection 'scm:git@github.com:otto-de/edison-aws.git'
-                    developerConnection 'scm:git@github.com:otto-de/edison-aws.git'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'edison-aws-metrics'
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
                 }
-
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'edison-aws-core'
+                description = 'CloudWatch metrics reporter library of the edison-aws project.'
+                url = 'http://github.com/otto-de/edison-aws'
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
-
                 developers {
                     developer {
-                        id 'gsteinacker'
-                        name 'Guido Steinacker'
+                        id = 'gsteinacker'
+                        name = 'Guido Steinacker'
                     }
+                }
+                scm {
+                    connection = 'scm:git@github.com:otto-de/edison-aws.git'
+                    developerConnection = 'scm:git@github.com:otto-de/edison-aws.git'
+                    url = 'http://github.com/otto-de/edison-aws'
                 }
             }
         }
     }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            if (project.debugUpload) {
+                releasesRepoUrl = "$buildDir/repos/releases"
+                snapshotsRepoUrl = "$buildDir/repos/snapshots"
+            } else {
+                credentials {
+                    username = sonatypeUsername
+                    password = sonatypePassword
+                }
+            }
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }

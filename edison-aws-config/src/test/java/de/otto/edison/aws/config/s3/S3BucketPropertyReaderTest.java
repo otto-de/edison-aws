@@ -1,7 +1,8 @@
 package de.otto.edison.aws.config.s3;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
@@ -15,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class S3BucketPropertyReaderTest {
 
@@ -28,9 +29,16 @@ public class S3BucketPropertyReaderTest {
     @InjectMocks
     private S3BucketPropertyReader testee;
 
-    @Before
+    private AutoCloseable mocks;
+
+    @BeforeEach
     public void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @SuppressWarnings("unchecked")

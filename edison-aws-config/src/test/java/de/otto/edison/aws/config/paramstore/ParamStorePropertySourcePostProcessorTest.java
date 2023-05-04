@@ -1,11 +1,16 @@
 package de.otto.edison.aws.config.paramstore;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.core.env.*;
+import org.springframework.core.env.ConfigurableEnvironment;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.MutablePropertySources;
+import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.env.PropertySource;
 import org.springframework.mock.env.MockEnvironment;
 import software.amazon.awssdk.services.ssm.SsmClient;
 import software.amazon.awssdk.services.ssm.model.GetParametersByPathRequest;
@@ -23,7 +28,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class ParamStorePropertySourcePostProcessorTest {
 
@@ -39,12 +44,19 @@ public class ParamStorePropertySourcePostProcessorTest {
     @InjectMocks
     private ParamStorePropertySourcePostProcessor postProcessor;
 
-    @Before
+    private AutoCloseable mocks;
+
+    @BeforeEach
     public void setUp() {
-        initMocks(this);
+        mocks = openMocks(this);
         when(environment.getProperty("edison.aws.config.paramstore.path")).thenReturn("/the/path");
         postProcessor.setEnvironment(environment);
         postProcessor.setSsmClient(ssmClient);
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @Test
@@ -90,7 +102,7 @@ public class ParamStorePropertySourcePostProcessorTest {
         parametersFirstPage.add(Parameter.builder().name("/the/path/param2").value("val2").build());
         when(firstPage.parameters()).thenReturn(parametersFirstPage);
         when(firstPage.nextToken()).thenReturn("firstPageNextToken");
-        GetParametersByPathRequest firstRequest = GetParametersByPathRequest.builder()
+        final GetParametersByPathRequest firstRequest = GetParametersByPathRequest.builder()
                 .path("/the/path")
                 .withDecryption(true)
                 .recursive(true)
@@ -103,7 +115,7 @@ public class ParamStorePropertySourcePostProcessorTest {
         parametersSecondPage.add(Parameter.builder().name("/the/path/param3").value("val3").build());
         when(secondPage.parameters()).thenReturn(parametersSecondPage);
         when(secondPage.nextToken()).thenReturn(null);
-        GetParametersByPathRequest secondRequest = GetParametersByPathRequest.builder()
+        final GetParametersByPathRequest secondRequest = GetParametersByPathRequest.builder()
                 .path("/the/path")
                 .withDecryption(true)
                 .recursive(true)
@@ -118,7 +130,8 @@ public class ParamStorePropertySourcePostProcessorTest {
         postProcessor.postProcessBeanFactory(beanFactory);
 
         // then
-        PropertySource<?> propertySource = envMock.getPropertySources().get("parameterStorePropertySource");
+        final PropertySource<?> propertySource = envMock.getPropertySources().get("parameterStorePropertySource");
+        //noinspection ConstantConditions
         assertThat(propertySource.getProperty("param1"), is("val1"));
         assertThat(propertySource.getProperty("param2"), is("val2"));
         assertThat(propertySource.getProperty("param3"), is("val3"));

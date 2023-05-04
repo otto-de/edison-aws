@@ -12,11 +12,8 @@ task jacocoRootReport(type: JacocoReport) {
     dependsOn jacocoMerge
 
     getAdditionalSourceDirs().from(files(publishedProjects.sourceSets.main.allSource.srcDirs))
-    //additionalSourceDirs = files(publishedProjects.sourceSets.main.allSource.srcDirs)
     getSourceDirectories().from(publishedProjects.sourceSets.main.allSource.srcDirs)
-    //sourceDirectories = files(publishedProjects.sourceSets.main.allSource.srcDirs)
     getClassDirectories().from(files(publishedProjects.sourceSets.main.output))
-    //classDirectories = files(publishedProjects.sourceSets.main.output)
     executionData jacocoMerge.destinationFile
 
     reports {

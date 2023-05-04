@@ -1,8 +1,8 @@
 dependencies {
-    compile libraries.spring_boot_autoconfigure
-    compile libraries.aws_sdk_core
-    compile libraries.aws_sdk_auth
-    compile libraries.slf4j
+    implementation libraries.spring_boot_autoconfigure
+    implementation libraries.aws_sdk_core
+    implementation libraries.aws_sdk_auth
+    implementation libraries.slf4j
 }
 
 artifacts {
@@ -11,45 +11,63 @@ artifacts {
     archives sourcesJar
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: sonatypeUsername, password: sonatypePassword)
-            }
-
-            pom.project {
-                name 'edison-aws-core'
-                packaging 'jar'
-                description 'Core library of Edison-AWS microservices.'
-                url 'http://github.com/otto-de/edison-aws'
-
-                scm {
-                    url 'scm:git@github.com:otto-de/edison-aws.git'
-                    connection 'scm:git@github.com:otto-de/edison-aws.git'
-                    developerConnection 'scm:git@github.com:otto-de/edison-aws.git'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'edison-aws-core'
+            from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
                 }
-
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
+            pom {
+                name = 'edison-aws-core'
+                description = 'Core library of Edison-AWS microservices.'
+                url = 'http://github.com/otto-de/edison-aws'
                 licenses {
                     license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
-
                 developers {
                     developer {
-                        id 'gsteinacker'
-                        name 'Guido Steinacker'
+                        id = 'gsteinacker'
+                        name = 'Guido Steinacker'
                     }
+                }
+                scm {
+                    connection = 'scm:git@github.com:otto-de/edison-aws.git'
+                    developerConnection = 'scm:git@github.com:otto-de/edison-aws.git'
+                    url = 'http://github.com/otto-de/edison-aws'
                 }
             }
         }
     }
+    repositories {
+        maven {
+            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            if (project.debugUpload) {
+                releasesRepoUrl = "$buildDir/repos/releases"
+                snapshotsRepoUrl = "$buildDir/repos/snapshots"
+            } else {
+                credentials {
+                    username = sonatypeUsername
+                    password = sonatypePassword
+                }
+            }
+            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
 }

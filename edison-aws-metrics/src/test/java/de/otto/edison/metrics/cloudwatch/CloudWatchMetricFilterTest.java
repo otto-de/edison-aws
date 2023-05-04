@@ -4,36 +4,40 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import io.micrometer.core.instrument.Measurement;
 import io.micrometer.core.instrument.Meter;
-import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Statistic;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.internal.DefaultMeter;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.singletonList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.samePropertyValuesAs;
-import static org.junit.Assert.assertThat;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
+@SuppressWarnings("ConstantConditions") // passing nulls to @NonNulls here
 public class CloudWatchMetricFilterTest {
 
-    @Mock
-    private MeterRegistry meterRegistry;
     private CloudWatchMetricFilter cloudWatchMetricFilter;
+    private AutoCloseable mocks;
 
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);
+    @BeforeEach
+    public void setUp() {
+        mocks = openMocks(this);
         final CloudWatchMetricsProperties cloudWatchMetricsProperties = new CloudWatchMetricsProperties();
         cloudWatchMetricsProperties.setDimensions(ImmutableMap.of("By_Environment","live"));
         cloudWatchMetricsProperties.setAllowedmetrics(ImmutableList.of("jvm.memory.*","logback.events.*"));
         cloudWatchMetricFilter = new CloudWatchMetricFilter((cloudWatchMetricsProperties));
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @Test

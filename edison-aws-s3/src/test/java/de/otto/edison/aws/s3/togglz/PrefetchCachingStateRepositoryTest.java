@@ -1,7 +1,8 @@
 package de.otto.edison.aws.s3.togglz;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.togglz.core.Feature;
 import org.togglz.core.repository.FeatureState;
@@ -13,7 +14,7 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class PrefetchCachingStateRepositoryTest {
 
@@ -27,12 +28,18 @@ public class PrefetchCachingStateRepositoryTest {
 
     @Mock
     private FeatureState featureState;
+    private AutoCloseable mocks;
 
-    @Before
-    public void setUp() throws Exception {
-        initMocks(this);
+    @BeforeEach
+    public void setUp() {
+        mocks = openMocks(this);
         prefetchCachingStateRepository = new PrefetchCachingStateRepository(stateRepository);
         when(feature.name()).thenReturn("someToggleName");
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        mocks.close();
     }
 
     @Test
@@ -57,7 +64,7 @@ public class PrefetchCachingStateRepositoryTest {
         prefetchCachingStateRepository.setFeatureState(featureState);
         verify(stateRepository, times(1)).setFeatureState(featureState);
 
-        FeatureState featureStateFromCache = prefetchCachingStateRepository.getFeatureState(feature);
+        final FeatureState featureStateFromCache = prefetchCachingStateRepository.getFeatureState(feature);
         assertThat(featureStateFromCache, is(featureState));
         verify(stateRepository, never());
     }

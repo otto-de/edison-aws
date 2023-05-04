@@ -13,6 +13,9 @@ buildscript {
 }
 apply plugin: 'java'
 
+project.ext.set("debugUpload", false)
+
+
 repositories {
     mavenCentral()
     maven { url 'http://repo.spring.io/libs-snapshot' }

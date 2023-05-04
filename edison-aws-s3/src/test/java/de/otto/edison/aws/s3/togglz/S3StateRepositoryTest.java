@@ -1,8 +1,8 @@
 package de.otto.edison.aws.s3.togglz;
 
 import de.otto.edison.aws.s3.configuration.S3TogglzProperties;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.togglz.core.Feature;
 import org.togglz.core.repository.FeatureState;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -15,16 +15,15 @@ import java.net.URI;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class S3StateRepositoryTest {
 
-    private S3Client client;
     private S3StateRepository repository;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        client = S3Client.builder()
+        S3Client client = S3Client.builder()
                 .credentialsProvider(StaticCredentialsProvider.create(
                         AwsBasicCredentials.create("test", "test")))
                 .endpointOverride(URI.create("http://localhost:4572"))

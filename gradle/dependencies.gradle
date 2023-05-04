@@ -1,7 +1,7 @@
-/**
- * For an example
- * @see https://raw.githubusercontent.com/ben-manes/caffeine/master/gradle/dependencies.gradle
- */
+//
+// For an example
+// @see https://raw.githubusercontent.com/ben-manes/caffeine/master/gradle/dependencies.gradle
+//
 ext {
     versions = [
             hibernate_validator: '6.2.0.Final',
@@ -22,9 +22,6 @@ ext {
             mockito  : '3.9.0'
     ]
     plugin_versions = [
-            //versions     : '0.17.0',
-            //jacoco       : '0.7.9',
-            //nexus_staging: '0.11.0'
             versions     : '0.25.0',
             jacoco       : '0.8.8',
             nexus_staging: '0.30.0'
@@ -60,8 +57,7 @@ ext {
             mockito_core            : "org.mockito:mockito-core:${test_versions.mockito}",
             hamcrest_core           : "org.hamcrest:hamcrest-core:${test_versions.hamcrest}",
             hamcrest_library        : "org.hamcrest:hamcrest-library:${test_versions.hamcrest}",
-            junit                   : "junit:junit:${test_versions.junit}",
-            //junit_jupiter                   : "org.junit.jupiter:junit-jupiter-api:${test_versions.junit}",
+            junit_jupiter           : "org.junit.jupiter:junit-jupiter-api:${test_versions.junit}",
             junit_params            : "org.junit.jupiter:junit-jupiter-params:${test_versions.junit}",
             junit_engine            : "org.junit.jupiter:junit-jupiter-engine:${test_versions.junit}",
             dynamodb_local          : "com.amazonaws:DynamoDBLocal:[1.11,2.0)",
