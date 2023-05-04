@@ -1,5 +1,8 @@
 # Release Notes
 
+## 3.0.0-SNAPSHOT
+* edison-microservice '3.0.0-M2' (WIP)
+
 ## 2.7.0
 * edison-microservice '2.7.0'
 
