@@ -56,7 +56,7 @@ Determine possible dependency updates
 
 Publish new releases
 
-    gradle uploadArchives
+    gradle publish
 
 
 ## Contributing
