@@ -4,20 +4,20 @@
 //
 ext {
     versions = [
-            hibernate_validator: '6.2.0.Final',
-            java_validation_api: '2.0.1.Final',
-            edison             : '3.0.0-M2',
-            spring_boot        : '3.0.2',
-            aws_sdk            : '2.20.7',
+            hibernate_validator: '8.0.0.Final',
+            java_validation_api: '3.0.2',
+            edison             : '3.0.0',
+            spring_boot        : '3.0.7',
+            aws_sdk            : '2.20.76',
             slf4j              : '1.7.26',
             micrometer         : '1.9.1',
             guava              : '30.0-jre',
             apache_commons     : '3.4',
-            togglz             : '4.0.0-M1',
-            jackson            : '2.14.2'
+            togglz             : '4.0.1',
+            jackson            : '2.15.2'
     ]
     test_versions = [
-            junit    : '5.9.2',
+            junit    : '5.9.3',
             hamcrest : '2.2',
             mockito  : '3.9.0'
     ]
@@ -28,7 +28,7 @@ ext {
     ]
     libraries = [
             hibernate_validator      : "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
-            java_validation_api      : "javax.validation:validation-api:${versions.java_validation_api}",
+            java_validation_api      : "jakarta.validation:jakarta.validation-api:${versions.java_validation_api}",
             aws_sdk_auth             : "software.amazon.awssdk:auth:${versions.aws_sdk}",
             aws_sdk_core             : "software.amazon.awssdk:core:${versions.aws_sdk}",
             aws_sdk_cloudwatch       : "software.amazon.awssdk:cloudwatch:${versions.aws_sdk}",

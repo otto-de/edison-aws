@@ -3,7 +3,7 @@ package de.otto.edison.aws.s3.configuration;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.Min;
+import jakarta.validation.constraints.Min;
 
 @Validated
 @ConfigurationProperties(prefix = "edison.aws.s3.togglz")

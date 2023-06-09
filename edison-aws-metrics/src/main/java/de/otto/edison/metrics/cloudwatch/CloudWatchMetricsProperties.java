@@ -3,7 +3,7 @@ package de.otto.edison.metrics.cloudwatch;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
