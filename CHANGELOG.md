@@ -1,5 +1,8 @@
 # Release Notes
 
+## 3.1.6
+* edison-microservice '3.1.6'
+
 ## 3.0.0
 * edison-microservice '3.0.0' (WIP)
 
