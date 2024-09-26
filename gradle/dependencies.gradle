@@ -4,22 +4,22 @@
 //
 ext {
     versions = [
-            hibernate_validator: '8.0.0.Final',
-            java_validation_api: '3.0.2',
-            edison             : '3.1.6',
-            spring_boot        : '3.1.5',
-            aws_sdk            : '2.21.22',
+            hibernate_validator: '8.0.1.Final',
+            java_validation_api: '3.1.0',
+            edison             : '3.3.0',
+            spring_boot        : '3.3.2',
+            aws_sdk            : '2.27.4',
             slf4j              : '1.7.26',
-            micrometer         : '1.12.1',
+            micrometer         : '1.13.3',
             guava              : '30.0-jre',
             apache_commons     : '3.4',
             togglz             : '4.4.0',
-            jackson            : '2.15.3'
+            jackson            : '2.17.2'
     ]
     test_versions = [
-            junit    : '5.9.3',
-            hamcrest : '2.2',
-            mockito  : '3.9.0'
+            junit    : '5.11.0',
+            hamcrest : '3.0',
+            mockito  : '5.12.0'
     ]
     plugin_versions = [
             versions     : '0.25.0',
@@ -64,7 +64,7 @@ ext {
             togglz_testing          : "org.togglz:togglz-testing:${versions.togglz}",
     ]
     gradle_plugins = [
-            versions     : "com.github.ben-manes:gradle-versions-plugin:${plugin_versions.versions}",
+            //versions     : "com.github.ben-manes:gradle-versions-plugin:${plugin_versions.versions}",
             spring_boot  : "org.springframework.boot:spring-boot-gradle-plugin:${versions.spring_boot}",
             nexus_staging: "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:${plugin_versions.nexus_staging}"
     ]
