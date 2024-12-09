@@ -8,6 +8,8 @@ Collection of independent libraries on top of [edison-microservice](https://gith
 
 [![release](https://maven-badges.herokuapp.com/maven-central/de.otto.edison/edison-aws-core/badge.svg)](https://maven-badges.herokuapp.com/maven-central/de.otto.edison/edison-aws-core)
 [![license](https://img.shields.io/github/license/otto-de/edison-aws.svg)](./LICENSE)
+![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fotto-de%2Fedison-aws%2Fblob%2Fmaster%2FOSSMETADATA)
+
 
 UNSTABLE - EARLY IN DEVELOPMENT
 
