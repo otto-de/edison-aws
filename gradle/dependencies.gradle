@@ -4,17 +4,17 @@
 //
 ext {
     versions = [
-            hibernate_validator: '8.0.1.Final',
+            hibernate_validator: '8.0.2.Final',
             java_validation_api: '3.1.0',
-            edison             : '3.3.0',
-            spring_boot        : '3.3.2',
-            aws_sdk            : '2.27.4',
+            edison             : '3.4.0',
+            spring_boot        : '3.4.0',
+            aws_sdk            : '2.29.36',
             slf4j              : '1.7.26',
-            micrometer         : '1.13.3',
+            micrometer         : '1.14.2',
             guava              : '30.0-jre',
             apache_commons     : '3.4',
             togglz             : '4.4.0',
-            jackson            : '2.17.2'
+            jackson            : '2.18.2'
     ]
     test_versions = [
             junit    : '5.11.0',

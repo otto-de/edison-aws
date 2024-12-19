@@ -1,27 +1,14 @@
 apply plugin: 'jacoco'
 
-def publishedProjects = subprojects.findAll { (!it.projectDir.name.contains('example')) }
-
-task jacocoMerge(type: JacocoMerge) {
-    publishedProjects.each { subproject ->
-        executionData subproject.tasks.withType(Test)
-    }
+jacoco {
+    toolVersion = plugin_versions.jacoco
 }
 
-task jacocoRootReport(type: JacocoReport) {
-    dependsOn jacocoMerge
-
-    getAdditionalSourceDirs().from(files(publishedProjects.sourceSets.main.allSource.srcDirs))
-    getSourceDirectories().from(publishedProjects.sourceSets.main.allSource.srcDirs)
-    getClassDirectories().from(files(publishedProjects.sourceSets.main.output))
-    executionData jacocoMerge.destinationFile
-
+jacocoTestReport {
     reports {
-        html.enabled = true
-        xml.enabled = true
-    }
-
-    doFirst {
-        executionData = files(executionData.findAll { it.exists() })
+        xml.required = true
+        html.required = true
     }
 }
+
+test.finalizedBy jacocoTestReport
