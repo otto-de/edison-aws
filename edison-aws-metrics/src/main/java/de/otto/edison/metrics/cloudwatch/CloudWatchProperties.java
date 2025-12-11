@@ -16,8 +16,8 @@
 
 package de.otto.edison.metrics.cloudwatch;
 
-import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.micrometer.metrics.autoconfigure.export.properties.StepRegistryProperties;
 
 /**
  * {@link ConfigurationProperties} for configuring CloudWatch metrics export.

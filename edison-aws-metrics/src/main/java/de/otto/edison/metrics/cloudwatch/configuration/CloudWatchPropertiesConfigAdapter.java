@@ -18,7 +18,7 @@ package de.otto.edison.metrics.cloudwatch.configuration;
 
 import de.otto.edison.metrics.cloudwatch.CloudWatchProperties;
 import io.micrometer.cloudwatch2.CloudWatchConfig;
-import org.springframework.boot.actuate.autoconfigure.metrics.export.properties.StepRegistryPropertiesConfigAdapter;
+import org.springframework.boot.micrometer.metrics.autoconfigure.export.properties.StepRegistryPropertiesConfigAdapter;
 
 /**
  * Adapter to convert {@link CloudWatchProperties} to a {@link CloudWatchConfig}.

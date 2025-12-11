@@ -4,22 +4,23 @@
 //
 ext {
     versions = [
-            hibernate_validator: '8.0.2.Final',
-            java_validation_api: '3.1.0',
-            edison             : '3.4.0',
-            spring_boot        : '3.4.0',
-            aws_sdk            : '2.29.36',
-            slf4j              : '1.7.26',
-            micrometer         : '1.14.2',
-            guava              : '30.0-jre',
+            hibernate_validator: '9.0.1.Final',
+            java_validation_api: '3.1.1',
+            edison             : '4.0.0',
+            spring_boot        : '4.0.0',
+            aws_sdk            : '2.40.3',
+            slf4j              : '2.0.17',
+            micrometer         : '1.16.0',
+            guava              : '31.1-jre',
             apache_commons     : '3.4',
             togglz             : '4.4.0',
-            jackson            : '2.18.2'
+            jackson            : '2.20.0',
+            jackson_annotations: '2.20'
     ]
     test_versions = [
-            junit    : '5.11.0',
+            junit    : '6.0.1',
             hamcrest : '3.0',
-            mockito  : '5.12.0'
+            mockito  : '5.20.0'
     ]
     plugin_versions = [
             versions     : '0.25.0',
@@ -27,7 +28,7 @@ ext {
             nexus_staging: '0.30.0'
     ]
     libraries = [
-            hibernate_validator      : "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
+            hibernate_validator      : "org.hibernate.validator:hibernate-validator:${versions.hibernate_validator}",
             java_validation_api      : "jakarta.validation:jakarta.validation-api:${versions.java_validation_api}",
             aws_sdk_auth             : "software.amazon.awssdk:auth:${versions.aws_sdk}",
             aws_sdk_core             : "software.amazon.awssdk:core:${versions.aws_sdk}",
@@ -49,7 +50,7 @@ ext {
             apache_commons           : "org.apache.commons:commons-lang3:${versions.apache_commons}",
             jackson                            : "com.fasterxml.jackson.core:jackson-core:${versions.jackson}",
             jackson_databind                   : "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}",
-            jackson_annotations                : "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson}"
+            jackson_annotations                : "com.fasterxml.jackson.core:jackson-annotations:${versions.jackson_annotations}"
 
     ]
     test_libraries = [
