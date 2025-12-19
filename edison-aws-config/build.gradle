@@ -1,19 +1,16 @@
 dependencies {
-
     implementation project(":edison-aws-core")
     implementation project(":edison-aws-s3")
 
-    implementation libraries.spring_boot_autoconfigure
-    implementation libraries.aws_sdk_ssm
-    implementation libraries.aws_sdk_s3, without_log4j
-    implementation libraries.slf4j
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.aws.sdk.ssm
+    implementation libs.aws.sdk.s3  // without_log4j wird nicht mehr benötigt
+    implementation libs.slf4j
 
-    testImplementation test_libraries.junit_jupiter
-    testImplementation test_libraries.mockito_core
-    testImplementation test_libraries.hamcrest_core
-    testImplementation test_libraries.hamcrest_library
-    testImplementation test_libraries.spring_boot_starter_test
-
+    testImplementation libs.junit.jupiter
+    testImplementation libs.mockito.core
+    testImplementation libs.hamcrest.core
+    testImplementation libs.spring.boot.starter.test
 }
 
 artifacts {
@@ -56,29 +53,10 @@ publishing {
                 scm {
                     connection = 'scm:git@github.com:otto-de/edison-aws.git'
                     developerConnection = 'scm:git@github.com:otto-de/edison-aws.git'
-                    url = 'http://github.com/otto-de/edison-aws'
+                    url = 'https://github.com/otto-de/edison-aws'
                 }
             }
-        }
-    }
-    repositories {
-        maven {
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            if (project.debugUpload) {
-                releasesRepoUrl = "$buildDir/repos/releases"
-                snapshotsRepoUrl = "$buildDir/repos/snapshots"
-            } else {
-                credentials {
-                    username = sonatypeUsername
-                    password = sonatypePassword
-                }
-            }
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
         }
     }
 }
 
-signing {
-    sign publishing.publications.mavenJava
-}

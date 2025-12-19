@@ -1,23 +1,24 @@
 dependencies {
     implementation project(":edison-aws-core")
 
-    implementation libraries.spring_boot_autoconfigure
-    implementation libraries.aws_sdk_s3, without_log4j
-    implementation libraries.slf4j
-    implementation libraries.jackson, libraries.jackson_databind, libraries.jackson_annotations
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.aws.sdk.s3
+    implementation libs.slf4j
+    implementation libs.jackson
+    implementation libs.jackson.databind
+    implementation libs.jackson.annotations
 
-    implementation libraries.java_validation_api
+    implementation libs.java.validation.api
 
-    compileOnly libraries.edison_togglz
+    compileOnly libs.edison.togglz
 
-    testImplementation libraries.edison_togglz
+    testImplementation libs.edison.togglz
 
-    testImplementation test_libraries.spring_boot_starter_test
-    testImplementation test_libraries.junit_jupiter
-    testImplementation test_libraries.mockito_core
-    testImplementation test_libraries.hamcrest_core
-    testImplementation test_libraries.hamcrest_library
-    testImplementation test_libraries.togglz_testing
+    testImplementation libs.spring.boot.starter.test
+    testImplementation libs.junit.jupiter
+    testImplementation libs.mockito.core
+    testImplementation libs.hamcrest.core
+    testImplementation libs.togglz.testing
 }
 
 artifacts {
@@ -63,22 +64,6 @@ publishing {
                     url = 'http://github.com/otto-de/edison-aws'
                 }
             }
-        }
-    }
-    repositories {
-        maven {
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            if (project.debugUpload) {
-                releasesRepoUrl = "$buildDir/repos/releases"
-                snapshotsRepoUrl = "$buildDir/repos/snapshots"
-            } else {
-                credentials {
-                    username = sonatypeUsername
-                    password = sonatypePassword
-                }
-            }
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
         }
     }
 }

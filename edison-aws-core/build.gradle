@@ -1,8 +1,12 @@
+apply plugin: 'java-library'
+
 dependencies {
-    implementation libraries.spring_boot_autoconfigure
-    implementation libraries.aws_sdk_core
-    implementation libraries.aws_sdk_auth
-    implementation libraries.slf4j
+    api platform(libs.edison.platform)
+
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.aws.sdk.core
+    implementation libs.aws.sdk.auth
+    implementation libs.slf4j
 }
 
 artifacts {
@@ -45,29 +49,10 @@ publishing {
                 scm {
                     connection = 'scm:git@github.com:otto-de/edison-aws.git'
                     developerConnection = 'scm:git@github.com:otto-de/edison-aws.git'
-                    url = 'http://github.com/otto-de/edison-aws'
+                    url = 'https://github.com/otto-de/edison-aws'
                 }
             }
-        }
-    }
-    repositories {
-        maven {
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            if (project.debugUpload) {
-                releasesRepoUrl = "$buildDir/repos/releases"
-                snapshotsRepoUrl = "$buildDir/repos/snapshots"
-            } else {
-                credentials {
-                    username = sonatypeUsername
-                    password = sonatypePassword
-                }
-            }
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
         }
     }
 }
 
-signing {
-    sign publishing.publications.mavenJava
-}

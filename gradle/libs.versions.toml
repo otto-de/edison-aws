@@ -1,0 +1,54 @@
+[versions]
+edison = "4.0.1"
+guava = "31.1-jre"
+versions-plugin = "0.25.0"
+jacoco = "0.8.8"
+dynamodb-local = "[1.11,2.0)"
+
+[libraries]
+
+edison-platform = { module = "de.otto.edison:edison-platform", version.ref = "edison" }
+edison-core = { module = "de.otto.edison:edison-core", version.ref = "edison"}
+edison-togglz = { module = "de.otto.edison:edison-togglz", version.ref = "edison" }
+edison-jobs = { module = "de.otto.edison:edison-jobs", version.ref = "edison" }
+
+hibernate-validator = { module = "org.hibernate.validator:hibernate-validator" }
+java-validation-api = { module = "jakarta.validation:jakarta.validation-api" }
+
+aws-sdk-bom = { module = "software.amazon.awssdk:bom" }
+aws-sdk-auth = { module = "software.amazon.awssdk:auth" }
+aws-sdk-core = { module = "software.amazon.awssdk:sdk-core" }
+aws-sdk-cloudwatch = { module = "software.amazon.awssdk:cloudwatch" }
+aws-sdk-s3 = { module = "software.amazon.awssdk:s3" }
+aws-sdk-dynamo = { module = "software.amazon.awssdk:dynamodb" }
+aws-sdk-ssm = { module = "software.amazon.awssdk:ssm" }
+
+spring-boot-bom = { module = "org.springframework.boot:spring-boot-dependencies" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+
+slf4j = { module = "org.slf4j:slf4j-api" }
+
+micrometer = { module = "io.micrometer:micrometer-core" }
+micrometer-cloudwatch = { module = "io.micrometer:micrometer-registry-cloudwatch2" }
+
+guava = { module = "com.google.guava:guava", version.ref = "guava" }
+apache-commons = { module = "org.apache.commons:commons-lang3" }
+
+jackson = { module = "tools.jackson.core:jackson-core" }
+jackson-databind = { module = "tools.jackson.core:jackson-databind" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations" }
+
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+mockito-core = { module = "org.mockito:mockito-core" }
+hamcrest-core = { module = "org.hamcrest:hamcrest" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+dynamodb-local = { module = "com.amazonaws:DynamoDBLocal", version.ref = "dynamodb-local" }
+togglz-testing = { module = "org.togglz:togglz-testing" }
+
+[plugins]
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions-plugin" }
+spring-boot = { id = "org.springframework.boot" }
+

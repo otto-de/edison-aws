@@ -1,31 +1,24 @@
 buildscript {
-    apply from: "${rootDir}/gradle/dependencies.gradle"
-
     repositories {
         mavenCentral()
-        jcenter()
         mavenLocal()
     }
-
-    dependencies {
-        classpath gradle_plugins.values()
-    }
 }
+
 apply plugin: 'java'
-
-project.ext.set("debugUpload", false)
-
 
 repositories {
     mavenCentral()
-    maven { url 'http://repo.spring.io/libs-snapshot' }
+    mavenLocal()
 }
 
-//apply from: "${rootDir}/gradle/root/versions.gradle"
+dependencies {
+    implementation platform(libs.edison.platform)
+}
+
 apply from: "${rootDir}/gradle/root/idea.gradle"
 apply from: "${rootDir}/gradle/root/eclipse.gradle"
 apply from: "${rootDir}/gradle/root/jacoco.gradle"
-apply from: "${rootDir}/gradle/root/nexusstaging.gradle"
 
 subprojects {
     apply plugin: 'eclipse'
@@ -40,18 +33,13 @@ subprojects {
     // DO NOT FORGET TO DOCUMENT CHANGES IN CHANGELOG.md
     //
     // Add a GitHub release for every new release: https://github.com/otto-de/edison-aws/releases
-    version = '4.0.0-SNAPSHOT'
+    version = '4.0.1-SNAPSHOT'
     group = 'de.otto.edison'
 
     repositories {
         mavenCentral()
         mavenLocal()
-        maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
-
-    ext['thymeleaf.version'] = versions.thymeleaf
-    ext['thymeleaf-layout-dialect.version'] = versions.thymeleaf_layout_dialect
 
     task allDeps(type: DependencyReportTask) {}
 

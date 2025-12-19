@@ -1,19 +1,18 @@
 dependencies {
     implementation project(":edison-aws-core")
-    implementation libraries.aws_sdk_core
-    implementation libraries.spring_boot_autoconfigure
-    implementation libraries.spring_boot_starter_actuator
-    implementation libraries.hibernate_validator
-    implementation libraries.aws_sdk_cloudwatch
-    implementation libraries.micrometer
-    implementation libraries.micrometer_cloudwatch
-    implementation libraries.guava
-    implementation libraries.apache_commons
+    implementation libs.aws.sdk.core
+    implementation libs.spring.boot.autoconfigure
+    implementation libs.spring.boot.starter.actuator
+    implementation libs.hibernate.validator
+    implementation libs.aws.sdk.cloudwatch
+    implementation libs.micrometer
+    implementation libs.micrometer.cloudwatch
+    implementation libs.guava
+    implementation libs.apache.commons
 
-    testImplementation test_libraries.junit_jupiter
-    testImplementation test_libraries.hamcrest_core
-    testImplementation test_libraries.hamcrest_library
-    testImplementation test_libraries.mockito_core
+    testImplementation libs.junit.jupiter
+    testImplementation libs.hamcrest.core
+    testImplementation libs.mockito.core
 }
 
 artifacts {
@@ -38,7 +37,7 @@ publishing {
                 }
             }
             pom {
-                name = 'edison-aws-core'
+                name = 'edison-aws-metrics'
                 description = 'CloudWatch metrics reporter library of the edison-aws project.'
                 url = 'http://github.com/otto-de/edison-aws'
                 licenses {
@@ -56,29 +55,10 @@ publishing {
                 scm {
                     connection = 'scm:git@github.com:otto-de/edison-aws.git'
                     developerConnection = 'scm:git@github.com:otto-de/edison-aws.git'
-                    url = 'http://github.com/otto-de/edison-aws'
+                    url = 'https://github.com/otto-de/edison-aws'
                 }
             }
-        }
-    }
-    repositories {
-        maven {
-            def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-            def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
-            if (project.debugUpload) {
-                releasesRepoUrl = "$buildDir/repos/releases"
-                snapshotsRepoUrl = "$buildDir/repos/snapshots"
-            } else {
-                credentials {
-                    username = sonatypeUsername
-                    password = sonatypePassword
-                }
-            }
-            url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
         }
     }
 }
 
-signing {
-    sign publishing.publications.mavenJava
-}
