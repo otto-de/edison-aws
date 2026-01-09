@@ -18,7 +18,7 @@ dependencies {
 
 apply from: "${rootDir}/gradle/root/idea.gradle"
 apply from: "${rootDir}/gradle/root/eclipse.gradle"
-apply from: "${rootDir}/gradle/root/jacoco.gradle"
+//apply from: "${rootDir}/gradle/root/jacoco.gradle"
 
 subprojects {
     apply plugin: 'eclipse'
@@ -46,7 +46,7 @@ subprojects {
     apply from: "${rootDir}/gradle/idea.gradle"
     apply from: "${rootDir}/gradle/compile.gradle"
     apply from: "${rootDir}/gradle/test.gradle"
-    apply from: "${rootDir}/gradle/jacoco.gradle"
+    //apply from: "${rootDir}/gradle/jacoco.gradle"
     apply from: "${rootDir}/gradle/maven.gradle"
     apply from: "${rootDir}/gradle/signing.gradle"
 

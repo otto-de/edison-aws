@@ -19,7 +19,6 @@ package de.otto.edison.metrics.cloudwatch.configuration;
 import de.otto.edison.metrics.cloudwatch.controller.MetricValuesEndpoint;
 import io.micrometer.core.annotation.Timed;
 import io.micrometer.core.instrument.MeterRegistry;
-
 import org.springframework.boot.actuate.autoconfigure.endpoint.condition.ConditionalOnAvailableEndpoint;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

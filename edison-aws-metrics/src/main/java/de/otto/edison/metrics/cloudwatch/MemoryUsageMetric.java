@@ -2,7 +2,6 @@ package de.otto.edison.metrics.cloudwatch;
 
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.binder.BaseUnits;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;

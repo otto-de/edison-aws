@@ -7,8 +7,6 @@ import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.util.NamedThreadFactory;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchAsyncClient;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 

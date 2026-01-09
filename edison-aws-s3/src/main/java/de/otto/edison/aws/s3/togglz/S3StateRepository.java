@@ -1,16 +1,19 @@
 package de.otto.edison.aws.s3.togglz;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import de.otto.edison.aws.s3.configuration.S3TogglzProperties;
 import org.togglz.core.Feature;
 import org.togglz.core.repository.FeatureState;
 import org.togglz.core.repository.StateRepository;
 import org.togglz.core.util.FeatureStateStorageWrapper;
 import software.amazon.awssdk.core.ResponseInputStream;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.core.sync.RequestBody;
+import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
+import software.amazon.awssdk.services.s3.model.GetObjectResponse;
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+import software.amazon.awssdk.services.s3.model.ServerSideEncryption;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 
@@ -69,7 +72,7 @@ public class S3StateRepository implements StateRepository {
                     .build();
             final RequestBody requestBody = RequestBody.fromString(json);
             s3Client.putObject(putObjectRequest, requestBody);
-        } catch (S3Exception | JsonProcessingException e) {
+        } catch (S3Exception e) {
             throw new RuntimeException("Failed to set the feature state", e);
         }
     }
